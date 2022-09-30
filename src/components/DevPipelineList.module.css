@@ -1,0 +1,12 @@
+.box {
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.lable{
+  width: 20%;  
+}

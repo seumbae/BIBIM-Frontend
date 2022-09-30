@@ -7,7 +7,7 @@ import styles from "./signin.module.css";
 
 const SIGNIN_URL = "/api/signin";
 
-function Login({setLogin, setName}) {
+function Login({ setLogin, setName }) {
 	const navigate = useNavigate();
 	// const {setAuth} = useContext(AuthContext);
 	const [id, setId] = useState("");
@@ -33,8 +33,8 @@ function Login({setLogin, setName}) {
 		setPassword("");
 		//permission 1 == Dev, 2 == Sec, 3 == Ops, 4 == Admin
 		const permission = response?.data?.permission;
-    setLogin(true);
-    setName(response?.data?.name);
+		setLogin(true);
+		setName(response?.data?.name);
 		console.log(`permission: ${permission}`);
 		if (permission === 1) {
 			navigate("/dev");
@@ -53,29 +53,33 @@ function Login({setLogin, setName}) {
 	return (
 		<div className={styles.card}>
 			<main className={styles.main}>
-				<div className={styles.box}>
-					<h1>Login</h1>
-				</div>
-				<form clssName={styles.box} onSubmit={onHandleSubmit}>
-					<input
-						onChange={onHandleChange}
-						name="id"
-						type="text"
-						autoComplete="off"
-						placeholder="Username"
-					/>
-					<input
-						onChange={onHandleChange}
-						name="password"
-						type="password"
-						placeholder="Password"
-					/>
-					<button className={styles.button}>SIGN IN</button>
-				</form>
-				<div className={styles.link}>
-					<Link to="/signup">
-						SignUp
-					</Link>
+				<div className={styles.container}>
+					<div className={styles.box}>
+						<div className={styles.sign}>Sign In</div>
+						<form className={styles.form} onSubmit={onHandleSubmit}>
+							<input
+								className={styles.input}
+								onChange={onHandleChange}
+								name="id"
+								type="text"
+								autoComplete="off"
+								placeholder="Username"
+							/>
+							<input
+								className={styles.input}
+								onChange={onHandleChange}
+								name="password"
+								type="password"
+								placeholder="Password"
+							/>
+							<button className={styles.button}>SIGN IN</button>
+						</form>
+						<div className={styles.link}>
+							<Link className={styles.signup} to="/signup">
+								Sign Up
+							</Link>
+						</div>
+					</div>
 				</div>
 			</main>
 		</div>

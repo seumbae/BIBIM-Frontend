@@ -1,0 +1,12 @@
+.container{
+  width : auto;
+  margin : 3rem auto;
+}
+.box{
+  display: flex;
+  margin: 2rem 0;
+}
+.lable{
+  width: 15%;
+  font-size: 1.6rem;
+}

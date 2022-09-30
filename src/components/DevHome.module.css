@@ -1,0 +1,26 @@
+.container {
+  width:80%;
+  margin: 3rem auto;
+}
+.box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+}
+.collapseDiv{
+  width:80%;
+  margin: 0 auto;
+}
+
+.btn{
+  /* background-color: #007bff; */
+  background-color:transparent;
+  font-size: 14px;
+  /* color: white; */
+  padding: 0 20px;
+  height: 3rem;
+  /* border-radius: 5px; */
+  border: none;
+}

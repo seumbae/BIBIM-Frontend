@@ -1,50 +1,69 @@
 .card{
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 430px;
-  height: 700px;
+  width: 100%;
+  max-width: 500px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .box{
-  text-align: center;
+  width:100%;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
-form {
+.form {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-input {
-  all: unset;
-  line-height: 1.2;
-  font-size: 18px;
-  display: block;
-  height: 62px;
-  padding: 0 20px 0 38px;
-  border: 1px solid #626262;
-  margin-top: 10px;
+.sign{
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+.input {
+  overflow: hidden;
+  height: 45px;
+  border: 1px solid #efefef;
+  padding: 15px 15px;
+  position: relative;
+  border-radius: 7px;
+  margin: 5px 0;
 }
 
 .button{
-  background-color: #827ffe;
-  font-size: 16px;
+  background-color: #007bff;
+  font-size: 14px;
   color: white;
   padding: 0 20px;
-  height: 62px;
+  height: 45px;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 30px;
   border: none;
 }
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-.link{
-  
+.link {
+  text-align: end;
+  margin-top: 1.2rem;
+}
+
+.signup{
+  font-size : 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  color: #888888;
 }

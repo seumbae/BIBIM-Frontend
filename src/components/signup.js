@@ -1,5 +1,5 @@
 import axios from "../api/axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -8,20 +8,14 @@ import SignupModal from "./signupModal";
 const SIGNIN_URL = "/api/register";
 
 function Signup() {
-	const userRef = useRef();
-	const errRef = useRef();
-	const auth = "dev";
 	const [user, setUser] = useState("");
 	const [vaildUser, setVaildUser] = useState(false);
-	const [userFocus, setUserFocus] = useState(false);
 
 	const [pwd, setPwd] = useState("");
 	const [vaildPwd, setVaildPwd] = useState(false);
-	const [pwdFocus, setPwdFocus] = useState(false);
 
 	const [matchPwd, setMatchPwd] = useState("");
 	const [vaildMatch, setVaildMatch] = useState(false);
-	const [matchFocus, setMatchFocus] = useState(false);
 
 	const [name, setName] = useState("");
 
@@ -29,14 +23,7 @@ function Signup() {
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
-		if (user) {
-			userRef.current.focus();
-		}
-	}, [user]);
-
-	useEffect(() => {
-		const result = user.match(/^[a-zA-Z0-9]{4,12}$/);
-		console.log(user);
+		const result = user.match(/^[a-zA-Z0-9]{4,20}$/);
 		setVaildUser(result);
 	}, [user]);
 
@@ -72,71 +59,69 @@ function Signup() {
 			} else {
 				setErrMsg("Registarion Failed");
 			}
-			errRef.current.focus();
 		}
 	};
 	return (
 		<div className={styles.card}>
-			<p
-				ref={errRef}
-				className={errMsg ? "errmsg" : "offscreen"}
-				aria-live="assertive"
-			>
-				{errMsg}
-			</p>
-			<h1>Sign up</h1>
-			<TextField
-				type="text"
-				id="username"
-				ref={userRef}
-				autoComplete="off"
-				placeholder="Username"
-				onChange={(event) => setUser(event.target.value)}
-				required
-				aria-invalid={vaildUser ? false : true}
-				onFocus={() => setUserFocus(true)}
-				onBlur={() => setUserFocus(false)}
-				sx={{ mt: 3, mb: 2 }}
-			/>
-			<TextField
-				type="text"
-				id="name"
-				autoComplete="off"
-				placeholder="Name"
-				onChange={(event) => setName(event.target.value)}
-				required
-        sx={{mb: 2 }}
-			/>
-			<TextField
-				type="password"
-				id="password"
-				placeholder="Password"
-				onChange={(event) => setPwd(event.target.value)}
-				required
-				aria-invalid={vaildPwd ? false : true}
-				onFocus={() => setPwdFocus(true)}
-				onBlur={() => setPwdFocus(false)}
-        sx={{mb: 2 }}
-			/>
-			<TextField
-				type="password"
-				id="confirm_pwd"
-				placeholder="Confirm Password"
-				onChange={(event) => setMatchPwd(event.target.value)}
-				required
-				aria-invalid={vaildMatch ? false : true}
-				onFocus={() => setMatchFocus(true)}
-				onBlur={() => setMatchFocus(false)}
-        sx={{mb: 2 }}
-				
-			/>
-			<Button
-				variant="contained"
-				onClick={onHandleSubmit}
-				disabled={!vaildUser || !vaildPwd || !vaildMatch ? true : false}
-			>
-				Sign Up
-			</Button>
+			<main className={styles.main}>
+				<div className={styles.container}>
+					<div className={styles.box}>
+						<div className={styles.sign}>Sign Up</div>
+						<form className={styles.form} onSubmit={onHandleSubmit}>
+							<input
+								className={styles.input}
+								type="text"
+								autoComplete="off"
+								placeholder="Username"
+								onChange={(event) => setUser(event.target.value)}
+								required
+								aria-invalid={vaildUser ? false : true}
+							/>
+							{vaildUser ? null : (
+								<span className={styles.errMsg}>4~20자의 영문 소문자, 숫자만 사용 가능합니다.</span>
+							)}
+							<input
+								className={styles.input}
+								type="text"
+								autoComplete="off"
+								placeholder="Name"
+								onChange={(event) => setName(event.target.value)}
+								required
+							/>
+							{name === "" ? <span className={styles.errMsg}>필수 정보입니다.</span> : null}
+							<input
+								className={styles.input}
+								type="password"
+								id="password"
+								placeholder="Password"
+								onChange={(event) => setPwd(event.target.value)}
+								required
+								aria-invalid={vaildPwd ? false : true}
+							/>
+							
+							{vaildPwd ? null : (
+								<span className={styles.errMsg}>4~20자의 영문 소문자, 숫자만 사용 가능합니다.</span>
+							)}
+							<input
+								className={styles.input}
+								type="password"
+								id="confirm_pwd"
+								placeholder="Confirm Password"
+								onChange={(event) => setMatchPwd(event.target.value)}
+								required
+								aria-invalid={vaildMatch ? false : true}
+							/>
+							{vaildMatch ? null : <span className={styles.errMsg}>동일하지 않습니다.</span>}
+							<button
+								className={styles.button}
+								disabled={!vaildUser || !vaildPwd || !vaildMatch ? true : false}
+							>
+								Sign Up
+							</button>
+						</form>
+					</div>
+				</div>
+			</main>
 			<div>{success ? <SignupModal /> : null}</div>
 		</div>
 	);

@@ -1,3 +1,7 @@
+.container{
+  display: flex;
+}
+
 .lable{
  font-size: 1.6rem;
  font-weight: 500; 
@@ -5,4 +9,41 @@
 .box{
   display: flex;
   justify-content: space-between;
+}
+
+/* side NavBar css */
+.nav{
+  /* position: fixed; */
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  width: 8rem;
+  height: 100vh;
+  padding: 0 1.5rem;
+}
+.nav div{
+  font-size: 1rem;
+  margin: 0.7rem 0;
+  color: #585858;
+}
+
+.nav div:hover {
+  color: #000000;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.headerName {
+  font-size: 0.9rem;
+  margin-right: 2rem;
+}
+
+.component {
+  width:100%;
 }
