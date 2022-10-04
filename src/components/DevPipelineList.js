@@ -32,6 +32,7 @@ function Row(item) {
         <TableCell>{row.createAt}</TableCell>
         <TableCell>{row.updateAt}</TableCell>
         <TableCell><button onClick={() =>setOpen(!open)}>Edit</button></TableCell>
+        <TableCell><button>Scan</button></TableCell>
       </TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open}>
@@ -74,6 +75,7 @@ function DevPipelineList({created, setCreated}) {
   useEffect(() => {
     getPipelineList();
   },[])
+
   if(created) {
     getPipelineList();
     setCreated(false);
@@ -91,10 +93,11 @@ function DevPipelineList({created, setCreated}) {
             <TableCell>Create Time</TableCell>
             <TableCell>Update Time</TableCell>
             <TableCell>Edit</TableCell>
+            <TableCell>Scan</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {pipelinesList.map((item) => (
+          {pipelinesList.reverse().map((item) => (
             <Row key={item.pipeline_name} row={item} />
           ))}
         </TableBody>

@@ -1,5 +1,41 @@
-.container{
+.header{
   display: flex;
+  background-color: #000000;
+  align-items: center;
+  height: 3.5rem;
+}
+.header_logo{
+  flex: 1;
+}
+.logo{
+  height: 100%;
+  align-items: center;
+  display: inline-flex;
+  color: #ffffff;
+  margin-left: 2rem;
+  font-size: 2rem;
+}
+
+.login{
+  color:#ffffff;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-right:1rem;
+}
+
+.headerName{
+  padding: 0.5rem;
+}
+
+.logout{
+  padding: 0.5rem;
+}
+
+.dev_body{
+  align-items: stretch;
+  display: flex;
+  flex: 1 0 auto;
 }
 
 .lable{
@@ -10,40 +46,57 @@
   display: flex;
   justify-content: space-between;
 }
+.side{
+  width: 340px;
+}
+
+.nav{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 1.6rem 0 1.2rem 2rem;
+}
+
+.contents {
+  font-size: 1.3rem;
+  padding: 0.55rem 0.8rem;
+  font-weight: 600 !important;
+}
 
 /* side NavBar css */
-.nav{
-  /* position: fixed; */
+/* .nav{
+  position: fixed;
   display: flex;
   flex-direction: column;
   top: 0;
   left: 0;
-  width: 8rem;
+  width: 12rem;
   height: 100vh;
   padding: 0 1.5rem;
+  background-color: rgb(54,52,63);
 }
-.nav div{
-  font-size: 1rem;
-  margin: 0.7rem 0;
-  color: #585858;
-}
+*/
 
 .nav div:hover {
   color: #000000;
   cursor: pointer;
 }
 
-.header {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 2rem;
-}
-
-.headerName {
-  font-size: 0.9rem;
-  margin-right: 2rem;
-}
-
-.component {
+.main {
   width:100%;
+  margin: 2rem;
+}
+.haveCollapse{
+  display: flex;
+  justify-content: space-between;
+}
+.collapse {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.5rem;
+}
+.collapseContents{
+  font-size: 1rem;
+  padding: 0.4rem;
+  font-weight: 600 !important;
 }

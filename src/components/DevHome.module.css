@@ -1,7 +1,21 @@
-.container {
-  width:80%;
-  margin: 3rem auto;
+.container{
+  width: min(65vw,1600px);
 }
+.header{
+  font-size: 1.8rem;
+  font-weight: 800;
+  padding-bottom: 2rem;;
+}
+.status{
+  display: flex;
+  flex-wrap:nowrap;
+  justify-content: space-around;
+}
+.statusBox{
+  display: flex;
+  flex-direction: column;
+}
+
 .box{
   display: flex;
   align-items: center;
