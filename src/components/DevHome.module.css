@@ -14,27 +14,19 @@
 .statusBox{
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  border: 1.5px solid #d4d4d4;
+  border-radius: 0.3rem;
+  padding: 1rem 1.5rem;
+  width: 10%;
 }
 
-.box{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 80%;
-  margin: 0 auto;
-}
-.collapseDiv{
-  width:80%;
-  margin: 0 auto;
-}
+.boxLable{
+  font-size: 1rem;
+  font-weight: 600;
+} 
 
-.btn{
-  /* background-color: #007bff; */
-  background-color:transparent;
-  font-size: 14px;
-  /* color: white; */
-  padding: 0 20px;
-  height: 3rem;
-  /* border-radius: 5px; */
-  border: none;
+.lableStatus{
+  font-size: 1.1rem;
+  font-weight: 600;
 }

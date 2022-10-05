@@ -42,10 +42,10 @@ function Dev({ name }) {
 			<main className={styles.dev_body}>
 				<div className={styles.side}>
 					<nav className={styles.nav}>
-						<div className={styles.contents} onClick={() => {setBtn("home");}}>
+						<div className={`${styles.contents} ${btn==="home"? styles.isActive : ''}`} onClick={() => {setBtn("home");}}>
 							DashBoard
 						</div>
-						<div className={styles.contents} onClick={() => {setBtn("result");}}>
+						<div className={`${styles.contents} ${btn==="result"? styles.isActive : ''}`} onClick={() => {setBtn("result");}}>
 							Result
 						</div>
 						<div className={`${styles.contents} ${styles.haveCollapse}`}>
@@ -53,12 +53,12 @@ function Dev({ name }) {
 								Pipeline
 							</div>
 							<div onClick={onHandleCollapse}>{collapse}</div>
-						</div>
+						</div> 
 						<Collapse className={styles.collapse} in={collapse === "-" ? true : false} >
-							<div className={styles.collapseContents} onClick={() => { setBtn("pipeline"); }} >
+							<div className={`${styles.collapseContents}  ${btn==="pipeline"? styles.isActive : ''}`} onClick={() => { setBtn("pipeline"); }} >
 								조회
 							</div>
-							<div className={styles.collapseContents} onClick={() => { setBtn("pipelineCreate"); }}>
+							<div className={`${styles.collapseContents}  ${btn==="pipelineCreate"? styles.isActive : ''}`} onClick={() => { setBtn("pipelineCreate"); }}>
 								생성
 							</div>
 						</Collapse>

@@ -58,24 +58,10 @@
 }
 
 .contents {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   padding: 0.55rem 0.8rem;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
-
-/* side NavBar css */
-/* .nav{
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  top: 0;
-  left: 0;
-  width: 12rem;
-  height: 100vh;
-  padding: 0 1.5rem;
-  background-color: rgb(54,52,63);
-}
-*/
 
 .nav div:hover {
   color: #000000;
@@ -99,4 +85,10 @@
   font-size: 1rem;
   padding: 0.4rem;
   font-weight: 600 !important;
+}
+
+.isActive{
+  background-color: #eeeef2;
+  border: 0px solid #eeeef2;
+  border-radius: 0.4rem;
 }
