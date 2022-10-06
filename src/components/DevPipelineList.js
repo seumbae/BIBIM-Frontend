@@ -26,9 +26,7 @@ function Row(item) {
     // Pipeline 삭제 axios 통신
 		const response = await axios.post(
 			`http://112.167.178.26:50000/api/v1/pipeline/deletePipeline/${event.target.id}`,
-      // {
-      //   id : event.target.id,
-      // },
+      null,
       {
         // 안됨
         // params: {
@@ -37,7 +35,18 @@ function Row(item) {
 				header: { "Context-Type": "application/json" },
 			}
 		);
-		alert(response?.data.msg);
+    if(response?.data.status === 200){
+      alert("delete success");
+    }
+    else if(response?.data.status === 400){
+      alert("delete fail");
+    }
+    else if(response?.data.status === 500){
+      alert("server error");
+    }
+    else{
+      alert("unknown error");
+    }
   }
   return (
     <>
