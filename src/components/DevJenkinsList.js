@@ -19,20 +19,24 @@ function Row({row}) {
       <td><DeleteIcon className={styles.icon} onClick={onClickDelete}fontSize="small"/></td>
     </tr>
   );
-
 }
 
-function DevJenkins() {
+function DevJenkinsList({created, setCreated}) {
   const [jenkins, setJenkins] = useState([]);
   
-  const getJenkinsFile = async () => {
+  const getJenkinsFileList = async () => {
     // const response = await axios.get("http://112.167.178.26:50000/api/v1/jenkins");
     const response = await axios.get(SIGNIN_URL);
     setJenkins(response.data);
   }
   useEffect(() => {
-    getJenkinsFile();
+    getJenkinsFileList();
   }, []);
+
+  if(created) {
+    getJenkinsFileList();
+    setCreated(false);
+  }
 
   return (
   <div>
@@ -55,4 +59,4 @@ function DevJenkins() {
   </div>);
 }
 
-export default DevJenkins;
+export default DevJenkinsList;

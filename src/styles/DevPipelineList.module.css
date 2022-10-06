@@ -10,3 +10,38 @@
 .lable{
   width: 20%;  
 }
+
+.icon {
+  cursor: pointer;
+}
+
+.lable{
+  font-size: 0.8rem;
+  /* font-weight: 600; */
+}
+
+.inputWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.input{
+  border: 1.5px solid #d4d4d4;
+  border-radius: 0.3rem;
+  line-height: 1.5rem;
+  width: 100%;
+  margin-bottom: 0.8rem;
+}
+
+.save{
+  display: flex;
+  align-items: center;
+  background-color: #eeeef2;
+  border-radius: 0.4rem;
+  padding: 0.3rem;
+  width: 4rem;
+}
+.save span{
+  font-size: 0.9rem;
+  margin-left: 0.3rem;
+}

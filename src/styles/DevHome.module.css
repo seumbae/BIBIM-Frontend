@@ -1,6 +1,9 @@
 .container{
   width: min(65vw,1600px);
 }
+.dashboard{
+  padding-bottom: 3rem;
+}
 .header{
   font-size: 1.8rem;
   font-weight: 800;
@@ -29,4 +32,41 @@
 .lableStatus{
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+.table{
+  background-color: #eeeef2;
+  border: solid #eeeef2;
+  border-radius: 0.4rem;
+  width:90%;
+  margin: auto;
+  border-width: 5px 5px 3px;
+  border-spacing: 0 2px;
+} 
+
+.thead{
+  text-align: left;
+  padding: 1rem;
+}
+.thead th{
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+
+.tbody tr{
+  background-color: #fff;
+}
+.tbody tr td {
+  padding: 0.4rem; 
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.tbody tr:first-child td:first-child { border-top-left-radius: 0.4rem; }
+.tbody tr:first-child td:last-child { border-top-right-radius: 0.4rem; }
+.tbody tr:last-child td:first-child { border-bottom-left-radius: 0.4rem; }
+.tbody tr:last-child td:last-child { border-bottom-right-radius: 0.4rem; }
+
+.icon {
+ cursor: pointer; 
 }
