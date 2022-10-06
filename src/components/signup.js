@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 import React, { useEffect, useState } from "react";
-import styles from "./signup.module.css";
+import styles from "../styles/signup.module.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SignupModal from "./signupModal";

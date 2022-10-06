@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Collapse from "@mui/material/Collapse";
-import styles from "./DevHome.module.css";
+import styles from "../styles/DevHome.module.css";
 
 function DevHome() {
   const [build, setBuild] = useState(0);

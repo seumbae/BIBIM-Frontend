@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import {useNavigate} from 'react-router-dom';
-import styles from "./signupModal.module.css";
+import styles from "../styles/signupModal.module.css";
 
 function SignUpModal() {
   const navigate = useNavigate();

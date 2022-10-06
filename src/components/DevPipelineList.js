@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
-import styles from "./DevPipelineList.module.css";
+import styles from "../styles/DevPipelineList.module.css";
 
 function Row(item) {
   const {row} = item;
@@ -22,6 +22,23 @@ function Row(item) {
     // Pipeline 수정 axios 통신
     
   }
+  const onHandleRemove = async (event) => {
+    // Pipeline 삭제 axios 통신
+		const response = await axios.post(
+			`http://112.167.178.26:50000/api/v1/pipeline/deletePipeline/${event.target.id}`,
+      // {
+      //   id : event.target.id,
+      // },
+      {
+        // 안됨
+        // params: {
+        //   id: event.target.id,
+        // },
+				header: { "Context-Type": "application/json" },
+			}
+		);
+		alert(response?.data.msg);
+  }
   return (
     <>
       <TableRow>
@@ -31,8 +48,9 @@ function Row(item) {
         <TableCell>{row.owner_id}</TableCell>
         <TableCell>{row.createAt}</TableCell>
         <TableCell>{row.updateAt}</TableCell>
-        <TableCell><button onClick={() =>setOpen(!open)}>Edit</button></TableCell>
         <TableCell><button>Scan</button></TableCell>
+        <TableCell><button onClick={() =>setOpen(!open)}>Edit</button></TableCell>
+        <TableCell><button id={row.id} onClick={(event) =>onHandleRemove(event)}>Remove</button></TableCell>
       </TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open}>
@@ -92,13 +110,14 @@ function DevPipelineList({created, setCreated}) {
             <TableCell>Owner</TableCell>
             <TableCell>Create Time</TableCell>
             <TableCell>Update Time</TableCell>
-            <TableCell>Edit</TableCell>
             <TableCell>Scan</TableCell>
+            <TableCell>Edit</TableCell>
+            <TableCell>Remove</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {pipelinesList.reverse().map((item) => (
-            <Row key={item.pipeline_name} row={item} />
+            <Row key={item.id} row={item} />
           ))}
         </TableBody>
       </Table>

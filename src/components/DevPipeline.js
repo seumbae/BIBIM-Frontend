@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import DevPipelineList from "./DevPipelineList";
-import styles from "./DevPipeline.module.css";
+import styles from "../styles/DevPipeline.module.css";
 
 function DevPipeline() {
 	const [projectName, setProjectName] = useState("");

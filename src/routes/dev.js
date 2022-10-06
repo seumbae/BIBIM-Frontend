@@ -1,10 +1,11 @@
-import styles from "./dev.module.css";
+import styles from "../styles/dev.module.css";
 import { useState } from "react";
 import DevHome from "../components/DevHome";
 import DevResult from "../components/DevResult";
 import DevPipeline from "../components/DevPipeline";
 import Collapse from "@mui/material/Collapse";
 import DevPipelineCreate from "../components/DevPipelineCreate";
+import DevJenkins from "../components/DevJenkins";
 
 function Dev({ name }) {
 	const [btn, setBtn] = useState("home");
@@ -19,6 +20,8 @@ function Dev({ name }) {
 		component = <DevPipeline />;
 	} else if (btn === "pipelineCreate") {
 		component = <DevPipelineCreate />;
+	} else if (btn === "jenkins"){
+		component = <DevJenkins />
 	}
 
 	const onHandleCollapse = () => {
@@ -47,6 +50,9 @@ function Dev({ name }) {
 						</div>
 						<div className={`${styles.contents} ${btn==="result"? styles.isActive : ''}`} onClick={() => {setBtn("result");}}>
 							Result
+						</div>
+						<div className={`${styles.contents} ${btn==="jenkins"? styles.isActive : ''}`} onClick={() => {setBtn("jenkins");}}>
+							Jenkins File
 						</div>
 						<div className={`${styles.contents} ${styles.haveCollapse}`}>
 							<div onClick={() => { setBtn("pipeline"); onHandleCollapse();}}>

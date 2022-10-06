@@ -1,4 +1,4 @@
-import styles from './userInfo.module.css';
+import styles from '../styles/userInfo.module.css';
 import { useEffect, useState } from 'react';
 import Admin from '../routes/admin';
 import axios from '../api/axios';

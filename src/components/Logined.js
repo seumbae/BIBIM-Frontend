@@ -1,4 +1,4 @@
-import styles from "./Logined.module.css";
+import styles from "../styles/Logined.module.css";
 
 function Logined({ name }) {
 	return (

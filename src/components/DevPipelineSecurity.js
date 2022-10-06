@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import styles from "./DevPipelineSecurity.module.css";
+import styles from "../styles/DevPipelineSecurity.module.css";
 
 function DevCreate({step, setStep}){
 
