@@ -18,14 +18,28 @@ function Row(item) {
   const [repositoryUrl, setRepositoryUrl] = useState("");
   const [jenkinsFile, setJenkinsFile] = useState("");
 
-  const onHandleEdit = () => {
+  const onHandleEdit = async () => {
     // Pipeline 수정 axios 통신
+    const response = await axios.post(
+      `http://112.167.178.26:50000/api/v1/pipeline/deletePipeline/${row.id}`,
+      null,
+      {
+        params: {
+          pipeline_name : row.pipeline_name,
+          repo_url : row.repo_url,
+          jenkinsfile_path_depoloy : row.jenkinsfile_path_depoloy,
+          jenkinsfile_path_security : row.jenkinsfile_path_security,
+          owner_id : row.owner_id,
+        },
+        header: { "Context-Type": "application/json" },
+      }
+    )
     
   }
   const onHandleRemove = async (event) => {
     // Pipeline 삭제 axios 통신
 		const response = await axios.post(
-			`http://112.167.178.26:50000/api/v1/pipeline/deletePipeline/${event.target.id}`,
+			`http://112.167.178.26:50000/api/v1/pipeline/deletePipeline/`,
       null,
       {
         // 안됨
@@ -48,6 +62,7 @@ function Row(item) {
       alert("unknown error");
     }
   }
+
   return (
     <>
       <TableRow>

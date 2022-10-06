@@ -1,5 +1,80 @@
+.headerContainer{
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding-bottom: 2rem; 
+}
 .header{
   font-size: 1.8rem;
+  font-weight: 800; 
+}
+.create{
+  width: 5rem;
+  background-color: #eeeef2;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon{
+  cursor: pointer;
+}
+.modalContainer{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 35rem;
+  background-color: #ffffff;
+  /* z-index: 100; */
+  border: 2px solid #fff;
+  box-shadow: 0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%);
+  padding: 32px;
+}
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+.modalTitle {
+  font-size: 1.5rem;
   font-weight: 800;
-  padding-bottom: 2rem;;
+}
+
+.checkbox{
+  margin: 0;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #d4d4d4;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+/* need to modify */
+.checkbox:checked{
+  background-color: #d4d4d4;
+  border: 1.5px solid #d4d4d4;
+}
+
+.checkInput{
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.checkWrapper{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lable{
+  font-size: 0.9rem;
+  font-weight: 600;
 }
