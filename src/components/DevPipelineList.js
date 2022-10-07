@@ -10,16 +10,34 @@ import Paper from "@mui/material/Paper";
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import styles from "../styles/DevPipelineList.module.css";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 
-function Row(item) {
-  const {row} = item;
+function Row({row, setDeleted}) {
+  // const {row} = item;
   const [open, setOpen] = useState(false);
-  const [projectName, setProjectName] = useState("");
-  const [repositoryUrl, setRepositoryUrl] = useState("");
+  const [projectName, setProjectName] = useState(row.pipeline_name);
+  const [repositoryUrl, setRepositoryUrl] = useState(row.repo_url);
   const [jenkinsFile, setJenkinsFile] = useState("");
 
-  const onHandleEdit = () => {
+  const onHandleEdit = async () => {
     // Pipeline 수정 axios 통신
+    const response = await axios.post(
+      `http://112.167.178.26:50000/api/v1/pipeline/deletePipeline/${row.id}`,
+      null,
+      {
+        params: {
+          pipeline_name : row.pipeline_name,
+          repo_url : row.repo_url,
+          jenkinsfile_path_depoloy : row.jenkinsfile_path_depoloy,
+          jenkinsfile_path_security : row.jenkinsfile_path_security,
+          owner_id : row.owner_id,
+        },
+        header: { "Context-Type": "application/json" },
+      }
+    )
     
   }
   const onHandleRemove = async (event) => {
@@ -47,43 +65,35 @@ function Row(item) {
     else{
       alert("unknown error");
     }
+    setDeleted(true);
   }
+
   return (
     <>
       <TableRow>
         <TableCell>{row.pipeline_name}</TableCell>
         <TableCell>{row.repo_url}</TableCell>
-        <TableCell>{row.jenkinsfile_path}</TableCell>
         <TableCell>{row.owner_id}</TableCell>
         <TableCell>{row.createAt}</TableCell>
         <TableCell>{row.updateAt}</TableCell>
-        <TableCell><button>Scan</button></TableCell>
-        <TableCell><button onClick={() =>setOpen(!open)}>Edit</button></TableCell>
-        <TableCell><button id={row.id} onClick={(event) =>onHandleRemove(event)}>Remove</button></TableCell>
+        <TableCell><PlayArrowRoundedIcon className={styles.icon} color="success" sx={{ fontSize: 30 }}/></TableCell>
+        <TableCell><EditIcon className={styles.icon} onClick={() =>setOpen(!open)}/></TableCell>
+        <TableCell><DeleteIcon className={styles.icon} id={row.id} onClick={(event) =>onHandleRemove(event)}/></TableCell>
       </TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open}>
             <Box className={styles.box} sx={{ margin: 1 }}>
-              <div className={styles.container}>
-                <div className={styles.lable}>
-                  Project Name
-                </div>
-                <input onChange={(event) => {setProjectName(event.target.value)}} id="projectName" placeholder="Project Name"/>
+              <div className={styles.inputWrapper}>
+                <div className={styles.lable}>Project name</div>
+                <div><input className={styles.input} type="text" value={projectName} onChange={(event) => setProjectName(event.target.value)} /></div>
               </div>
-              <div className={styles.container}>
-                <div className={styles.lable}>
-                  Repository URL
-                </div>
-                <input onChange={(event) => {setRepositoryUrl(event.target.value)}} id="repository" placeholder="Repository URL"/>
+              <div className={styles.inputWrapper}>
+                <div className={styles.lable}>Repository url</div>
+                <div><input className={styles.input} type="text" value={repositoryUrl} onChange={(event) => setRepositoryUrl(event.target.value)} /></div>
               </div>
-              <div className={styles.container}>
-                <div className={styles.lable}>
-                  Jenkins File
-                </div>
-                <input onChange={(event) => {setJenkinsFile(event.target.value)}} id="jenkins" placeholder="Jenkins File"/>
-              </div>
-              <div>
-                <button value={row.pipeline_name} onClick={onHandleEdit}>Save</button>
+              <div className={`${styles.icon} ${styles.save}`}>
+                <SaveAltIcon className={styles.icon} fontSize="small" value={row.pipeline_name} onClick={onHandleEdit}/>
+                <span>Save</span>
               </div>
             </Box>
           </Collapse>
@@ -94,6 +104,7 @@ function Row(item) {
 
 function DevPipelineList({created, setCreated}) {
   const [pipelinesList, setPipelinesList] = useState([]);
+  const [deleted, setDeleted] = useState(false);
 
   const getPipelineList = async () => {
     const response = await axios.get("http://112.167.178.26:50000/api/v1/pipeline/pipelineList");
@@ -107,6 +118,11 @@ function DevPipelineList({created, setCreated}) {
     getPipelineList();
     setCreated(false);
   }
+  if(deleted) {
+    getPipelineList();
+    setDeleted(false);
+  }
+
   return (
     <div>
     <TableContainer component={Paper}>
@@ -115,18 +131,17 @@ function DevPipelineList({created, setCreated}) {
           <TableRow>
             <TableCell>Project Name</TableCell>
             <TableCell>Repository URL</TableCell>
-            <TableCell>Jenkins File</TableCell>
             <TableCell>Owner</TableCell>
             <TableCell>Create Time</TableCell>
             <TableCell>Update Time</TableCell>
             <TableCell>Scan</TableCell>
-            <TableCell>Edit</TableCell>
-            <TableCell>Remove</TableCell>
+            <TableCell> </TableCell>
+            <TableCell> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {pipelinesList.reverse().map((item) => (
-            <Row key={item.id} row={item} />
+            <Row key={item.id} row={item} setDeleted={setDeleted} />
           ))}
         </TableBody>
       </Table>

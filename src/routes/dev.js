@@ -54,8 +54,8 @@ function Dev({ name }) {
 						<div className={`${styles.contents} ${btn==="jenkins"? styles.isActive : ''}`} onClick={() => {setBtn("jenkins");}}>
 							Jenkins File
 						</div>
-						<div className={`${styles.contents} ${styles.haveCollapse}`}>
-							<div onClick={() => { setBtn("pipeline"); onHandleCollapse();}}>
+						<div className={`${styles.contents} ${styles.haveCollapse}`} onClick={() => { setBtn("pipeline"); onHandleCollapse();}}>
+							<div>
 								Pipeline
 							</div>
 							<div onClick={onHandleCollapse}>{collapse}</div>

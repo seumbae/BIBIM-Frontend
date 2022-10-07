@@ -39,7 +39,7 @@ function DevPipeline() {
 			<header>
 				<div className={styles.header}>Pipeline</div>
 			</header>
-			<main>
+			<main className={styles.main}>
 				<DevPipelineList created={created} setCreated={setCreadted} />
 			</main>
 		</div>

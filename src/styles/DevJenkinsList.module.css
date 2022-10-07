@@ -1,45 +1,14 @@
-.container{
-  width: min(65vw,1600px);
-}
-.dashboard{
-  padding-bottom: 3rem;
-}
-.header{
-  font-size: 1.8rem;
-  font-weight: 800;
-  padding-bottom: 2rem;;
-}
-.status{
-  display: flex;
-  flex-wrap:nowrap;
-  justify-content: space-around;
-}
-.statusBox{
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border: 1.5px solid #d4d4d4;
-  border-radius: 0.3rem;
-  padding: 1rem 1.5rem;
-  width: 10%;
-}
 
-.boxLable{
-  font-size: 1rem;
-  font-weight: 600;
-} 
 
-.lableStatus{
-  font-size: 1.1rem;
-  font-weight: 600;
+.icon{
+  cursor: pointer;
 }
 
 .table{
   background-color: #eeeef2;
   border: solid #eeeef2;
   border-radius: 0.4rem;
-  width:90%;
-  margin: auto;
+  width: 80%;
   border-width: 5px 5px 3px;
   border-spacing: 0 2px;
 } 
@@ -67,6 +36,3 @@
 .tbody tr:last-child td:first-child { border-bottom-left-radius: 0.4rem; }
 .tbody tr:last-child td:last-child { border-bottom-right-radius: 0.4rem; }
 
-.icon {
- cursor: pointer; 
-}

@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from '../styles/DevPipelineCreate.module.css';
 import DevPipelineSecurity from "./DevPipelineSecurity";
 import Collapse from '@mui/material/Collapse';
+import DevJenkinsList from "./DevJenkinsList";
 
 function DevPipelineCreate() {
   const [step, setStep] = useState({});
@@ -115,7 +116,9 @@ function DevPipelineCreate() {
               <span className={styles.lable}>Upload Jenkins file</span>
             </div>
             <Collapse in={upload}>
-              <div> 기존 Jenkins File 불러오기</div>
+              <div>
+              <DevJenkinsList/>
+              </div>
             </Collapse>
           </div>
         </div>
