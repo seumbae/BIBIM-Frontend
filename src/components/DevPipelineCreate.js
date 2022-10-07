@@ -1,27 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from '../styles/DevPipelineCreate.module.css';
 import DevPipelineSecurity from "./DevPipelineSecurity";
 import Collapse from '@mui/material/Collapse';
 
 function DevPipelineCreate() {
-  const [step, setStep] = useState({
-    sis:{
-      'pre-commit' : false,
-    },
-    sast:{
-      'code-ql' : false,
-    },
-    dast:{
-      'zap' : false,
-      'arachni' : false,
-      'nikto' : false,
-    },
-    sca:{
-      'owasp-dependencycheck' : false,
-      'dependabot' : false,
-    }
-  });
+  const [step, setStep] = useState({});
+  // const [step, setStep] = useState({
+  //   sis:{
+  //     'pre-commit' : false,
+  //   },
+  //   sast:{
+  //     'code-ql' : false,
+  //   },
+  //   dast:{
+  //     'zap' : false,
+  //     'arachni' : false,
+  //     'nikto' : false,
+  //   },
+  //   sca:{
+  //     'owasp-dependencycheck' : false,
+  //     'dependabot' : false,
+  //   }
+  // });
 	const [projectName, setProjectName] = useState("");
 	const [repoUrl, setRepoUrl] = useState("");
 	const [created, setCreadted] = useState(false);
@@ -49,6 +50,34 @@ function DevPipelineCreate() {
 		alert(response?.data.msg);
 		if (response?.data.status === 201) setCreadted(true);
 	};
+
+  const testfunc = () => {
+    console.log(step["SAST"])
+    console.log(Object.keys(step["SAST"]).map((element) => {
+      console.log(element)
+    }))
+  }
+
+  const loadToolList = async () => {
+    const response = await axios.get("http://112.167.178.26:52200/api/v1/tool/toolList");
+    let result = response.data.result;
+    let stepDict = {};
+
+    for(let i = 0; i < result.length; i++){
+      if(Object.keys(stepDict).includes(result[i].stage)){ // stage가 있는 경우
+        stepDict[result[i].stage][result[i].name] = false;
+      }else{ // 새롭게 추가된 stage인 경우
+        let row = {};
+        row[result[i].name] = false;
+        stepDict[result[i].stage] = row;
+      }
+    }
+    setStep(stepDict);
+  };
+
+  useEffect(() => {
+    loadToolList();
+  },[checkSecurity])
 
   return (
     <div className={styles.create}>
@@ -96,6 +125,7 @@ function DevPipelineCreate() {
         </div>
 				<div>
           <button className={styles.btn} onClick={onHandleCreate}>Create</button>
+          <button className={styles.btn} onClick={testfunc}>test button</button>
         </div>
 			</div>
   )
