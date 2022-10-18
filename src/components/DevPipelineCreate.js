@@ -35,12 +35,13 @@ function DevPipelineCreate() {
 	const onHandleCreate = async (event) => {
 		event.preventDefault();
 		const response = await axios.post(
-			"http://112.167.178.26:50000/api/v1/pipeline/createPipeline",
+			"http://172.30.55.242:51000/api/v1/pipeline/createPipeline",
 			{
 				pipeline_name: projectName,
 				repo_url: repoUrl,
-				jenkinsfile_path: "Jenkinsfile_test",
-				owner_id: 1,
+				jenkins_id: "test",
+				jenkins_token: "test",
+        branch: "master",
 			},
 			{
 				header: { "Context-Type": "application/json" },
@@ -60,7 +61,7 @@ function DevPipelineCreate() {
   }
 
   const loadToolList = async () => {
-    const response = await axios.get("http://112.167.178.26:52200/api/v1/tool/toolList");
+    const response = await axios.get("http://172.30.55.242:51000/api/v1/tool/toolList");
     let result = response.data.result;
     let stepDict = {};
 
