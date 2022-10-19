@@ -5,8 +5,20 @@ import axios from "axios";
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 function Row({row}) {
-	const requestBuild =() => {
-		//axios로 build 요청 보내기
+	
+	const requestBuild = async (event) => {
+		event.preventDefault();
+		const response = await axios.post(
+			"http://172.30.55.242:51000/api/v1/pipeline/runPipeline",
+			// params
+			{
+				pipeline_name: row.pipeline_name,
+        branch: "master",
+			},
+			{
+				header: { "Context-Type": "application/json" },
+			}
+		);
 	}
   return (
     <tr>
