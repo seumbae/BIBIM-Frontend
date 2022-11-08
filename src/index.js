@@ -7,9 +7,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
     <Router>
-        <Routes>
+      <App />
+        {/* <Routes>
           <Route path="/*" element={<App />}/>
-        </Routes>
+        </Routes> */}
     </Router>
   // </React.StrictMode>
 );
