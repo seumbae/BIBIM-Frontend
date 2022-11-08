@@ -22,11 +22,13 @@ const Content = styled.div`
 
 
 function MainSideNav() {
+  /*Container로 빠져야하는 부분 */
   const navigate = useNavigate();
   const contents = ['DashBoard', 'Profile', 'Issues', 'Jenkins File', 'Pipeline'];
   const onHandleClick = (e) => {
-    const target = (e.target.innerText).toLowerCase();
-    navigate(`/dev/${target}`);
+    const target = (e.target.innerText).toLowerCase().replace(' ', '');
+    if(target === 'dashboard') navigate(`/dev`);
+    else navigate(`/dev/${target}`);
   }
   
   return(
