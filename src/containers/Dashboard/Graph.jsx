@@ -87,8 +87,7 @@ const Graph = ({Data}) => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          // <ResponsiveContainer width="730" height="250">
-            <LineChart width={700} height={250} data={data}
+            <LineChart width={680} height={250} data={data}
               margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
               >
               <XAxis dataKey="name" />
@@ -100,7 +99,6 @@ const Graph = ({Data}) => {
               <Line type="monotone" dataKey="C" stroke="#F58737" />
               <Line type="monotone" dataKey="D" stroke="#DD4433" />
             </LineChart>
-          // </ResponsiveContainer>
         )}
       </div>
     );
