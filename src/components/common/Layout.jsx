@@ -5,6 +5,7 @@ import MainSideNav from "./MainNav";
 
 const Body = styled.div`
   display: flex;
+  gap: 1.3rem;
 `
 
 const Layout = () => {
