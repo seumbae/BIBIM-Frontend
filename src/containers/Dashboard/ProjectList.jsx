@@ -5,7 +5,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Collapse from '@mui/material/Collapse';
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ListWrapper = styled.div`
   max-width: 100%;
@@ -25,12 +25,13 @@ const ProjectInfoWrapper = styled.div`
   gap: 1rem;
   align-items: center;
 `
-const ProjectTitle = styled.div`
+
+const ProjectTitle = styled(Link)`
+  text-decoration: none;
+  color: inherit;
   font-size: 1.2rem;
   font-weight: 500;
-  &:hover {
-    cursor: pointer;
-  }
+  cursor: pointer;
 `
 
 const Branch = styled.div`
@@ -121,7 +122,6 @@ const ProjectScanResult = ({
   jenkinsfile, 
   lastScan, 
 }) => {
-  const navigate = useNavigate();
   const Sort ={
     Critical: 0,
     Major: 1,
@@ -130,18 +130,15 @@ const ProjectScanResult = ({
   }
   const score = ['A', 'B', 'C', 'D']
   const [open, setOpen] = useState(false);
-  const onHandleClick = () => {
+  const onHandleIconClick = () => {
     setOpen(!open);
   }
-  const onHandleTitleClick = () => {
-    navigate('/dev/dev-pipeline-2/status');
-    // navigate(`/dev/${projectTitle}`);
-  }
+
   return (
     <ListWrapper>
       <MainContentWrapper>
         <ProjectInfoWrapper>
-          <ProjectTitle onClick={onHandleTitleClick}>{projectTitle}</ProjectTitle>
+          <ProjectTitle to={`/dev/${projectTitle}/status`}>{projectTitle}</ProjectTitle>
           <Branch><div>{branchName}</div></Branch>
           <Result result={result}><div style={{color: '#FFFFFF'}}>{result}</div></Result>
         </ProjectInfoWrapper>
@@ -151,7 +148,7 @@ const ProjectScanResult = ({
               <ResultCount sort={item[0]} count={item[1]} />
             )
           })}
-          {open ?<MoreIcon onClick={onHandleClick}/> : <LessIcon onClick={onHandleClick}/>}
+          {open ?<MoreIcon onClick={onHandleIconClick}/> : <LessIcon onClick={onHandleIconClick}/>}
         </CountWrapper>
       </MainContentWrapper>
         <Collapse in={open}>
