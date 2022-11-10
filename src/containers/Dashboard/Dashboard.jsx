@@ -6,9 +6,8 @@ import TooltipIcon from "../../components/Tooltip";
 
 const ContentsWrapper = styled.div`
 	margin-top: 3rem;
-  padding-right:9%;
-  // padding-right: 11.25rem;
-  width: 100%;
+  margin-right: 9%;
+  // width: 100%;
 	height: 100vh;
   display: flex;
   flex-direction: column;
@@ -151,7 +150,7 @@ const Dashboard = () => {
 				</ProjectStatistics>
 				<ResultStatistics>
           <IconWrapper>
-            <TooltipIcon styled={{position: 'absolute'}}/>
+            <TooltipIcon />
           </IconWrapper>
           <ResultStatisticsWrapper>
 					{Object.entries(ResultTitle).map((item) => {
@@ -167,6 +166,7 @@ const Dashboard = () => {
 							</ResultItems>
 						);
 					})}
+          {/* Reliabilities, Vulnerabilities A B C D로 해야함 */}
           </ResultStatisticsWrapper>
 				</ResultStatistics>
 			</StatusWrapper>
