@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const HeaderBackground = styled.div`
   background-color: #2C2C2C;
   padding-left: 2.5rem;
-  padding-right: 11.25rem;
+  padding-right: 9%;
   display: flex;
   heigth: 4rem;
   align-items: center;
@@ -25,19 +25,15 @@ const UserInfo = styled.div`
   gap: 0.5rem;
 `
 
-const UserName = styled.div`
-`
-
 const DownIcon = styled(ExpandMoreIcon)`
   cursor: pointer;
 `
-// funtion 사용 X
 const Header = ({userName}) => {
   return (
     <HeaderBackground>
       <Logo>BIBIM</Logo>
       <UserInfo>
-        <UserName>{userName}</UserName>
+        <div>{userName}</div>
         <DownIcon />
       </UserInfo>
     </HeaderBackground>
