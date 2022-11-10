@@ -134,7 +134,7 @@ const ProjectScanResult = ({
     setOpen(!open);
   }
   const onHandleTitleClick = () => {
-    navigate('/dev/status/dev-pipeline-2');
+    navigate('/dev/dev-pipeline-2/status');
     // navigate(`/dev/${projectTitle}`);
   }
   return (
