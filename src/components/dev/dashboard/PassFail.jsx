@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-const ResultComponent = styled.div`
-  width: 60%;
-`
 const PassComponenet = styled.div`
   background-color: #00AA00;
   display: flex;
