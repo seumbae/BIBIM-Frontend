@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import Header from "./Header";
-import DetailNavbar from "./DetailNavbar";
+import DetailNav from "./DetailNav";
 
 const Body = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const Layout = () => {
     <div>
       <Header userName='admin'/>
       <Body>
-        <DetailNavbar />
+        <DetailNav />
         <Outlet />
       </Body>      
     </div>
