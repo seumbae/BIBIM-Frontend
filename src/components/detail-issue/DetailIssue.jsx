@@ -85,29 +85,55 @@ const PropetyValue = ( { value } ) => {
     "High"      : "#2181B8",
   }
 
-  return <ValueText color={colorList[value]}>value</ValueText>;
+  return <ValueText color={colorList[value]}>{value}</ValueText>;
 };
 
+// const _, score = useState('socre')
+
 const DetailIssueComponent = ( { data } ) => {
+
+  console.log(data[0])
+
   return (
     <Container>
       <InfoTopContainer>
-        <TitleMessage>{data.message.text}</TitleMessage>
+        {/* <TitleMessage>da</TitleMessage> */}
+        {
+          data[0].message ? <TitleMessage>{data[0].message.text}</TitleMessage> 
+          : <TitleMessage>-</TitleMessage>
+        }
         <ScoreContainer>
           <ScoreText>Score: </ScoreText>
-          <ScoreNumber>{data.description["security-severity"]}</ScoreNumber>
+          {/* <ScoreNumber>{data.description["security-severity"] ? data.description["security-severity"] : "-" }</ScoreNumber> */}
+          {
+            data[0].description ? <ScoreNumber>{data[0].description.properties["security-severity"]}</ScoreNumber> 
+            : <ScoreNumber>-</ScoreNumber>
+          }
         </ScoreContainer>
       </InfoTopContainer>
       <InfoBottomContainer>
         <ContentsContainer>
-          <LocationText>dev-pipeline-2/LessonProgressService.py</LocationText>
+          {
+            data[0].locations ? <LocationText>{data[0].locations[0].physicalLocation.artifactLocation.uri}</LocationText>
+            : <LocationText>-</LocationText>
+          }
           <PropertyContainer>
             <PropertyTitle>Level: </PropertyTitle>
-            <PropetyValue value={"warning"} />
+            {
+              data[0].description ? <PropetyValue value={data[0].description.defaultConfiguration.level} />
+              : <PropetyValue>-</PropetyValue>
+            }
             <PropertyTitle>Precision: </PropertyTitle>
-            <PropetyValue value={"error"} />
+            {
+              data[0].description ? <PropetyValue value={data[0].description.properties["problem.severity"]} />
+              : <PropetyValue>-</PropetyValue>
+            }
             <PropertyTitle>Line: </PropertyTitle>
-            <PropetyValue value={100} />
+            {
+              data[0].locations ? <PropetyValue value={data[0].locations[0].physicalLocation.region.startLine} />
+              : <PropetyValue>-</PropetyValue>
+            }
+            {/* <PropetyValue value={100} /> */}
           </PropertyContainer>
         </ContentsContainer>
         <VulnTypeContainer>

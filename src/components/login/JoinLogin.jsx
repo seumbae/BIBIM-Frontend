@@ -2,7 +2,7 @@ import styled from "styled-components";
 import FormContainer from "../../containers/login/Form";
 import Info from "./Info";
 
-const LoginContainer = styled.div`
+const LoginComponent = styled.div`
 	width: 100%;
 	height: 100vh;
   display: flex;
@@ -24,13 +24,13 @@ const Title = styled.div`
 
 const JoinLogin = () => {
 	return (
-    <LoginContainer>
+    <LoginComponent>
 	    <LoginWrapper>
         <Title>Login</Title>
         <FormContainer />
         <Info />
       </LoginWrapper>
-	  </LoginContainer>
+	  </LoginComponent>
   );
 };
 
