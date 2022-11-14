@@ -11,7 +11,6 @@ const ResultWrapper = styled.div`
   }};
   width: 260px;
   height: 130px;
-  // padding: 9px 18px;
   padding 18px;
   color: #FFFFFF;
   position: relative;
