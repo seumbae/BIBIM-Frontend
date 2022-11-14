@@ -7,7 +7,7 @@ const HeaderBackground = styled.div`
   padding-left: 2.5rem;
   padding-right: 9%;
   display: flex;
-  heigth: 4rem;
+  height: 4rem;
   align-items: center;
   justify-content: space-between;
 `;
