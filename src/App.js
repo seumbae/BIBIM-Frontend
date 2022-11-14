@@ -19,7 +19,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/dev" element={<Dashboard />} /> 
         <Route path="/dev/profile" element={<Profile />} />
-        <Route path="/dev/issues" element={<Issues />} />
+        <Route path="/dev/issues" element={<AllDetailIssueContainer />} />
         <Route path="/dev/jenkinsfile" element={<JenkinsFile />} />
         <Route path="/dev/pipeline" element={<Pipeline />} />
         <Route path="/dev/allIssues" element={<AllDetailIssueContainer />}></Route>
