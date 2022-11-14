@@ -88,12 +88,7 @@ const PropetyValue = ( { value } ) => {
   return <ValueText color={colorList[value]}>{value}</ValueText>;
 };
 
-// const _, score = useState('socre')
-
 const DetailIssueComponent = ( { data } ) => {
-
-  console.log(data[0])
-
   return (
     <Container>
       <InfoTopContainer>
