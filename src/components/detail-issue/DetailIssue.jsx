@@ -89,9 +89,6 @@ const PropetyValue = ( { value } ) => {
 };
 
 const DetailIssueComponent = ( { data } ) => {
-  // console.log("DetailIssueComponent")
-  // console.log(data);
-  
   return (
     <Container>
       <InfoTopContainer>

@@ -3,9 +3,6 @@ import DetailIssueComponent from "./DetailIssue";
 
 const AllIssueTableList = ({ dataList }) => {
   let { data } = dataList;
-  console.log("test++++++++++")
-  console.log(Array.isArray(data))
-  console.log(data);
   return(
     <>
       {
