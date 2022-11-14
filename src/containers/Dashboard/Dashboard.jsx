@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ResultComponent from "./PassFail";
+import ResultComponent from "./StatisticsCount";
 import ProjectList from "./ProjectList";
 import Graph from "./Graph";
 import TooltipIcon from "../../components/Tooltip";
@@ -67,6 +67,7 @@ const ResultItems = styled.div`
 	// padding: 0.6rem 1rem;
 	border-radius: 6.4px;
 `;
+
 const Title = styled.div`
 	padding: 0.6rem 1rem;
 `;
@@ -130,9 +131,10 @@ const Dashboard = () => {
 		third: { name: "Vulnerabilities", value: 3 },
 	};
 	const ResultTitle = {
-		Releasability: { Passed: 2, Failed: 4 },
-		Reliabilities: {Passed: 6, Failed: 4 },
-		Vulnerabilities: {Passed: 2, Failed: 5},
+		Releasability: { Failed: 2, Passed: 4 },
+    Reliabilities: { D: 1, C: 2, B: 4, A: 6 },
+    Vulnerabilities: {D:2, C:3, B:5, A:2 },
+
 	};
 
 	return (
@@ -158,10 +160,9 @@ const Dashboard = () => {
 							<ResultItems>
 								<Title>{item[0]}</Title>
 								<ResultWrapper>
-									<ResultComponent
-										pass={item[1].Passed}
-										fail={item[1].Failed}
-									/>
+                  <ResultComponent 
+                    item={item}
+                  />
 								</ResultWrapper>
 							</ResultItems>
 						);
