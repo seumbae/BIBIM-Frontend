@@ -21,7 +21,6 @@ function App() {
         <Route path="/dev/issues" element={<AllDetailIssueContainer />} />
         <Route path="/dev/jenkinsfile" element={<JenkinsFile />} />
         <Route path="/dev/pipeline" element={<Pipeline />} />
-        <Route path="/dev/allIssues" element={<AllDetailIssueContainer />}></Route>
       </Route>
       <Route element={<DetailLayout />}>
         <Route path="/dev/:projectTitle/status" element={<DetailStatusPage />} />
