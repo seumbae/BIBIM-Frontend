@@ -7,8 +7,8 @@ import Issues from "./pages/dev/Issues";
 import JenkinsFile from "./pages/dev/JenkinsFile"
 import Pipeline from "./pages/dev/Pipeline"
 import Profile from "./pages/dev/Profile"
-// import Header from "./components/common/Header";
-// import MainNav from "./components/common/MainNav";
+import DetailStatusPage from "./containers/ProjectDetail/Status/Status";
+
 
 /* 로그인 여부 확인해야함 */
 function App() {
@@ -23,7 +23,7 @@ function App() {
         <Route path="/dev/pipeline" element={<Pipeline />} />
       </Route>
       <Route element={<DetailLayout />}>
-        <Route path="/dev/:projectTitle/status" element={<Issues />} />
+        <Route path="/dev/:projectTitle/status" element={<DetailStatusPage />} />
         <Route path="/dev/:projectTitle/profile" element={<Issues />} />
         <Route path="/dev/:projectTitle/issues" element={<Issues />} />
         <Route path="/dev/:projectTitle/history" element={<Issues />} />
