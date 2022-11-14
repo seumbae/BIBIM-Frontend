@@ -89,19 +89,22 @@ const PropetyValue = ( { value } ) => {
 };
 
 const DetailIssueComponent = ( { data } ) => {
+  // console.log("DetailIssueComponent")
+  // console.log(data);
+  
   return (
     <Container>
       <InfoTopContainer>
         {/* <TitleMessage>da</TitleMessage> */}
         {
-          data[0].message ? <TitleMessage>{data[0].message.text}</TitleMessage> 
+          data.message ? <TitleMessage>{data.message.text}</TitleMessage> 
           : <TitleMessage>-</TitleMessage>
         }
         <ScoreContainer>
           <ScoreText>Score: </ScoreText>
           {/* <ScoreNumber>{data.description["security-severity"] ? data.description["security-severity"] : "-" }</ScoreNumber> */}
           {
-            data[0].description ? <ScoreNumber>{data[0].description.properties["security-severity"]}</ScoreNumber> 
+            data.description ? <ScoreNumber>{data.description.properties["security-severity"]}</ScoreNumber> 
             : <ScoreNumber>-</ScoreNumber>
           }
         </ScoreContainer>
@@ -109,23 +112,23 @@ const DetailIssueComponent = ( { data } ) => {
       <InfoBottomContainer>
         <ContentsContainer>
           {
-            data[0].locations ? <LocationText>{data[0].locations[0].physicalLocation.artifactLocation.uri}</LocationText>
+            data.locations ? <LocationText>{data.locations[0].physicalLocation.artifactLocation.uri}</LocationText>
             : <LocationText>-</LocationText>
           }
           <PropertyContainer>
             <PropertyTitle>Level: </PropertyTitle>
             {
-              data[0].description ? <PropetyValue value={data[0].description.defaultConfiguration.level} />
+              data.description ? <PropetyValue value={data.description.defaultConfiguration.level} />
               : <PropetyValue>-</PropetyValue>
             }
             <PropertyTitle>Precision: </PropertyTitle>
             {
-              data[0].description ? <PropetyValue value={data[0].description.properties["problem.severity"]} />
+              data.description ? <PropetyValue value={data.description.properties["problem.severity"]} />
               : <PropetyValue>-</PropetyValue>
             }
             <PropertyTitle>Line: </PropertyTitle>
             {
-              data[0].locations ? <PropetyValue value={data[0].locations[0].physicalLocation.region.startLine} />
+              data.locations ? <PropetyValue value={data.locations[0].physicalLocation.region.startLine} />
               : <PropetyValue>-</PropetyValue>
             }
             {/* <PropetyValue value={100} /> */}
