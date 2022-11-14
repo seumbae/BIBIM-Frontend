@@ -5,12 +5,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 const Nav = styled.div`
   display: flex;
   flex-direction: column;
+	width: 13rem;
   margin-left: 2.5rem;
   min-width: 11rem;
+	heigth: 100vh;
 `
 const NavWarpper = styled.div`
-	width: 13rem;
-	height: 100vh;
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
