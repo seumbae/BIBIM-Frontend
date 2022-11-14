@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Collapse from '@mui/material/Collapse';
+import Branch from '../../components/Branch';
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -32,15 +33,6 @@ const ProjectTitle = styled(Link)`
   font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
-`
-
-const Branch = styled.div`
-  background-color: #D9D9D9;
-  padding: 4px 12px;
-  font-size: 0.8rem;
-  border-radius: 1.5rem;
-  display: flex;
-  align-items: center;
 `
 
 const Result = styled.div`
@@ -139,7 +131,7 @@ const ProjectScanResult = ({
       <MainContentWrapper>
         <ProjectInfoWrapper>
           <ProjectTitle to={`/dev/${projectTitle}/status`}>{projectTitle}</ProjectTitle>
-          <Branch><div>{branchName}</div></Branch>
+          <Branch name={branchName}/>
           <Result result={result}><div style={{color: '#FFFFFF'}}>{result}</div></Result>
         </ProjectInfoWrapper>
         <CountWrapper>
