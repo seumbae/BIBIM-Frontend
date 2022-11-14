@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const HeaderBackground = styled.div`
   background-color: #2C2C2C;
   padding-left: 2.5rem;
-  padding-right: 11.25rem;
+  padding-right: 9%;
   display: flex;
   height: 4rem;
   align-items: center;
@@ -16,6 +17,7 @@ const Logo = styled.div`
   font-weight: 700;
   color: #fff;
   line-height: 1.5;
+  cursor: pointer;
 `
 const UserInfo = styled.div`
   color: #fff;
@@ -25,19 +27,16 @@ const UserInfo = styled.div`
   gap: 0.5rem;
 `
 
-const UserName = styled.div`
-`
-
 const DownIcon = styled(ExpandMoreIcon)`
   cursor: pointer;
 `
-// funtion 사용 X
 const Header = ({userName}) => {
+  const navigate = useNavigate();
   return (
     <HeaderBackground>
-      <Logo>BIBIM</Logo>
+      <Logo onClick={() => navigate('/dev') }>BIBIM</Logo>
       <UserInfo>
-        <UserName>{userName}</UserName>
+        <div>{userName}님</div>
         <DownIcon />
       </UserInfo>
     </HeaderBackground>

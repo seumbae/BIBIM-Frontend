@@ -1,18 +1,19 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import Header from "./Header";
-import MainSideNav from "./MainNav";
+import DetailNav from "./DetailNav";
 
 const Body = styled.div`
   display: flex;
+  gap: 1.3rem;
 `
 
 const Layout = () => {
   return (
     <div>
-      <Header />
+      <Header userName='admin'/>
       <Body>
-        <MainSideNav />
+        <DetailNav />
         <Outlet />
       </Body>      
     </div>

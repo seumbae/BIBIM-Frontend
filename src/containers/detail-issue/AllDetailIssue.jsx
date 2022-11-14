@@ -5,13 +5,8 @@ import { getSecurityList } from "../../services/axios";
 import DetailIssueComponent from "../../components/detail-issue/DetailIssue";
 import AllIssueTableList from "../../components/detail-issue/AllIssueTable";
 
-const ProjectDetailIssueContainer = () => {
+const AllDetailIssueContainer = () => {
   const [issueData, setIssueData] = useState([]);
-
-  // [
-  //   { "message": { "text": "testmessage"}, "description": { "security-severity": 10 } },
-  //   { "message": { "text": "testmessage"}, "description": { "security-severity": 10 } }
-  // ]
 
   useEffect(() => {
     getSecurityList().then((res) => {
@@ -22,7 +17,6 @@ const ProjectDetailIssueContainer = () => {
   
   return (
     <>
-      <Header userName={"test user"} />
       {
         issueData.map((oneProjectItem) => (
           <AllIssueTableList key={oneProjectItem["_id"]["$oid"]} dataList={oneProjectItem} />
@@ -32,4 +26,4 @@ const ProjectDetailIssueContainer = () => {
   );
 };
 
-export default ProjectDetailIssueContainer;
+export default AllDetailIssueContainer;

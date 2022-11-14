@@ -6,8 +6,8 @@ const PassComponenet = styled.div`
   justify-content: center;
   align-items: center;
   color: #FFFFFF;
-  flex: 1;
   border-radius: 0 6.4px 6.4px 0;
+  flex: ${props => props.passVal};
   gap: 0.5rem;
 `
 const FailComponenet = styled.div`
@@ -16,19 +16,19 @@ const FailComponenet = styled.div`
   justify-content: center;
   align-items: center;
   color: #FFFFFF;
-  flex: 1;
   border-radius: 6.4px 0 0 6.4px;
+  flex: ${props => props.failVal};
   gap: 0.5rem;
 `
-const Result = () => {
+const Result = ({pass, fail}) => {
   return (<>
-    <FailComponenet>
+    <FailComponenet failVal={fail}>
       <div>Failed</div>
-      <div>4</div>
+      <div>{fail}</div>
     </FailComponenet>
-    <PassComponenet>
+    <PassComponenet passVal={pass}>
       <div>Passed</div>
-      <div>4</div>
+      <div>{pass}</div>
     </PassComponenet>
     </>
 
