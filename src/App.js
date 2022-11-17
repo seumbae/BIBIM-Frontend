@@ -3,8 +3,8 @@ import LoginPage from "./containers/Login/Login";
 import MainLayout from "./containers/common/MainLayout";
 import DetailLayout from "./containers/common/DetailLayout";
 import Dashboard from "./containers/Dashboard/Dashboard";
+import Pipeline from "./containers/Pipeline/Pipeline";
 import Issues from "./pages/dev/Issues";
-import Pipeline from "./pages/dev/Pipeline"
 import Profile from "./pages/dev/Profile"
 import DetailStatusPage from "./containers/ProjectDetail/Status/Status";
 import AllDetailIssueContainer from "./containers/detail-issue/AllDetailIssue";
