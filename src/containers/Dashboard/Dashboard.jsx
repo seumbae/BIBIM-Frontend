@@ -103,7 +103,6 @@ const GraphBody = styled.div`
   border-radius: 6.4px;
   display: flex;
   flex-direction: column;
-  // padding: 21px 21px;
   padding: 21px 21px 21px 0px;
   gap: 1rem;
 `
