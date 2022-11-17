@@ -87,7 +87,7 @@ const Graph = ({Data}) => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-            <LineChart width={680} height={250} data={data}
+            <LineChart width={580} height={250} data={data}
               margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
               >
               <XAxis dataKey="name" />
