@@ -89,20 +89,15 @@ const PropetyValue = ( { value } ) => {
 };
 
 const DetailIssueComponent = ( { data } ) => {
-  // console.log("DetailIssueComponent")
-  // console.log(data);
-  
   return (
     <Container>
       <InfoTopContainer>
-        {/* <TitleMessage>da</TitleMessage> */}
         {
           data.message ? <TitleMessage>{data.message.text}</TitleMessage> 
           : <TitleMessage>-</TitleMessage>
         }
         <ScoreContainer>
           <ScoreText>Score: </ScoreText>
-          {/* <ScoreNumber>{data.description["security-severity"] ? data.description["security-severity"] : "-" }</ScoreNumber> */}
           {
             data.description ? <ScoreNumber>{data.description.properties["security-severity"]}</ScoreNumber> 
             : <ScoreNumber>-</ScoreNumber>
@@ -131,7 +126,6 @@ const DetailIssueComponent = ( { data } ) => {
               data.locations ? <PropetyValue value={data.locations[0].physicalLocation.region.startLine} />
               : <PropetyValue>-</PropetyValue>
             }
-            {/* <PropetyValue value={100} /> */}
           </PropertyContainer>
         </ContentsContainer>
         <VulnTypeContainer>

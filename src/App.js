@@ -8,6 +8,9 @@ import Issues from "./pages/dev/Issues";
 import Profile from "./pages/dev/Profile"
 import DetailStatusPage from "./containers/ProjectDetail/Status/Status";
 import AllDetailIssueContainer from "./containers/detail-issue/AllDetailIssue";
+import ConfigurationContainer from "./containers/user/Configuration";
+// import Header from "./components/common/Header";
+// import MainNav from "./components/common/MainNav";
 import Jenkins from "./containers/Jenkins/Jenkins";
 
 /* 로그인 여부 확인해야함 */
@@ -29,6 +32,7 @@ function App() {
         <Route path="/dev/:projectTitle/history" element={<Issues />} />
         <Route path="/dev/:projectTitle/configuration" element={<Issues />} />
       </Route>
+      <Route path="/configuration" element={<ConfigurationContainer />} />
     </Routes>
   );
 }
