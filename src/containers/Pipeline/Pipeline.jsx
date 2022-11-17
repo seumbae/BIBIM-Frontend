@@ -73,8 +73,8 @@ const Pipeline = () => {
   const onHandleGetPipeline = () => {
     getPipeline().then((res) => {
       setPipelineList(res.data.result);
+      setLoading(false);
     });
-    setLoading(false);
     if(created) setCreated(false);
   }
 
@@ -99,7 +99,6 @@ const Pipeline = () => {
         pipelineList.map((pipeline) => {
           return <List key={pipeline.pipeline_name} onHandleCheck={onHandleCheck} name={pipeline} jenkins={jenkinsList} owner="nebulayoon" created="2022-10-12" updated="2022-10-12" repo="github.com/nebulayoon/python/tree/main/check2" />
         })}
-        <ListSkeleton /> 
       </PipelineWrapper>
       <Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
         <PipelineCreate setCreate={setCreate} setCreated={setCreated}/>
