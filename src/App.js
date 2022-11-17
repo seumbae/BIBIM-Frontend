@@ -8,6 +8,7 @@ import JenkinsFile from "./pages/dev/JenkinsFile"
 import Pipeline from "./pages/dev/Pipeline"
 import Profile from "./pages/dev/Profile"
 import AllDetailIssueContainer from "./containers/detail-issue/AllDetailIssue";
+import ConfigurationContainer from "./containers/user/Configuration";
 // import Header from "./components/common/Header";
 // import MainNav from "./components/common/MainNav";
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/dev/:projectTitle/history" element={<Issues />} />
         <Route path="/dev/:projectTitle/configuration" element={<Issues />} />
       </Route>
+      <Route path="/configuration" element={<ConfigurationContainer />} />
     </Routes>
   );
 }
