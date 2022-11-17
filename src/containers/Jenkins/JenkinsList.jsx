@@ -40,11 +40,10 @@ const Desc = styled.div`
   margin-top: 1rem;
 `
 
-const List = ({setChecked, name, jenkins, owner, created, updated}) => {
+const List = ({onHandleCheck, name, jenkins, owner, created, updated}) => {
   return (
-    // <div onClick={(prev) => setChecked(prev => !prev)}>hello</div>
     <ListWrapper>
-      <CheckBox type="checkbox" onClick={(prev) => setChecked(prev => !prev)} />
+      <CheckBox type="checkbox" value={name} onClick={onHandleCheck} />
       <Info>
         <div style={{display:"flex"}}>
           <div style={{fontWeight: 500}}>{name}</div>
