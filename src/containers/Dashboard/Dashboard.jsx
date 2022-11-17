@@ -7,11 +7,11 @@ import TooltipIcon from "../../components/Tooltip";
 const ContentsWrapper = styled.div`
 	margin-top: 3rem;
   margin-right: 9%;
-  // width: 100%;
 	height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  flex: 1;
 `;
 const StatusWrapper = styled.div`
 	display: flex;
@@ -25,7 +25,6 @@ const ProjectStatistics = styled.div`
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	// justify-content: space-between;
 	gap: 1rem;
 	border-radius: 6.4px;
 `;
@@ -134,7 +133,6 @@ const Dashboard = () => {
 		Releasability: { Failed: 2, Passed: 4 },
     Reliabilities: { D: 1, C: 2, B: 4, A: 6 },
     Vulnerabilities: {D:2, C:3, B:5, A:2 },
-
 	};
 
 	return (
@@ -167,7 +165,6 @@ const Dashboard = () => {
 							</ResultItems>
 						);
 					})}
-          {/* Reliabilities, Vulnerabilities A B C D로 해야함 */}
           </ResultStatisticsWrapper>
 				</ResultStatistics>
 			</StatusWrapper>
