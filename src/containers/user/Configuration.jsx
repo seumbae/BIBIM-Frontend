@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import Header from "../common/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import HorizonLine from "../../components/HorizonLine";
 import delete_logo from "../../static/delete.png";
 
 const NavWarpper = styled.div`
@@ -12,8 +13,6 @@ const NavWarpper = styled.div`
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
-	padding-top: 3rem;
 	margin-left:2.5rem;
 	min-width: 11rem;
 `;
@@ -24,6 +23,17 @@ const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+const IconWrapper = styled.div`
+  display: flex;
+  height: 3rem;
+  align-items: center;
+`
+
+const ArrowIcon = styled(ArrowBackIosIcon)`
+  font-size: 1rem Important!;
+  cursor: pointer;
+  padding-left: 1rem;
+`
 
 const Content = styled(Link)`
   text-decoration: none;
@@ -38,7 +48,11 @@ const Body = styled.div`
   gap: 1.3rem;
   padding-right: 500px;
 `
-
+const NameArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`
 const TitleArea = styled.div`
   display: flex;
   align-items: end;
@@ -51,6 +65,11 @@ const TitleName = styled.div`
   font-size: 19.2px;
   line-height: 23px;
 `;
+const PasswordArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`
 
 const SubTitle = styled.div`
   font-family: 'Roboto';
@@ -59,6 +78,9 @@ const SubTitle = styled.div`
   font-size: 14px;
   line-height: 16px;
 `;
+
+const NotiArea = styled.div`
+`
 
 const ConfigurationArea = styled.div`
   display: flex;
@@ -80,14 +102,8 @@ const TipText = styled.div`
 
 const UserName = styled.div`
   color: #14141F;
-  font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-`;
-
-const DivisionLine = styled.div`
-  border: 0.5px solid #D9D9D9;
+  font-size: 1rem;
 `;
 
 const PasswordInput = styled.input.attrs(props => ({
@@ -122,15 +138,15 @@ const DeleteWarning = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  width: 67px;
-  height: 22px;
+  width: 100px;
+  height: 40px;
   left: 282px;
   top: 714px;
   border: 1px solid #EEEEF2;
   border-radius: 6.4px;
   font-style: normal;
   font-weight: 500;
-  font-size: 9px;
+  font-size: 1rem;
   line-height: 11px;
   color: #FF3030;
   cursor: pointer;
@@ -157,9 +173,12 @@ const ConfigurationSideNav = () => {
   }
 
   const location = useLocation();
-
+  const navigate = useNavigate();
 	return (
 		<NavWarpper>
+      <IconWrapper>
+        <ArrowIcon onClick={() => navigate(-1)}/>
+      </IconWrapper>
 			<ContentWrapper active={isActive(`/configuration`, location.pathname)}>
 				<Content to='/configuration'>Configuration</Content>
 			</ContentWrapper>
@@ -223,20 +242,26 @@ const ConfigurationContainer = () => {
       <Body>
         <ConfigurationSideNav />
         <ConfigurationArea>
-          <TitleArea>
-            <TitleName>Name</TitleName>
-            <TipText>변경은 관리자에게 문의하십시오</TipText>
-          </TitleArea>
-          <UserName>admin</UserName>
-          <DivisionLine />
-          <TitleName>Password</TitleName>
-          <SubTitle>password</SubTitle>
-          <PasswordInputBox setState={setPassword} />
-          <SubTitle>confirm password</SubTitle>
-          <PasswordInputBox setState={setConfirm} />
-          <DivisionLine />
-          <TitleName>Notification</TitleName>
-          <DivisionLine />
+          <NameArea>
+            <TitleArea>
+              <TitleName>Name</TitleName>
+              <TipText>변경은 관리자에게 문의하십시오</TipText>
+            </TitleArea>
+            <UserName>admin</UserName>
+          </NameArea>
+          <HorizonLine />
+          <PasswordArea>
+            <TitleName>Password</TitleName>
+            <SubTitle>password</SubTitle>
+            <PasswordInputBox setState={setPassword} />
+            <SubTitle>confirm password</SubTitle>
+            <PasswordInputBox setState={setConfirm} />
+          </PasswordArea>
+          <HorizonLine />
+          <NotiArea>
+            <TitleName>Notification</TitleName>
+          </NotiArea>
+          <HorizonLine />
           <TitleArea style={ {justifyContent: 'space-between'} }>
             <TitleName>Jenkins Token</TitleName>
             <JenkinsNewButton>New token</JenkinsNewButton>
@@ -245,7 +270,7 @@ const ConfigurationContainer = () => {
             <JenkinsToken>115761f7e63c6d7ce954ee86c604d934c2</JenkinsToken>
             <DeleteImageButton />
           </TokenArea>
-          <DivisionLine />
+          <HorizonLine />
           <TitleName>Delete account</TitleName>
           <DeleteWarning>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took ...</DeleteWarning>
           <DeleteButton onClick={deleteButtonClick}>DELETE</DeleteButton>
