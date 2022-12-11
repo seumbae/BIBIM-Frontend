@@ -81,7 +81,6 @@ const Pipeline = () => {
   useEffect(() => {
     onHandleGetPipeline();
   }, [created]);
-  
 	return(
     <BodyWrapper>
 			<Buttons>
@@ -96,8 +95,8 @@ const Pipeline = () => {
       <PipelineWrapper>
         {loading ? 
           <ListSkeleton /> :
-        pipelineList.map((pipeline) => {
-          return <List key={pipeline.pipeline_name} onHandleCheck={onHandleCheck} name={pipeline} jenkins={jenkinsList} owner="nebulayoon" created="2022-10-12" updated="2022-10-12" repo="github.com/nebulayoon/python/tree/main/check2" />
+        pipelineList?.map((item) => {
+          return <List key={item.pipeline_name} onHandleCheck={onHandleCheck} name={item} jenkins={jenkinsList} owner="nebulayoon" created="2022-10-12" updated="2022-10-12" repo="github.com/nebulayoon/python/tree/main/check2" />
         })}
       </PipelineWrapper>
       <Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
