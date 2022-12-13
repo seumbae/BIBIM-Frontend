@@ -1,140 +1,133 @@
 import styled from "styled-components";
-
+import SellIcon from "@mui/icons-material/Sell";
+import HorizonLine from "../HorizonLine";
 const Container = styled.div`
-  display: block;
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
 `;
 
-const InfoTopContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Body = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
 `;
 
-const InfoBottomContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Footer = styled.div`
+	display: flex;
+	justify-content: space-between;
 `;
 
-const ScoreContainer = styled.div`
-  display: flex;
-  align-items: center;
+const Messasge = styled.div`
+	max-width: 90%;
+	font-size: 0.9rem;
+`;
+const ScoreArea = styled.div`
+	display: flex;
+	gap: 0.5rem;
+	font-size: 0.8rem;
+	color: #707070;
+	align-items: center;
+`;
+const Score = styled.div`
+	color: #dd4433;
+	font-weight: 600;
+	font-size: 1rem;
 `;
 
-const TitleMessage = styled.div`
-  font-size: 12px;
-  font-weight: 508;
-  color: #000000;
+const Details = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 1rem;
 `;
-
-const ScoreText = styled.div`
-  font-size: 10px;
-  font-weight: 300;
-  color: #707070;
+const Detail = styled.div`
+	display: flex;
+	gap: 0.2rem;
+	align-items: center;
+	font-size: 0.8rem;
+	color: #707070;
 `;
-
-const ScoreNumber = styled.div`
-  font-size: 12px;
-  font-weight: 500;
-  color: #DD4433;
+const Tag = styled.div`
+	display: flex;
+	aling-items: center;
+	gap: 0.3rem;
 `;
-
-const LocationText = styled.div`
-  font-size: 10px;
-  font-weight: 300;
-  color: #707070;
-`;
-
-const ContentsContainer = styled.div`
-  display: flex;
-`;
-
-const PropertyContainer = styled.div`
-  display: flex;
-`;
-
-const PropertyTitle = styled.div`
-  font-size: 10px;
-  font-weight: 300;
-  margin-left: 14px;
+const TagIcon = styled(SellIcon)`
+	font-size: 0.9rem !important;
+	color: #707070;
 `;
 
 const ValueText = styled.div`
-  font-size: 10px;
-  color: ${ ({ color }) => ( color ? color : "#707070") };
+	color: ${({ color }) => (color ? color : "#707070")};
 `;
 
-const VulnTypeContainer = styled.div`
-  display: flex;
-`;
+const PropetyValue = ({ value }) => {
+	const colorList = {
+		warning: "#F58737",
+		error: "#DD4433",
+		"very-high": "#00AA00",
+		High: "#2181B8",
+		medium: "#F58737",
+		None: "#707070",
+	};
 
-const VulnType = styled.div`
-  font-size: 8px;
-`;
-
-const DivisionLine = styled.div`
-  border: 0.5px solid #D9D9D9;
-`;
-
-const PropetyValue = ( { value } ) => {
-  const colorList = {
-    "warning"   : "#F58737",
-    "error"     : "#DD4433",
-    "Very-High" : "#00AA00",
-    "High"      : "#2181B8",
-  }
-
-  return <ValueText color={colorList[value]}>{value}</ValueText>;
+	return <ValueText color={colorList[value]}>{value}</ValueText>;
 };
 
-const DetailIssueComponent = ( { data } ) => {
-  return (
-    <Container>
-      <InfoTopContainer>
-        {
-          data.message ? <TitleMessage>{data.message.text}</TitleMessage> 
-          : <TitleMessage>-</TitleMessage>
-        }
-        <ScoreContainer>
-          <ScoreText>Score: </ScoreText>
-          {
-            data.description ? <ScoreNumber>{data.description.properties["security-severity"]}</ScoreNumber> 
-            : <ScoreNumber>-</ScoreNumber>
-          }
-        </ScoreContainer>
-      </InfoTopContainer>
-      <InfoBottomContainer>
-        <ContentsContainer>
-          {
-            data.locations ? <LocationText>{data.locations[0].physicalLocation.artifactLocation.uri}</LocationText>
-            : <LocationText>-</LocationText>
-          }
-          <PropertyContainer>
-            <PropertyTitle>Level: </PropertyTitle>
-            {
-              data.description ? <PropetyValue value={data.description.defaultConfiguration.level} />
-              : <PropetyValue>-</PropetyValue>
-            }
-            <PropertyTitle>Precision: </PropertyTitle>
-            {
-              data.description ? <PropetyValue value={data.description.properties["problem.severity"]} />
-              : <PropetyValue>-</PropetyValue>
-            }
-            <PropertyTitle>Line: </PropertyTitle>
-            {
-              data.locations ? <PropetyValue value={data.locations[0].physicalLocation.region.startLine} />
-              : <PropetyValue>-</PropetyValue>
-            }
-          </PropertyContainer>
-        </ContentsContainer>
-        <VulnTypeContainer>
-          <VulnType>cwe</VulnType>
-        </VulnTypeContainer>
-      </InfoBottomContainer>
-      <DivisionLine></DivisionLine>
-    </Container>
-  );
+const DetailIssueComponent = ({ data, pipelineName }) => {
+	return (
+		<Container>
+			<Body>
+				<Messasge>{data.message}</Messasge>
+				<ScoreArea>
+					Score
+					<Score>
+						{data.cvssv3 === 0 || data.cvssv3 === null ? "-" : data.cvssv3}
+					</Score>
+				</ScoreArea>
+			</Body>
+			<Footer>
+				<Details>
+					<Detail>
+						{pipelineName}
+						{data.uri.charAt(0) !== "/" ? " /" + data.uri : " " + data.uri}
+					</Detail>
+					<Detail>
+						Level:{" "}
+						<PropetyValue
+							value={
+								data.toolProblemSeverity === "" ||
+								data.toolProblemSeverity === "None"
+									? "None"
+									: data.toolProblemSeverity
+							}
+						>
+							{data.toolProblemSeverity}
+						</PropetyValue>
+					</Detail>
+					<Detail>
+						Precision:{" "}
+						<PropetyValue
+							value={
+								data.toolPrecision === "" || data.toolPrecision === "None"
+									? "None"
+									: data.toolPrecision.split(" ")[0].toLowerCase()
+							}
+						>
+							{data.toolPrecision}
+						</PropetyValue>
+					</Detail>
+					<Detail>Line: {data.startLine}</Detail>
+				</Details>
+				<Tag>
+					<TagIcon />
+					{/* TODO: parent에서 Stage나 툴 받아와서 더 보여주기 */}
+					<Detail>{data.cweId ? "cwe" : "owasp"}</Detail>
+				</Tag>
+			</Footer>
+			<HorizonLine />
+		</Container>
+	);
 };
 
 export default DetailIssueComponent;
