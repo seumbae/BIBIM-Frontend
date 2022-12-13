@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Categories from "./Category";
-import Tooltip from "./Tooltip";
 
 const FilterBody = styled.div`
 	width: 250px;
@@ -49,7 +48,6 @@ const Filter = ({ data, checked, setChecked }) => {
 				<Title>Filter</Title>
 				<Container>
 					{checked.length > 0 ? <ClearBtn onClick={onHandleClear}>Clear Filters</ClearBtn> : null}
-					<Tooltip />
 				</Container>
 			</TitleWrapper>
 			<Categories data={data} checkList={checked} setChecked={setChecked}/>
