@@ -81,6 +81,9 @@ const Pipeline = () => {
   useEffect(() => {
     onHandleGetPipeline();
   }, [created]);
+
+  // TODO: Context 사용하여 전역으로 관리
+
 	return(
     <BodyWrapper>
 			<Buttons>

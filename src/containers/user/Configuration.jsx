@@ -5,7 +5,6 @@ import Header from "../common/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import HorizonLine from "../../components/HorizonLine";
-import delete_logo from "../../static/delete.png";
 
 const NavWarpper = styled.div`
 	width: 13rem;
@@ -55,7 +54,7 @@ const NameArea = styled.div`
 `
 const TitleArea = styled.div`
   display: flex;
-  align-items: end;
+  align-items: baseline;
 `;
 
 const TitleName = styled.div`
@@ -63,8 +62,8 @@ const TitleName = styled.div`
   font-style: normal;
   font-weight: 500;
   font-size: 19.2px;
-  line-height: 23px;
 `;
+
 const PasswordArea = styled.div`
   display: flex;
   flex-direction: column;
@@ -111,10 +110,8 @@ const PasswordInput = styled.input.attrs(props => ({
 }))
 `
   border: 1px solid #EEEEF2;
-  width: 707px;
-  height: 28px;
-  left: 282px;
-  top: 299px;
+  border-radius: 6.4px;
+  padding: 0.5rem;
 `;
 
 const JenkinsToken = styled.div`
@@ -127,6 +124,7 @@ const JenkinsToken = styled.div`
 const TokenArea = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const DeleteWarning = styled.div`
@@ -140,14 +138,11 @@ const DeleteWarning = styled.div`
 const DeleteButton = styled.button`
   width: 100px;
   height: 40px;
-  left: 282px;
-  top: 714px;
   border: 1px solid #EEEEF2;
   border-radius: 6.4px;
   font-style: normal;
   font-weight: 500;
   font-size: 1rem;
-  line-height: 11px;
   color: #FF3030;
   cursor: pointer;
 `;
@@ -165,6 +160,27 @@ const JenkinsNewButton = styled.button`
   line-height: 11px;
   cursor: pointer;
 `;
+
+const DeleteIconBtn = styled(DeleteIcon)`
+  font-size: 1.2rem !important;
+  cursor: pointer;
+  color: #FF3030;
+`
+
+const SavePasswordButton = styled.div`
+  width: 60px;
+  height: 30px;
+  background-color: #EEEEF2;
+  border: 1px solid #EEEEF2;
+  border-radius: 30px;
+  text-align: center;
+  line-height: 30px;
+  align-self: end;
+  &:hover {
+    background-color: #DADAE6;
+    cursor: pointer;
+  }
+`
 
 const ConfigurationSideNav = () => {
   const isActive = (path, location) => {
@@ -185,36 +201,7 @@ const ConfigurationSideNav = () => {
 		</NavWarpper>
 	);
 };
-
-const PasswordInputBox = ({setState}) => {
-  const onChange = ({ target: { value } }) => {
-    setState(value);
-  };
-
-  return(
-    <PasswordInput onChange={onChange}></PasswordInput>
-  );
-};
-
-// const DeleteAccountSubmit = () => {
-//   const onClick = () => {
-//     // user delete api
-//   };
-
-//   return(
-//     <DeleteButton onClick={onClick}>DELETE</DeleteButton>
-//   );
-// };
-
-const DeleteImageButton = () => {
-  const onClick = () => {
-    console.log("test")
-  };
-
-  return(
-    <img src={delete_logo} alt="delete" onClick={onClick} style={{cursor:"pointer"}}/>
-  );
-};
+ 
 
 const ConfigurationContainer = () => {
   const [password, setPassword] = useState("");
@@ -224,6 +211,37 @@ const ConfigurationContainer = () => {
     if(password === confirm) return true;
     else return false;
   };
+
+  const onHandleChange = (e) => {
+    if(e.target.name === "password"){
+      setPassword(e.target.value);
+    }
+    else if(e.target.name === "confirm"){
+      setConfirm(e.target.value);
+    }
+  }
+
+
+  const onHandleChangePassword = () => {
+    if(passwordConfirm()){
+      console.log("password changed");
+      setPassword("");
+      setConfirm("");
+    }
+    else{
+      console.log("password did not match");
+    }
+  }
+
+  const onHandleNewToken = () => {
+    // TODO: user token api
+    console.log("new token");
+  }
+
+  const onHandleDeleteIcon = () => {
+    // TODO: user delete api
+    console.log("delete");
+  }
 
   const deleteButtonClick = () => {
     // user delete api
@@ -253,9 +271,10 @@ const ConfigurationContainer = () => {
           <PasswordArea>
             <TitleName>Password</TitleName>
             <SubTitle>password</SubTitle>
-            <PasswordInputBox setState={setPassword} />
+            <PasswordInput name='password' value={password} onChange={onHandleChange}></PasswordInput>
             <SubTitle>confirm password</SubTitle>
-            <PasswordInputBox setState={setConfirm} />
+            <PasswordInput name='confirm' value={confirm} onChange={onHandleChange}></PasswordInput>
+            {password.length > 0 || confirm.length > 0 ?<SavePasswordButton onClick={onHandleChangePassword}>Save</SavePasswordButton> : null}
           </PasswordArea>
           <HorizonLine />
           <NotiArea>
@@ -264,11 +283,11 @@ const ConfigurationContainer = () => {
           <HorizonLine />
           <TitleArea style={ {justifyContent: 'space-between'} }>
             <TitleName>Jenkins Token</TitleName>
-            <JenkinsNewButton>New token</JenkinsNewButton>
+            <JenkinsNewButton onClick={onHandleNewToken}>New token</JenkinsNewButton>
           </TitleArea>
           <TokenArea>
             <JenkinsToken>115761f7e63c6d7ce954ee86c604d934c2</JenkinsToken>
-            <DeleteImageButton />
+            <DeleteIconBtn onClick={onHandleDeleteIcon} />
           </TokenArea>
           <HorizonLine />
           <TitleName>Delete account</TitleName>
