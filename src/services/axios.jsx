@@ -11,7 +11,7 @@ const API = axios.create({
 export const tryLogin = async (data) => await API.post('/user/login', data);
 
 /* Security Result */
-export const getSecurityList = async () => await API.get('/security_result/securityResultList');
+export const getSecurityList = async () => await API.get('/security_result/bibimResultList');
 export const getProjectSecurityResult = async (id) => await API.get(`/projectTotalSecurityResult/${id}`);
 
 /* Get Security Check List */
