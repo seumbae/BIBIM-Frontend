@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useLocation, Link, useParams, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
+import BuildStatus from "../../components/BuildStatus";
 const Nav = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,6 +71,8 @@ function MainSideNav() {
 		  	<ContentWrapper active={isActive(`/dev/${params.projectTitle}/configuration`, location.pathname)}>
 		  		<Content to={`/dev/${params.projectTitle}/configuration`}>Configuration</Content>
 		  	</ContentWrapper>
+				{/* TODO: Context 사용하여 build 중일 때 build하고 있는 것 보여주기 */}
+				<BuildStatus />
 		  </NavWarpper>
     </Nav>
 	);
