@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Branch from '../../../components/Branch';
 import HorizonLine from '../../../components/HorizonLine';
 import VulComponent from './Vulnerability';
-import Tooltip from '../../../components/Tooltip';
+import Tooltip from '../../../components/TooltipIcon';
 import Condition from './Condition';
 import Score from './Score';
 import Graph from "./Graph";

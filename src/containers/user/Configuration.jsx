@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import Header from "../common/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import delete_logo from "../../static/delete.png";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import HorizonLine from "../../components/HorizonLine";
 
 const NavWarpper = styled.div`
 	width: 13rem;
@@ -12,8 +12,6 @@ const NavWarpper = styled.div`
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
-	padding-top: 3rem;
 	margin-left:2.5rem;
 	min-width: 11rem;
 `;
@@ -25,6 +23,17 @@ const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+const IconWrapper = styled.div`
+  display: flex;
+  height: 3rem;
+  align-items: center;
+`
+
+const ArrowIcon = styled(ArrowBackIosIcon)`
+  font-size: 1rem Important!;
+  cursor: pointer;
+  padding-left: 1rem;
+`
 
 const Content = styled(Link)`
   text-decoration: none;
@@ -39,10 +48,14 @@ const Body = styled.div`
   gap: 1.3rem;
   padding-right: 500px;
 `
-
+const NameArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`
 const TitleArea = styled.div`
   display: flex;
-  align-items: end;
+  align-items: baseline;
 `;
 
 const TitleName = styled.div`
@@ -50,8 +63,13 @@ const TitleName = styled.div`
   font-style: normal;
   font-weight: 500;
   font-size: 19.2px;
-  line-height: 23px;
 `;
+
+const PasswordArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`
 
 const SubTitle = styled.div`
   font-family: 'Roboto';
@@ -60,6 +78,9 @@ const SubTitle = styled.div`
   font-size: 14px;
   line-height: 16px;
 `;
+
+const NotiArea = styled.div`
+`
 
 const ConfigurationArea = styled.div`
   display: flex;
@@ -81,14 +102,8 @@ const TipText = styled.div`
 
 const UserName = styled.div`
   color: #14141F;
-  font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-`;
-
-const DivisionLine = styled.div`
-  border: 0.5px solid #D9D9D9;
+  font-size: 1rem;
 `;
 
 const PasswordInput = styled.input.attrs(props => ({
@@ -96,10 +111,8 @@ const PasswordInput = styled.input.attrs(props => ({
 }))
 `
   border: 1px solid #EEEEF2;
-  width: 707px;
-  height: 28px;
-  left: 282px;
-  top: 299px;
+  border-radius: 6.4px;
+  padding: 0.5rem;
 `;
 
 const JenkinsToken = styled.div`
@@ -112,6 +125,7 @@ const JenkinsToken = styled.div`
 const TokenArea = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const DeleteWarning = styled.div`
@@ -123,16 +137,13 @@ const DeleteWarning = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  width: 67px;
-  height: 22px;
-  left: 282px;
-  top: 714px;
+  width: 100px;
+  height: 40px;
   border: 1px solid #EEEEF2;
   border-radius: 6.4px;
   font-style: normal;
   font-weight: 500;
-  font-size: 9px;
-  line-height: 11px;
+  font-size: 1rem;
   color: #FF3030;
   cursor: pointer;
 `;
@@ -151,6 +162,27 @@ const JenkinsNewButton = styled.button`
   cursor: pointer;
 `;
 
+const DeleteIconBtn = styled(DeleteIcon)`
+  font-size: 1.2rem !important;
+  cursor: pointer;
+  color: #FF3030;
+`
+
+const SavePasswordButton = styled.div`
+  width: 60px;
+  height: 30px;
+  background-color: #EEEEF2;
+  border: 1px solid #EEEEF2;
+  border-radius: 30px;
+  text-align: center;
+  line-height: 30px;
+  align-self: end;
+  &:hover {
+    background-color: #DADAE6;
+    cursor: pointer;
+  }
+`
+
 const ConfigurationSideNav = () => {
   const isActive = (path, location) => {
     //path가 현재 url과 같으면 true를 반환
@@ -158,45 +190,19 @@ const ConfigurationSideNav = () => {
   }
 
   const location = useLocation();
-
+  const navigate = useNavigate();
 	return (
 		<NavWarpper>
+      <IconWrapper>
+        <ArrowIcon onClick={() => navigate(-1)}/>
+      </IconWrapper>
 			<ContentWrapper active={isActive(`/configuration`, location.pathname)}>
 				<Content to='/configuration'>Configuration</Content>
 			</ContentWrapper>
 		</NavWarpper>
 	);
 };
-
-const PasswordInputBox = ({setState}) => {
-  const onChange = ({ target: { value } }) => {
-    setState(value);
-  };
-
-  return(
-    <PasswordInput onChange={onChange}></PasswordInput>
-  );
-};
-
-// const DeleteAccountSubmit = () => {
-//   const onClick = () => {
-//     // user delete api
-//   };
-
-//   return(
-//     <DeleteButton onClick={onClick}>DELETE</DeleteButton>
-//   );
-// };
-
-const DeleteImageButton = () => {
-  const onClick = () => {
-    console.log("test")
-  };
-
-  return(
-    <img src={delete_logo} alt="delete" onClick={onClick} style={{cursor:"pointer"}}/>
-  );
-};
+ 
 
 const ConfigurationContainer = () => {
   const [password, setPassword] = useState("");
@@ -206,6 +212,37 @@ const ConfigurationContainer = () => {
     if(password === confirm) return true;
     else return false;
   };
+
+  const onHandleChange = (e) => {
+    if(e.target.name === "password"){
+      setPassword(e.target.value);
+    }
+    else if(e.target.name === "confirm"){
+      setConfirm(e.target.value);
+    }
+  }
+
+
+  const onHandleChangePassword = () => {
+    if(passwordConfirm()){
+      console.log("password changed");
+      setPassword("");
+      setConfirm("");
+    }
+    else{
+      console.log("password did not match");
+    }
+  }
+
+  const onHandleNewToken = () => {
+    // TODO: user token api
+    console.log("new token");
+  }
+
+  const onHandleDeleteIcon = () => {
+    // TODO: user delete api
+    console.log("delete");
+  }
 
   const deleteButtonClick = () => {
     // user delete api
@@ -224,29 +261,36 @@ const ConfigurationContainer = () => {
       <Body>
         <ConfigurationSideNav />
         <ConfigurationArea>
-          <TitleArea>
-            <TitleName>Name</TitleName>
-            <TipText>변경은 관리자에게 문의하십시오</TipText>
-          </TitleArea>
-          <UserName>admin</UserName>
-          <DivisionLine />
-          <TitleName>Password</TitleName>
-          <SubTitle>password</SubTitle>
-          <PasswordInputBox setState={setPassword} />
-          <SubTitle>confirm password</SubTitle>
-          <PasswordInputBox setState={setConfirm} />
-          <DivisionLine />
-          <TitleName>Notification</TitleName>
-          <DivisionLine />
+          <NameArea>
+            <TitleArea>
+              <TitleName>Name</TitleName>
+              <TipText>변경은 관리자에게 문의하십시오</TipText>
+            </TitleArea>
+            <UserName>admin</UserName>
+          </NameArea>
+          <HorizonLine />
+          <PasswordArea>
+            <TitleName>Password</TitleName>
+            <SubTitle>password</SubTitle>
+            <PasswordInput name='password' value={password} onChange={onHandleChange}></PasswordInput>
+            <SubTitle>confirm password</SubTitle>
+            <PasswordInput name='confirm' value={confirm} onChange={onHandleChange}></PasswordInput>
+            {password.length > 0 || confirm.length > 0 ?<SavePasswordButton onClick={onHandleChangePassword}>Save</SavePasswordButton> : null}
+          </PasswordArea>
+          <HorizonLine />
+          <NotiArea>
+            <TitleName>Notification</TitleName>
+          </NotiArea>
+          <HorizonLine />
           <TitleArea style={ {justifyContent: 'space-between'} }>
             <TitleName>Jenkins Token</TitleName>
-            <JenkinsNewButton>New token</JenkinsNewButton>
+            <JenkinsNewButton onClick={onHandleNewToken}>New token</JenkinsNewButton>
           </TitleArea>
           <TokenArea>
             <JenkinsToken>115761f7e63c6d7ce954ee86c604d934c2</JenkinsToken>
-            <DeleteImageButton />
+            <DeleteIconBtn onClick={onHandleDeleteIcon} />
           </TokenArea>
-          <DivisionLine />
+          <HorizonLine />
           <TitleName>Delete account</TitleName>
           <DeleteWarning>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took ...</DeleteWarning>
           <DeleteButton onClick={deleteButtonClick}>DELETE</DeleteButton>

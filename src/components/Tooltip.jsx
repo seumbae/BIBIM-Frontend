@@ -1,12 +1,27 @@
-import styled from "styled-components";
-import HelpIcon from '@mui/icons-material/Help';
+import { useState } from "react";
 
-const Icon = styled(HelpIcon)`
-  color: #D4D4D4;
-  font-size: 1rem !important;
-`
-const TooltipIcon = ({text}) => {
-  return <Icon />
-}
+import Tooltip from "@mui/material/Tooltip";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
-export default TooltipIcon;
+const TooltipMsg = ({children, open, setOpen, title }) => {
+  const onHandleTooltipClose = () => {
+		setOpen(false);
+	};
+
+  return (
+		<ClickAwayListener onClickAway={onHandleTooltipClose}>
+			<Tooltip
+				open={open}
+				onClose={onHandleTooltipClose}
+				disableFocusListener
+				disableHoverListener
+				disableTouchListener
+				title={title}
+			>
+        {children}
+			</Tooltip>
+		</ClickAwayListener>
+	);
+};
+
+export default TooltipMsg;

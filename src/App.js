@@ -5,7 +5,7 @@ import DetailLayout from "./containers/common/DetailLayout";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import Pipeline from "./containers/Pipeline/Pipeline";
 import Issues from "./pages/dev/Issues";
-import Profile from "./pages/dev/Profile"
+import Profile from "./containers/Profile/Profile"
 import DetailStatusPage from "./containers/ProjectDetail/Status/Status";
 import AllDetailIssueContainer from "./containers/detail-issue/AllDetailIssue";
 import ConfigurationContainer from "./containers/user/Configuration";

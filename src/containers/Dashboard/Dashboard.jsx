@@ -1,21 +1,23 @@
+import { useState } from "react";
 import styled from "styled-components";
 import ResultComponent from "./StatisticsCount";
 import ProjectList from "./ProjectList";
 import Graph from "./Graph";
-import TooltipIcon from "../../components/Tooltip";
+import TooltipIcon from "../../components/TooltipIcon";
+import TooltipMsg from "../../components/Tooltip";
 
 const ContentsWrapper = styled.div`
 	margin-top: 3rem;
-  margin-right: 9%;
+	margin-right: 9%;
 	height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	flex: 1;
 `;
 const StatusWrapper = styled.div`
 	display: flex;
-  justify-content: space-between;
+	justify-content: space-between;
 	gap: 1rem;
 `;
 
@@ -47,17 +49,17 @@ const ResultStatistics = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  height: 26px;
-  align-items: center;
-`
+	display: flex;
+	justify-content: flex-end;
+	height: 26px;
+	align-items: center;
+`;
 
 const ResultStatisticsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-` 
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+`;
 const ResultItems = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -79,48 +81,48 @@ const ResultWrapper = styled.div`
 
 /* Entire Project Summary Graph */
 const SummaryWrapper = styled.div`
-  max-width: 100%;
-  background-color: #eeeef2;
-  border-radius: 6.4px;
-  padding: 21px 21px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`
+	max-width: 100%;
+	background-color: #eeeef2;
+	border-radius: 6.4px;
+	padding: 21px 21px;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+`;
 const SummaryHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`;
 const GraphWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-`
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 1rem;
+`;
 const GraphBody = styled.div`
-  background-color: #FFFFFF;
-  border-radius: 6.4px;
-  display: flex;
-  flex-direction: column;
-  padding: 21px 21px 21px 0px;
-  gap: 1rem;
-`
+	background-color: #ffffff;
+	border-radius: 6.4px;
+	display: flex;
+	flex-direction: column;
+	padding: 21px 21px 21px 0px;
+	gap: 1rem;
+`;
 const GraphTitle = styled.div`
-  font-size: 1rem;
-  margin-left: 1.2rem;
-  font-weight: 400;
-`
+	font-size: 1rem;
+	margin-left: 1.2rem;
+	font-weight: 400;
+`;
 /* Entire Project Scan Result */
 const ScanListWrapper = styled.div`
-  max-width: 100%;
-  background-color: #eeeef2;
-  border-radius: 6.4px;
-  padding: 21px 21px;
-  display: flex;
-  flex-direction: column;
-  gap : 0.8rem;
-`
+	max-width: 100%;
+	background-color: #eeeef2;
+	border-radius: 6.4px;
+	padding: 21px 21px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+`;
 
 const Dashboard = () => {
 	const ProjectTitle = {
@@ -130,10 +132,14 @@ const Dashboard = () => {
 	};
 	const ResultTitle = {
 		Releasability: { Failed: 2, Passed: 4 },
-    Reliabilities: { D: 1, C: 2, B: 4, A: 6 },
-    Vulnerabilities: {D:2, C:3, B:5, A:2 },
+		Reliabilities: { D: 1, C: 2, B: 4, A: 6 },
+		Vulnerabilities: { D: 2, C: 3, B: 5, A: 2 },
 	};
 
+	const [summaryTooltip, setSummaryTooltip] = useState(false);
+	const handleSummaryTooltipOpen = () => {
+		setSummaryTooltip((prev) => !prev);
+	};
 	return (
 		<ContentsWrapper>
 			<StatusWrapper>
@@ -148,48 +154,62 @@ const Dashboard = () => {
 					})}
 				</ProjectStatistics>
 				<ResultStatistics>
-          <IconWrapper>
-            <TooltipIcon />
-          </IconWrapper>
-          <ResultStatisticsWrapper>
-					{Object.entries(ResultTitle).map((item) => {
-						return (
-							<ResultItems>
-								<Title>{item[0]}</Title>
-								<ResultWrapper>
-                  <ResultComponent 
-                    item={item}
-                  />
-								</ResultWrapper>
-							</ResultItems>
-						);
-					})}
-          </ResultStatisticsWrapper>
+					<IconWrapper>
+						<TooltipIcon />
+					</IconWrapper>
+					<ResultStatisticsWrapper>
+						{Object.entries(ResultTitle).map((item) => {
+							return (
+								<ResultItems>
+									<Title>{item[0]}</Title>
+									<ResultWrapper>
+										<ResultComponent item={item} />
+									</ResultWrapper>
+								</ResultItems>
+							);
+						})}
+					</ResultStatisticsWrapper>
 				</ResultStatistics>
 			</StatusWrapper>
-      {/* Entire Project Summary Graph */}
-      <SummaryWrapper>
-        <SummaryHeader>
-          <div>전체 프로젝트 요약</div>
-          <TooltipIcon/>
-        </SummaryHeader>
-        <GraphWrapper>
-          <GraphBody>
-            <GraphTitle>Vulnerabilities</GraphTitle>
-            <Graph />
-          </GraphBody>
-          <GraphBody>
-            <GraphTitle>Reliabilities</GraphTitle>
-            <Graph />
-          </GraphBody>
-        </GraphWrapper>
-      </SummaryWrapper>
-      {/* Entire Project Scan Result List */}
-      <ScanListWrapper>
-        {/* Need to transfer props */}
-        <ProjectList projectTitle={'dev-pipeline-2'} branchName={'main'} result={'Passed'}/>
-        <ProjectList projectTitle={'dev-pipeline-3'} branchName={'main'} result={'Failed'}/>
-      </ScanListWrapper>
+			{/* Entire Project Summary Graph */}
+			<SummaryWrapper>
+				<SummaryHeader>
+					<div>전체 프로젝트 요약</div>
+					<TooltipMsg
+						title="과거부터 현재까지 전체 프로젝트에 대한 요약"
+						open={summaryTooltip}
+						setOpen={setSummaryTooltip}
+					>
+						<div onClick={handleSummaryTooltipOpen}>
+							<TooltipIcon />
+						</div>
+					</TooltipMsg>
+				</SummaryHeader>
+				<GraphWrapper>
+					<GraphBody>
+						<GraphTitle>Vulnerabilities</GraphTitle>
+						<Graph />
+					</GraphBody>
+					<GraphBody>
+						<GraphTitle>Reliabilities</GraphTitle>
+						<Graph />
+					</GraphBody>
+				</GraphWrapper>
+			</SummaryWrapper>
+			{/* Entire Project Scan Result List */}
+			<ScanListWrapper>
+				{/* Need to transfer props */}
+				<ProjectList
+					projectTitle={"dev-pipeline-2"}
+					branchName={"main"}
+					result={"Passed"}
+				/>
+				<ProjectList
+					projectTitle={"dev-pipeline-3"}
+					branchName={"main"}
+					result={"Failed"}
+				/>
+			</ScanListWrapper>
 		</ContentsWrapper>
 	);
 };
