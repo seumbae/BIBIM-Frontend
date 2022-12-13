@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { getSecurityCheckList } from "../services/axios";
 import styled from "styled-components";
-import axios from "axios";
 import { getToolList } from "../services/axios";
 
 const SecurityCheckArea = styled.div`
@@ -56,19 +54,18 @@ const Tool = styled.div`
 
 const SecurityCheck = ({ setStep }) => {
   const [tools, setTools] = useState([]);
-  // const [step, setStep] = useState({});
 
   const onHandleItemClick = (event) => {
     const {name, value, checked} = event.target;
     setStep((prev) => {
       return {...prev, [name]: {...prev[name], [value]: checked}}
     });
-    // console.log(step)
   }
 
-  useEffect(async () => {
-    let toolList = await getToolList();
-    setTools(toolList.data.result)
+  useEffect( () => {
+    getToolList().then((res) =>{
+      setTools(res.data.result);
+    })
   }, []);
 
   return(
