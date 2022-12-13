@@ -3,9 +3,11 @@ import { deletePipeline, getPipeline } from "../../services/axios";
 import styled from "styled-components";
 import Button from "./Button";
 import List from "./PipelineList";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
 import PipelineCreate from "./PipelineCreate";
 import ListSkeleton from "../../components/ListSkeleton";
+import { BuildContext } from "../../store/BuildContext";
+import { useContext } from "react";
 
 const BodyWrapper = styled.div`
 	margin-top: 3rem;
@@ -14,7 +16,7 @@ const BodyWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	flex: 1;
-  gap: 1rem;
+	gap: 1rem;
 `;
 const Buttons = styled.div`
 	display: flex;
@@ -26,87 +28,119 @@ const ModifyDelete = styled.div`
 `;
 
 const PipelineWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 12px 8px;
-  background-color: #EEEEF2;
-  border-radius: 6.4px;
-`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 12px 8px;
+	background-color: #eeeef2;
+	border-radius: 6.4px;
+`;
+
+const None = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+	color: #4a4949;
+	font-size: 0.8rem;
+`;
 
 const Pipeline = () => {
-  const [loading, setLoading] = useState(true);
-  const [create, setCreate] = useState(false);
-  const [created, setCreated] = useState(false);
-  const [checkList, setChecked] = useState({});
-  const [jenkinsList, setJenkinsList] = useState(['Pre-commit', 'Code-Ql', 'Zap', 'Dependabot']);
-  const [pipelineList, setPipelineList] = useState([]);
+	const buildContext = useContext(BuildContext);
+	const [loading, setLoading] = useState(true);
+	const [create, setCreate] = useState(false);
+	const [created, setCreated] = useState(false);
+	const [checkList, setChecked] = useState({});
+	const [jenkinsList, setJenkinsList] = useState([
+		"Pre-commit",
+		"Code-Ql",
+		"Zap",
+		"Dependabot",
+	]);
+	const [pipelineList, setPipelineList] = useState([]);
 	const onHandleCreate = () => {
-    setCreate((prev) => !prev);
+		setCreate(true);
 	};
-  const onHandleClose = () => setCreate((prev) => !prev);
+	const onHandleClose = () => setCreate(false);
 	const onHandleModify = () => {
 		console.log("modify");
 	};
 
 	const onHandleDelete = () => {
 		Object.keys(checkList).forEach((key) => {
-      deletePipeline({pipeline_name: key}).then((res) => {
-        alert(res.data.msg);
-        setLoading(false);
-        window.location.reload();
-      })})
+			deletePipeline({ pipeline_name: key }).then((res) => {
+				alert(res.data.msg);
+				setLoading(false);
+				buildContext.removePipeline(key);
+				window.location.reload();
+			});
+		});
 	};
 
-  const onHandleCheck = (event) => {
-    const {value, checked} = event.target;
-    if(checked){
-      setChecked((prev) => ({...prev, [value]: checked}));
-    }
-    else{
-      const temp = {...checkList};
-      delete temp[value];
-      setChecked(temp);
-    }
-  }
-  
-  const onHandleGetPipeline = () => {
-    getPipeline().then((res) => {
-      setPipelineList(res.data.result);
-      setLoading(false);
-    });
-    if(created) setCreated(false);
-  }
+	const onHandleCheck = (event) => {
+		const { value, checked } = event.target;
+		if (checked) {
+			setChecked((prev) => ({ ...prev, [value]: checked }));
+		} else {
+			const temp = { ...checkList };
+			delete temp[value];
+			setChecked(temp);
+		}
+	};
 
-  useEffect(() => {
-    onHandleGetPipeline();
-  }, [created]);
+	const onHandleGetPipeline = () => {
+		getPipeline()
+			.then((res) => {
+				setPipelineList(res.data.result);
+				setLoading(false);
+			})
+			.catch((err) => {
+				setLoading(false);
+			});
+		if (created) setCreated(false);
+	};
 
-  // TODO: Context 사용하여 전역으로 관리
+	useEffect(() => {
+		onHandleGetPipeline();
+	}, [created]);
 
-	return(
-    <BodyWrapper>
+	// TODO: Context 사용하여 전역으로 관리
+
+	return (
+		<BodyWrapper>
 			<Buttons>
 				<Button onHandleCreate={onHandleCreate} />
 				{Object.keys(checkList).length > 0 ? (
 					<ModifyDelete>
 						<Button name="수정" onHandleModify={onHandleModify} />
-						<Button name="삭제" onHandleDelete={onHandleDelete}  />
+						<Button name="삭제" onHandleDelete={onHandleDelete} />
 					</ModifyDelete>
 				) : null}
 			</Buttons>
-      <PipelineWrapper>
-        {loading ? 
-          <ListSkeleton /> :
-        pipelineList?.map((item) => {
-          return <List key={item.pipeline_name} onHandleCheck={onHandleCheck} name={item} jenkins={jenkinsList} owner="nebulayoon" created="2022-10-12" updated="2022-10-12" repo="github.com/nebulayoon/python/tree/main/check2" />
-        })}
-      </PipelineWrapper>
-      <Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
-        <PipelineCreate setCreate={setCreate} setCreated={setCreated}/>
-      </Modal>
+				{loading ? <PipelineWrapper><ListSkeleton /></PipelineWrapper> : null}
+				{!loading && pipelineList.length === 0 ? (
+					<None>등록된 Pipeline이 없습니다.</None>
+				) : (<PipelineWrapper>
+					{pipelineList.map((item) => {
+						return (
+							<List
+								key={item.pipeline_name}
+								onHandleCheck={onHandleCheck}
+								name={item}
+								jenkins={jenkinsList}
+								owner="nebulayoon"
+								created="2022-10-12"
+								updated="2022-10-12"
+								repo="github.com/nebulayoon/python/tree/main/check2"
+							/>
+						);
+					})}
+				</PipelineWrapper>)}
+			<Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
+				<PipelineCreate setCreate={setCreate} setCreated={setCreated} />
+			</Modal>
 		</BodyWrapper>
-  );
+	);
 };
 
 export default Pipeline;
