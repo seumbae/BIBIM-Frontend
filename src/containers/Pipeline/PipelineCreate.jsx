@@ -109,13 +109,14 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 	const [checkSecurity, setCheckSecurity] = useState(false);
 	const [uploadexisting, setUploadexisting] = useState(false);
 	const [uploadlocal, setUploadlocal] = useState(false);
+	const [step, setStep] = useState({});
 
 	const onHandleCreate = async (event) => {
 		event.preventDefault();
     // createPipeline({pipeline_name: projectName, repo_url: repoUrl, description: description, security_check: checkSecurity, upload_existing: uploadexisting, upload_local: uploadlocal})
-    createPipeline({pipeline_name: projectName, repo_url: repoUrl, branch}).then((res) => {
+    createPipeline({pipeline_name: projectName, repo_url: repoUrl, branch, tools: step}).then((res) => {
       alert(res.data.msg);
-      // runPipeline({pipeline_name: "building-a-multibranch-pipeline-project/master"})
+			window.location.reload();
     })
     setCreated(true);
     setCreate(false);
@@ -189,7 +190,7 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 						<Subtitle>Proceed Security check</Subtitle>
 					</SubtitleWithCheck>
 					<Collapse in={checkSecurity}>
-            <SecurityCheckList />
+            <SecurityCheckList setStep={setStep}/>
 					</Collapse>
 				</AreaWithCheck>
 				<AreaWithCheck>
@@ -204,7 +205,7 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 						<div>Upload existing Jenkins File</div>
 					</Collapse>
 				</AreaWithCheck>
-        <AreaWithCheck>
+        {/* <AreaWithCheck>
 					<SubtitleWithCheck>
 						<Checkbox
 							type="checkbox"
@@ -215,7 +216,7 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 					<Collapse in={uploadlocal}>
 						<div>Upload Jenkins File from Local</div>
 					</Collapse>
-				</AreaWithCheck>
+				</AreaWithCheck> */}
         {/* Option이 더 존재한다면 넣을 자리 */}
 			</div>
 			<Btn onClick={onHandleCreate}>Create</Btn>

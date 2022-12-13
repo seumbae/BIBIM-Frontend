@@ -15,7 +15,7 @@ export const getSecurityList = async () => await API.get('/security_result/secur
 export const getProjectSecurityResult = async (id) => await API.get(`/projectTotalSecurityResult/${id}`);
 
 /* Get Security Check List */
-export const getSecurityCheckList = async () => await API.get('/tool/toolList');
+export const getToolList = async () => await API.get('/tool/toolList');
 
 
 /* Pipeline */
