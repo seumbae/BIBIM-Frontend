@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import Categories from "./Category";
 
@@ -56,12 +55,3 @@ const Filter = ({ data, checked, setChecked }) => {
 };
 
 export default Filter;
-
-// {Object.values(item[0]).map((item, index) => {
-//   return (
-//     <ItemWrapper key={index}>
-//       <Item>{item}</Item>
-//       <CheckBox type="checkbox" />
-//     </ItemWrapper>
-//   );
-// })}
