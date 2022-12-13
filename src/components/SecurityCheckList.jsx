@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { getSecurityCheckList } from "../services/axios";
 import styled from "styled-components";
+import axios from "axios";
+import { getToolList } from "../services/axios";
 
 const SecurityCheckArea = styled.div`
   display: flex;
@@ -14,7 +16,7 @@ const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0.4rem
+  padding: 0.4rem;
 `
 
 const Subtitle = styled.div`
@@ -52,89 +54,91 @@ const Tool = styled.div`
   font-weight: 600;
 `
 
-const SecurityCheck = () => {
-  const [step, setStep] = useState({});
+const SecurityCheck = ({ setStep }) => {
+  const [tools, setTools] = useState([]);
+  // const [step, setStep] = useState({});
 
   const onHandleItemClick = (event) => {
     const {name, value, checked} = event.target;
     setStep((prev) => {
       return {...prev, [name]: {...prev[name], [value]: checked}}
     });
+    // console.log(step)
   }
 
-  const loadToolList = async () => {
-    const response = getSecurityCheckList().then((res) => {
-    });
-    let result = response.data.result;
-    let stepDict = {};
-
-    for(let i = 0; i < result.length; i++){
-      if(Object.keys(stepDict).includes(result[i].stage)){ // stage가 있는 경우
-        stepDict[result[i].stage][result[i].name] = false;
-      }else{ // 새롭게 추가된 stage인 경우
-        let row = {};
-        row[result[i].name] = false;
-        stepDict[result[i].stage] = row;
-      }
-    }
-    setStep(stepDict);
-    console.log(step);
-  };
-
-  useEffect(() => {
-    loadToolList();
-  },[]);
+  useEffect(async () => {
+    let toolList = await getToolList();
+    setTools(toolList.data.result)
+  }, []);
 
   return(
     <SecurityCheckArea>
       <ListWrapper>
         <Subtitle>Check Sensitive Information Scan (SIS)</Subtitle>
         <Lists>
-          <List>
-            <CheckBox type="checkbox" name="sis" value="gitleaks" onClick={onHandleItemClick}/>
-            <Tool>Gitleaks</Tool>
-          </List>
-          <List>
-            <CheckBox type="checkbox" name="sis" value="ggshield" onClick={onHandleItemClick}/>
-            <Tool>GitGuardian Shield</Tool>
-          </List>
+          {
+            tools.map((item, idx) => {
+              if(item.stage == "SIS"){
+                return (
+                  <List key={idx}>
+                    <CheckBox type="checkbox" name={item.stage} value={item.name} onClick={onHandleItemClick}/>
+                    <Tool>{item.name}</Tool>
+                  </List>
+                )
+              }
+            })
+          }
         </Lists>
       </ListWrapper>
       <ListWrapper>
         <Subtitle>Check Static Application Security Testing (SAST)</Subtitle>
-        <List>
-          <CheckBox type="checkbox" name="sast" value="code-ql" onClick={onHandleItemClick}/>
-          <Tool>Code-QL</Tool>
-        </List>
+        <Lists>
+          {
+            tools.map((item, idx) => {
+              if(item.stage == "SAST"){
+                return (
+                  <List key={idx}>
+                    <CheckBox type="checkbox" name={item.stage} value={item.name} onClick={onHandleItemClick}/>
+                    <Tool>{item.name}</Tool>
+                  </List>
+                )
+              }
+            })
+          }
+        </Lists>
       </ListWrapper>
       <ListWrapper>
         <Subtitle>Check Dynamic Application Security Testing (DAST)</Subtitle>
         <Lists>
-          <List>
-            <CheckBox type="checkbox" name="dast" value="zap" onClick={onHandleItemClick}/>
-            <Tool>ZAP</Tool>
-          </List>
-          <List>
-            <CheckBox type="checkbox" name="dast" value="arachni" onClick={onHandleItemClick}/>
-            <Tool>Arachni</Tool>
-          </List>
-          <List>
-            <CheckBox type="checkbox" name="dast" value="nikto" onClick={onHandleItemClick}/>
-            <Tool>Nikto</Tool>
-          </List>
+          {
+            tools.map((item, idx) => {
+              if(item.stage == "DAST"){
+                return (
+                  <List key={idx}>
+                    <CheckBox type="checkbox" name={item.stage} value={item.name} onClick={onHandleItemClick}/>
+                    <Tool>{item.name}</Tool>
+                  </List>
+                )
+              }
+            })
+          }
         </Lists>
       </ListWrapper>
       <ListWrapper>
         <Subtitle>Check Software Composition Analysis (SCA)</Subtitle>
         <Lists>
-          <List>
-            <CheckBox type="checkbox" name="sca" value="owasp-dependencycheck" onClick={onHandleItemClick}/>
-            <Tool>OWASP-dependencycheck</Tool>
-          </List>
-          <List>
-            <CheckBox type="checkbox" name="sca" value="dependabot" onClick={onHandleItemClick}/>
-            <Tool>Dependabot</Tool>
-          </List>
+          {
+            tools.map((item, idx) => {
+              if(item.stage == "SCA"){
+                return (
+                  <List key={idx}>
+                    <CheckBox type="checkbox" name={item.stage} value={item.name} onClick={onHandleItemClick}/>
+                    <Tool>{item.name}</Tool>
+                  </List>
+                )
+              }
+            })
+          }
         </Lists>
       </ListWrapper>
     </SecurityCheckArea>

@@ -15,6 +15,7 @@ const NavWarpper = styled.div`
 	margin-left:2.5rem;
 	min-width: 11rem;
 `;
+
 const ContentWrapper = styled.div`
 	background-color: ${(props) => (props.active ? "#EEEEF2" : "#FFFFFF")};
   height: 2.5rem;

@@ -9,7 +9,7 @@ import JenkinsCreate from "./JenkinsCreate";
 const BodyWrapper = styled.div`
 	margin-top: 3rem;
 	margin-right: 9%;
-	heigth: 100vh;
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
 	flex: 1;

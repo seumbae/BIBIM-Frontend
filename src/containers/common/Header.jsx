@@ -1,8 +1,8 @@
+import React, { useState, useEffect, MouseEvent } from 'react';
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProfileMenu from "./ProfileMenu";
-import { useState } from "react";
 
 const HeaderBackground = styled.div`
 	background-color: #2c2c2c;
