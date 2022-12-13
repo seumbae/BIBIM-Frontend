@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import SecurityCheckList from "../../components/SecurityCheckList";
-import { createPipeline, runPipeline } from "../../services/axios";
+import { createPipeline } from "../../services/axios";
+import { useContext } from "react";
+import { BuildContext } from "../../store/BuildContext";
 
 const ModalContainer = styled.div`
 	position: absolute;
@@ -100,6 +101,7 @@ const Close = styled(CloseIcon)`
 	cursor: pointer;
 `;
 const CreateModal = ({ create, setCreate, setCreated}) => {
+	const buildContext = useContext(BuildContext);
 	const [projectName, setProjectName] = useState("");
 	const [repoUrl, setRepoUrl] = useState("");
   const [branch, setBranch] = useState("");
@@ -110,28 +112,24 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 	const [uploadexisting, setUploadexisting] = useState(false);
 	const [uploadlocal, setUploadlocal] = useState(false);
 	const [step, setStep] = useState({});
-
+	
 	const onHandleCreate = async (event) => {
 		event.preventDefault();
-    // createPipeline({pipeline_name: projectName, repo_url: repoUrl, description: description, security_check: checkSecurity, upload_existing: uploadexisting, upload_local: uploadlocal})
     createPipeline({pipeline_name: projectName, repo_url: repoUrl, branch, tools: step}).then((res) => {
       alert(res.data.msg);
 			window.location.reload();
     })
-    setCreated(true);
-    setCreate(false);
+		buildContext.addPipeline(projectName);
 		setProjectName("");
 		setRepoUrl("");
     setBranch("");
+    setCreated(true);
+    setCreate(false);
 	};
 
 	const onHandleClose = () => {
 		setCreate(false);
 	};
-
-  useEffect(() => {
-    onHandleCreate();
-  },[])
 
 	return (
 		<ModalContainer>
