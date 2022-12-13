@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
+import BuildStatus from "../../components/BuildStatus";
 const NavWarpper = styled.div`
 	width: 13rem;
 	height: 100vh;
@@ -51,6 +52,8 @@ function MainSideNav() {
 			<ContentWrapper active={isActive(`/dev/pipeline`, location.pathname)}>
 				<Content to='/dev/pipeline'>Pipeline</Content>
 			</ContentWrapper>
+			{/* TODO: Context 사용하여 build 중일 때 build하고 있는 것 보여주기 */}
+			<BuildStatus />
 		</NavWarpper>
 	);
 }
