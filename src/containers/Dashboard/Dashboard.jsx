@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import styled from "styled-components";
-import ResultComponent from "./StatisticsCount";
-import ProjectList from "./ProjectList";
+import { useContext } from "react";
+import { BuildContext } from "../../store/BuildContext";
+import { getStageIssueCount } from "../../services/axios";
+
+import StageIssue from "./StageIssue";
+import ProjectList from "../../components/ProjectList";
 import Graph from "./Graph";
 import TooltipIcon from "../../components/TooltipIcon";
 import TooltipMsg from "../../components/Tooltip";
+import ReleasabilityPieGraph from "./ReleasabilityPieGraph";
+import SecurityGradePieGraph from "./SecurityGradePieGraph";
+import VulnerabilityBarGraph from "./VulnerabilityBarGraph";
 
 const ContentsWrapper = styled.div`
 	margin-top: 3rem;
@@ -16,28 +23,10 @@ const ContentsWrapper = styled.div`
 	flex: 1;
 `;
 const StatusWrapper = styled.div`
-	display: flex;
 	justify-content: space-between;
 	gap: 1rem;
 `;
 
-const ProjectStatistics = styled.div`
-	background-color: #eeeef2;
-	padding: 26px 21px;
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	gap: 1rem;
-	border-radius: 6.4px;
-`;
-const ProjectItems = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background-color: #ffffff;
-	padding: 0.6rem 1rem;
-	border-radius: 6.4px;
-`;
 const ResultStatistics = styled.div`
 	background-color: #eeeef2;
 	padding: 0px 21px 26px 21px;
@@ -60,23 +49,10 @@ const ResultStatisticsWrapper = styled.div`
 	flex-direction: column;
 	gap: 1rem;
 `;
-const ResultItems = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background-color: #ffffff;
-	// padding: 0.6rem 1rem;
-	border-radius: 6.4px;
-`;
 
-const Title = styled.div`
-	padding: 0.6rem 1rem;
-`;
-
-const ResultWrapper = styled.div`
-	display: flex;
-	width: 60%;
-	height: 100%;
+const ContentTitle = styled.div`
+	font-size: 1rem;
+	font-weight: 500;
 `;
 
 /* Entire Project Summary Graph */
@@ -97,14 +73,14 @@ const SummaryHeader = styled.div`
 const GraphWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	gap: 1rem;
 `;
 const GraphBody = styled.div`
-	background-color: #ffffff;
-	border-radius: 6.4px;
 	display: flex;
 	flex-direction: column;
+	background-color: #ffffff;
+	border-radius: 6.4px;
 	padding: 21px 21px 21px 0px;
 	gap: 1rem;
 `;
@@ -124,57 +100,65 @@ const ScanListWrapper = styled.div`
 	gap: 0.8rem;
 `;
 
+const GraphArea = styled.div`
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+`;
+
+const MediumGraph = styled.div`
+	width: 350px;
+	height: 250px;
+`;
+
 const Dashboard = () => {
-	const ProjectTitle = {
-		first: { name: "Projects", value: 1 },
-		second: { name: "Lines", value: 2 },
-		third: { name: "Vulnerabilities", value: 3 },
-	};
-	const ResultTitle = {
-		Releasability: { Failed: 2, Passed: 4 },
-		Reliabilities: { D: 1, C: 2, B: 4, A: 6 },
-		Vulnerabilities: { D: 2, C: 3, B: 5, A: 2 },
-	};
+	const buildContext = useContext(BuildContext);
+
+	const [stageIssue, setStageIssue] = useState([
+		{ SIS: 0 },
+		{ SAST: 0 },
+		{ DAST: 0 },
+		{ SCA: 0 },
+	]);
 
 	const [summaryTooltip, setSummaryTooltip] = useState(false);
 	const handleSummaryTooltipOpen = () => {
 		setSummaryTooltip((prev) => !prev);
 	};
+
+	useLayoutEffect(() => {
+		getStageIssueCount().then((res) => {
+			setStageIssue(res.data.result);
+		});
+	}, []);
+
 	return (
 		<ContentsWrapper>
+			<StageIssue data={stageIssue} />
 			<StatusWrapper>
-				<ProjectStatistics>
-					{Object.values(ProjectTitle).map((item) => {
-						return (
-							<ProjectItems>
-								<div>{item.name}</div>
-								<div>{item.value}</div>
-							</ProjectItems>
-						);
-					})}
-				</ProjectStatistics>
 				<ResultStatistics>
 					<IconWrapper>
 						<TooltipIcon />
 					</IconWrapper>
 					<ResultStatisticsWrapper>
-						{Object.entries(ResultTitle).map((item) => {
-							return (
-								<ResultItems>
-									<Title>{item[0]}</Title>
-									<ResultWrapper>
-										<ResultComponent item={item} />
-									</ResultWrapper>
-								</ResultItems>
-							);
-						})}
+						<GraphArea>
+							<MediumGraph>
+								<ReleasabilityPieGraph />
+							</MediumGraph>
+							<MediumGraph>
+								<SecurityGradePieGraph />
+							</MediumGraph>
+							<MediumGraph>
+								<VulnerabilityBarGraph />
+							</MediumGraph>
+						</GraphArea>
 					</ResultStatisticsWrapper>
 				</ResultStatistics>
 			</StatusWrapper>
 			{/* Entire Project Summary Graph */}
 			<SummaryWrapper>
 				<SummaryHeader>
-					<div>전체 프로젝트 요약</div>
+					<ContentTitle>전체 프로젝트 요약</ContentTitle>
 					<TooltipMsg
 						title="과거부터 현재까지 전체 프로젝트에 대한 요약"
 						open={summaryTooltip}
@@ -198,14 +182,15 @@ const Dashboard = () => {
 			</SummaryWrapper>
 			{/* Entire Project Scan Result List */}
 			<ScanListWrapper>
+				<ContentTitle style={{ fontSize: "1.1rem" }}>Projects 1</ContentTitle>
 				{/* Need to transfer props */}
 				<ProjectList
-					projectTitle={"dev-pipeline-2"}
+					projectTitle={"test1"}
 					branchName={"main"}
 					result={"Passed"}
 				/>
 				<ProjectList
-					projectTitle={"dev-pipeline-3"}
+					projectTitle={"test2"}
 					branchName={"main"}
 					result={"Failed"}
 				/>
