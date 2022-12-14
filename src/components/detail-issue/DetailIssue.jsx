@@ -19,7 +19,7 @@ const Footer = styled.div`
 `;
 
 const Messasge = styled.div`
-	max-width: 90%;
+	max-width: 80%;
 	font-size: 0.9rem;
 `;
 const ScoreArea = styled.div`
@@ -47,10 +47,21 @@ const Detail = styled.div`
 	font-size: 0.8rem;
 	color: #707070;
 `;
+
+const URL = styled.div`
+	width: 300px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+`;
+const TagArea = styled.div`
+	display: flex;
+	gap: 0.5rem;
+`;
 const Tag = styled.div`
 	display: flex;
 	aling-items: center;
-	gap: 0.3rem;
+	gap: 0.2rem;
 `;
 const TagIcon = styled(SellIcon)`
 	font-size: 0.9rem !important;
@@ -66,15 +77,17 @@ const PropetyValue = ({ value }) => {
 		warning: "#F58737",
 		error: "#DD4433",
 		"very-high": "#00AA00",
-		High: "#2181B8",
+		high: "#2181B8",
 		medium: "#F58737",
+		low: "#F5C037",
+		informational: "#263690",
 		None: "#707070",
 	};
 
 	return <ValueText color={colorList[value]}>{value}</ValueText>;
 };
 
-const DetailIssueComponent = ({ data, pipelineName }) => {
+const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
 	return (
 		<Container>
 			<Body>
@@ -82,7 +95,9 @@ const DetailIssueComponent = ({ data, pipelineName }) => {
 				<ScoreArea>
 					Score
 					<Score>
-						{data.cvssv3 === 0 || data.cvssv3 === null ? "-" : data.cvssv3}
+						{data.cvssv3 === 0 || data.cvssv3 === null
+							? "-"
+							: parseFloat(data.cvssv3).toFixed(2)}
 					</Score>
 				</ScoreArea>
 			</Body>
@@ -90,7 +105,9 @@ const DetailIssueComponent = ({ data, pipelineName }) => {
 				<Details>
 					<Detail>
 						{pipelineName}
-						{data.uri.charAt(0) !== "/" ? " /" + data.uri : " " + data.uri}
+						<URL>
+							{data.uri.charAt(0) !== "/" ? " /" + data.uri : " " + data.uri}
+						</URL>
 					</Detail>
 					<Detail>
 						Level:{" "}
@@ -119,11 +136,25 @@ const DetailIssueComponent = ({ data, pipelineName }) => {
 					</Detail>
 					<Detail>Line: {data.startLine}</Detail>
 				</Details>
-				<Tag>
-					<TagIcon />
-					{/* TODO: parent에서 Stage나 툴 받아와서 더 보여주기 */}
-					<Detail>{data.cweId ? "cwe" : "owasp"}</Detail>
-				</Tag>
+				<TagArea>
+					<Tag>
+						<TagIcon />
+						{/* TODO: parent에서 Stage나 툴 받아와서 더 보여주기 */}
+						<Detail>{data.cweId ? "cwe" : "owasp"}</Detail>
+					</Tag>
+					{stage ? (
+						<Tag>
+							<TagIcon />
+							<Detail>{stage}</Detail>
+						</Tag>
+					) : null}
+					{tool ? (
+						<Tag>
+							<TagIcon />
+							<Detail>{tool}</Detail>
+						</Tag>
+					) : null}
+				</TagArea>
 			</Footer>
 			<HorizonLine />
 		</Container>
