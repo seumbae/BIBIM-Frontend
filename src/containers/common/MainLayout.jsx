@@ -10,13 +10,13 @@ const Body = styled.div`
 
 const Layout = () => {
   return (
-    <div>
+    <>
       <Header userName='admin' />
       <Body>
         <MainSideNav />
         <Outlet />
       </Body>      
-    </div>
+    </>
   ); 
 }
 

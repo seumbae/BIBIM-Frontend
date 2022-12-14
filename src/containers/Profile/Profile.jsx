@@ -37,6 +37,7 @@ const Profile = () => {
 		},
 	});
 
+	//TODO: Security Category중 CWE 적용해야함
 	const [checked, setChecked] = useState({Languages: [], SIS:[], SAST:[], DAST:[], SCA:[], Tag:[]});
 
 	return (

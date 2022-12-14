@@ -1,16 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { BrowserRouter as Router } from "react-router-dom";
+import BuildContextProvider from "./store/BuildContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>
-    <Router>
-      <App />
-        {/* <Routes>
-          <Route path="/*" element={<App />}/>
-        </Routes> */}
-    </Router>
-  // </React.StrictMode>
+	<Router>
+		{/* <BuildContextProvider> */}
+			<App />
+		{/* </BuildContextProvider> */}
+	</Router>
 );

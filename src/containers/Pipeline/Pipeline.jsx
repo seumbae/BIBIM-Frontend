@@ -17,6 +17,7 @@ const BodyWrapper = styled.div`
 	flex-direction: column;
 	flex: 1;
 	gap: 1rem;
+	min-width: 900px;
 `;
 const Buttons = styled.div`
 	display: flex;
@@ -68,10 +69,10 @@ const Pipeline = () => {
 
 	const onHandleDelete = () => {
 		Object.keys(checkList).forEach((key) => {
-			deletePipeline({ pipeline_name: key }).then((res) => {
+			deletePipeline({ pipeline_name: key, branch:"master" }).then((res) => {
 				alert(res.data.msg);
 				setLoading(false);
-				buildContext.removePipeline(key);
+				// buildContext.removePipeline(key);
 				window.location.reload();
 			});
 		});

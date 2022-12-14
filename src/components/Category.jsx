@@ -75,6 +75,7 @@ const CheckBox = styled.input`
 const Category = ({ item, index, setChecked, checkList }) => {
 	const [open, setOpen] = useState(true);
 	const [subOpen, setSubOpen] = useState({});
+	
 	useEffect(() => {
 		if (item[1] instanceof Object) {
 			const tmp = {};

@@ -12,6 +12,7 @@ const HeaderBackground = styled.div`
 	height: 4rem;
 	align-items: center;
 	justify-content: space-between;
+	min-width: 1190px;
 `;
 
 const Logo = styled.div`

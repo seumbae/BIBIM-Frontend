@@ -2,6 +2,7 @@ import styled from "styled-components";
 import List from "./List";
 
 const ListsWrapper = styled.div`
+	min-width: 820px;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;

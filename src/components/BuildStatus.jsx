@@ -67,8 +67,10 @@ const BuildStatus = ({ status }) => {
 	const [open, setOpen] = useState(true);
 	const onHandleCancel = () => {
 		// TODO: API call to cancel the build
-		setOpen(false);
-		console.log("cancel");
+		if(window.confirm("진행중인 빌드가 취소됩니다. 정말 취소하시겠습니까?")){
+			alert("빌드가 정상적으로 취소되었습니다.")
+			setOpen(false);
+		}
 	};
 	return (
 		<>

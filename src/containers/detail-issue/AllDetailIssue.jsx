@@ -13,6 +13,7 @@ const ResultArea = styled.div`
 `;
 
 const Lists = styled.div`
+	min-width: 700px;
 	display: flex;
 	flex-direction: column;
 	flex: 1;
@@ -24,7 +25,7 @@ const None = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex: 1;
-	color: #4A4949;
+	color: #4a4949;
 	font-size: 0.8rem;
 `;
 
@@ -34,7 +35,7 @@ const AllDetailIssueContainer = () => {
 	const [data, setData] = useState({
 		Languages: ["Javascript", "Python"],
 		Stages: {
-			SIS: ["Gitleaks", "GitGuardian"],
+			SIS: ["Gitleaks", "ggshield"],
 			SAST: ["CodeQL", "Semgrep"],
 			DAST: ["OWASP ZAP"],
 			SCA: ["OWASP DependencyCheck"],
@@ -54,7 +55,7 @@ const AllDetailIssueContainer = () => {
 			],
 		},
 	});
-
+	
 	const [checked, setChecked] = useState({
 		Languages: [],
 		SIS: [],

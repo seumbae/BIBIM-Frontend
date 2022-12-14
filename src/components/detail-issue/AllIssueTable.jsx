@@ -5,11 +5,13 @@ const AllIssueTableList = ({ dataList }) => {
 	return (
 		<>
 			{data.length > 0
-				? data.map((item) => (
+				? data.map((item, index) => (
 						<DetailIssueComponent
-							key={dataList._id.$oid}
+							key={dataList._id.$oid+index}
 							data={item}
 							pipelineName={dataList.pipelineName}
+							stage={dataList.stage}
+							tool={dataList.tool}
 						/>
 				  ))
 				: null}

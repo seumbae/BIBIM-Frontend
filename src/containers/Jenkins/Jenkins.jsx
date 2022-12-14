@@ -14,6 +14,7 @@ const BodyWrapper = styled.div`
 	flex-direction: column;
 	flex: 1;
 	gap: 1rem;
+	min-width: 900px;
 `;
 const Buttons = styled.div`
 	display: flex;

@@ -41,6 +41,7 @@ const Filter = ({ data, checked, setChecked }) => {
   const onHandleClear = () => {
     setChecked([]);
   }
+	
 	return (
 		<FilterBody>
 			<TitleWrapper>
