@@ -1,6 +1,9 @@
 import styled, { keyframes } from "styled-components";
 import LoopIcon from "@mui/icons-material/Loop";
 import { useState } from "react";
+import { useContext } from "react";
+import { BuildContext } from "../store/BuildContext";
+import { Link } from "react-router-dom";
 
 const rotation = keyframes`
   from{
@@ -35,9 +38,11 @@ const TitleArea = styled.div`
 	justify-content: space-between;
 `;
 
-const ProjectTitle = styled.div`
+const ProjectTitle = styled(Link)`
 	font-size: 0.8rem;
 	font-weight: 600;
+	text-decoration: none;
+	color: inherit;
 `;
 
 const Cancel = styled.div`
@@ -63,13 +68,14 @@ const Date = styled.div`
 	color: #555555;
 `;
 
-const BuildStatus = ({ status }) => {
+const BuildStatus = ({ pipeline }) => {
+	const buildContext = useContext(BuildContext);
 	const [open, setOpen] = useState(true);
 	const onHandleCancel = () => {
-		// TODO: API call to cancel the build
 		if(window.confirm("진행중인 빌드가 취소됩니다. 정말 취소하시겠습니까?")){
 			alert("빌드가 정상적으로 취소되었습니다.")
 			setOpen(false);
+			buildContext.modifyStatus(pipeline);
 		}
 	};
 	return (
@@ -79,7 +85,7 @@ const BuildStatus = ({ status }) => {
 					<StyledLoopIcon />
 					<DetailArea>
 						<TitleArea>
-							<ProjectTitle>dev-pipeline-3</ProjectTitle>
+							<ProjectTitle to={`/dev/${pipeline}/build`}>{pipeline}</ProjectTitle>
 							<Cancel onClick={onHandleCancel}>Cancel</Cancel>
 						</TitleArea>
 						<ProgressArea>
