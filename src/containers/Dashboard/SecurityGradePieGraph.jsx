@@ -8,23 +8,27 @@ import {
 	Tooltip,
 } from "recharts";
 
-const SecurityGradePieGraph = () => {
+const SecurityGradePieGraph = ({item}) => {
 	const data = [
 		{
 			name: "A",
-			value: 2,
+			value: item.A,
 		},
 		{
 			name: "B",
-			value: 5,
+			value: item.B,
 		},
 		{
 			name: "C",
-			value: 3,
+			value: item.C,
 		},
 		{
 			name: "D",
-			value: 2,
+			value: item.D,
+		},
+		{
+			name: "E",
+			value: item.E,
 		},
 	];
 
@@ -33,7 +37,7 @@ const SecurityGradePieGraph = () => {
 		totalValue += item.value;
 	});
 
-	const COLORS = ["#00AA00", "#F5C037", "#F58737", "#FF0000"];
+	const COLORS = ["#00AA00", "#F5C037", "#F58737", "#FF0000", "#4a4a4a"];
 	return (
 		<ResponsiveContainer >
 			<PieChart>

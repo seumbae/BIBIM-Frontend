@@ -47,25 +47,31 @@ const RepoArea = styled.div`
   margin-top: 0.5rem;
 `
 
-const List = ({onHandleCheck, name, jenkins, owner, created, updated, repo}) => {
+const List = ({onHandleCheck, data, created, updated}) => {
   return (
     <ListWrapper>
-      <CheckBox type="checkbox" value={name} onClick={onHandleCheck} />
+      <CheckBox type="checkbox" value={data.pipeline_name} onClick={onHandleCheck} />
       <Info>
         <div style={{display:"flex"}}>
-          <div style={{fontWeight: 500}}>{name}</div>
+          <div style={{fontWeight: 500}}>{data.pipeline_name}</div>
           <AdditionalInfos>
-            <div>Owner: {owner}</div>
+            <div>Owner: {data.owner}</div>
             <div>Created: {created}</div>
             <div>Updated: {updated}</div>
           </AdditionalInfos>
         </div>
         <RepoArea>
-          <div>Repository URL: {repo}</div>
+          <div>Repository URL: {data.repo_url}</div>
           <AdditionalInfos>
-            {jenkins.map((item) => {
-              return <div>#{item}</div>
-            })}
+            {Object.entries(data.tool_list).map(([key, value]) => {
+								if (key !== "BUILD")
+									return (
+										<div key={key}>
+											#
+											{value[0].replace(/^[a-z]/, (char) => char.toUpperCase())}
+										</div>
+									);
+							})}
           </AdditionalInfos>
         </RepoArea>
         <DescArea>Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took ...</DescArea>

@@ -6,6 +6,7 @@ background-color: ${({rank})=> {
   if (rank === "B") {return "#F5C037";}
   if (rank === "C") {return "#F58737";}
   if (rank === "D") {return "#FF0000";}
+  if (rank === "E") {return "#4A4A4A";}
 }};
   width: 1.75rem;
   height: 1.75rem;
@@ -13,7 +14,7 @@ background-color: ${({rank})=> {
   font-size: 1.3rem;
   color: #FFFFFF;
   text-align: center;
-  line-height: 1.75rem;
+  line-height: 1.80rem;
 `
 const Score = ({rank}) => {
   return( 
