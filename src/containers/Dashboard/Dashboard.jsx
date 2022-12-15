@@ -1,8 +1,8 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import { useContext } from "react";
 import { BuildContext } from "../../store/BuildContext";
-import { getStageIssueCount } from "../../services/axios";
+import { getStageIssueCount, allProjectPrecisionCount  } from "../../services/axios";
 
 import StageIssue from "./StageIssue";
 import ProjectList from "../../components/ProjectList";
@@ -113,7 +113,8 @@ const MediumGraph = styled.div`
 
 const Dashboard = () => {
 	const buildContext = useContext(BuildContext);
-
+	const [projectPrecisionCount, setProjectPrecisionCount] = useState([]);
+	const [PrecisionLoading, setPrecisionLoading] = useState(false);
 	const [stageIssue, setStageIssue] = useState([
 		{ SIS: 0 },
 		{ SAST: 0 },
@@ -126,11 +127,16 @@ const Dashboard = () => {
 		setSummaryTooltip((prev) => !prev);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		getStageIssueCount().then((res) => {
 			setStageIssue(res.data.result);
 		});
 	}, []);
+	useEffect(() => {
+		allProjectPrecisionCount().then((res) =>{
+			setProjectPrecisionCount(res.data.result);
+		}).then(() => setPrecisionLoading(true));
+	},[])
 
 	return (
 		<ContentsWrapper>
@@ -146,10 +152,10 @@ const Dashboard = () => {
 								<ReleasabilityPieGraph />
 							</MediumGraph>
 							<MediumGraph>
-								<SecurityGradePieGraph />
+								{PrecisionLoading ? <SecurityGradePieGraph item={projectPrecisionCount.grade}/> : null}
 							</MediumGraph>
 							<MediumGraph>
-								<VulnerabilityBarGraph />
+								{PrecisionLoading ? <VulnerabilityBarGraph item={projectPrecisionCount.precision}/>: null}
 							</MediumGraph>
 						</GraphArea>
 					</ResultStatisticsWrapper>
@@ -172,28 +178,18 @@ const Dashboard = () => {
 				<GraphWrapper>
 					<GraphBody>
 						<GraphTitle>Vulnerabilities</GraphTitle>
-						<Graph />
+						<Graph item={projectPrecisionCount.precision}/>
 					</GraphBody>
 					<GraphBody>
 						<GraphTitle>Reliabilities</GraphTitle>
-						<Graph />
+						<Graph item={projectPrecisionCount.grade}/>
 					</GraphBody>
 				</GraphWrapper>
 			</SummaryWrapper>
 			{/* Entire Project Scan Result List */}
 			<ScanListWrapper>
-				<ContentTitle style={{ fontSize: "1.1rem" }}>Projects 1</ContentTitle>
-				{/* Need to transfer props */}
-				<ProjectList
-					projectTitle={"test1"}
-					branchName={"main"}
-					result={"Passed"}
-				/>
-				<ProjectList
-					projectTitle={"test2"}
-					branchName={"main"}
-					result={"Failed"}
-				/>
+				<ContentTitle>전체 프로젝트 {buildContext.pipeline.length}</ContentTitle>
+				{buildContext.pipeline.length > 0 ? (buildContext.pipeline.map((item, index) => { return (<ProjectList key={item.pipeline_name+index} data={item} />)})):(null)}
 			</ScanListWrapper>
 		</ContentsWrapper>
 	);
