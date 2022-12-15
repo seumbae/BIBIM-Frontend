@@ -5,8 +5,9 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Collapse from "@mui/material/Collapse";
 import Branch from "./Branch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { projectPrecisionCount } from "../services/axios";
 
 const ListWrapper = styled.div`
 	max-width: 100%;
@@ -37,7 +38,7 @@ const ProjectTitle = styled(Link)`
 
 const Result = styled.div`
 	background-color: ${({ result }) =>
-		result === "Passed" ? "#00AA00" : "#FF0000"};
+		result ? "#00AA00" : "#FF0000"};
 	padding: 4px 12px;
 	font-size: 0.8rem;
 	border-radius: 1.5rem;
@@ -81,7 +82,8 @@ const AlpaScore = styled.div`
 		(score === "D" && "#FF1900") ||
 		(score === "C" && "#F58737") ||
 		(score === "B" && "#F5C037") ||
-		(score === "A" && "#00AA00")};
+		(score === "A" && "#00AA00") ||
+		(score === "E" && "#4A4A4A")};
 	color: #ffffff;
 	border-radius: 50%;
 	width: 2rem;
@@ -95,54 +97,53 @@ const SettingIcon = styled(SettingsIcon)`
 		cursor: pointer;
 	}
 `;
-/**
- * projectTitle = Project Name
- * BranchName = Branch Name
- * result = Passed or Failed
- * resultSort = Critical, Major, Minor, Info Count
- * securityScore = A or B or C or D
- * vulnerabilities = How many vulnerabilities are detected
- * jenkinsfile = jenkinsFile Name
- * lastScan = Last Scan Date
- */
-const ProjectScanResult = ({
-	projectTitle,
-	branchName,
-	result,
-	resultSort,
-	securityScore,
-	vulnerabilities,
-	jenkinsfile,
-	lastScan,
-}) => {
-	const Sort = {
-		Critical: 0,
-		Major: 1,
-		Minor: 2,
-		Info: 3,
-	};
-	const score = ["A", "B", "C", "D"];
+
+const ProjectList = ({ data }) => {
+	const [issue, setIssue] = useState([]);
+	const [issueLoading, setIssueLoading] = useState(false);
+	const [totalIssue, setTotalIssue] = useState(0);
 	const [open, setOpen] = useState(false);
 	const onHandleIconClick = () => {
 		setOpen(!open);
 	};
 
+	useEffect(() => {
+		projectPrecisionCount("test1")
+			.then((res) => {
+				setIssue(res.data.result);
+			})
+			.then(() => {
+				setIssueLoading(true);
+				setTotalIssue(
+					Object.values(issue.precision).reduce((acc, cur) => acc + cur, 0)
+				);
+			});
+	}, []);
+
+
 	return (
 		<ListWrapper>
 			<MainContentWrapper>
 				<ProjectInfoWrapper>
-					<ProjectTitle to={`/dev/${projectTitle}/status`}>
-						{projectTitle}
+					<ProjectTitle
+						to={`/dev/${data.pipeline_name}/status`}
+						state={{ data: data, issue: issue }}
+					>
+						{data.pipeline_name}
 					</ProjectTitle>
-					<Branch name={branchName} />
-					<Result result={result}>
-						<div style={{ color: "#FFFFFF" }}>{result}</div>
+					<Branch name={data.branch} />
+					<Result result={issue.qualityGate}>
+						<div style={{ color: "#FFFFFF" }}>
+							{issue.qualityGate ? "Passed" : "Failed"}
+						</div>
 					</Result>
 				</ProjectInfoWrapper>
 				<CountWrapper>
-					{Object.entries(Sort).map((item) => {
-						return <ResultCount key={item} sort={item[0]} count={item[1]} />;
-					})}
+					{issueLoading
+						? Object.entries(issue.precision).map((item) => {
+								return <ResultCount key={item[0]} data={item} />;
+						  })
+						: null}
 					{open ? (
 						<MoreIcon onClick={onHandleIconClick} />
 					) : (
@@ -155,14 +156,14 @@ const ProjectScanResult = ({
 					<Detail>
 						<Box>
 							<div>Security Score</div>
-							<AlpaScore score={score[1]}>B</AlpaScore>
+							<AlpaScore score={issue.grade}>{issue.grade}</AlpaScore>
 						</Box>
 						<Box>
 							<div>Vulnerabilities</div>
-							<div>121</div>
+							<div>{totalIssue}</div>
 						</Box>
 						<Box>
-							<div>deploy_jenkins_1.0.2</div>
+							<div>{data.jenkinsfile_name}</div>
 						</Box>
 						<Box>
 							<div>12 hours ago</div>
@@ -175,4 +176,4 @@ const ProjectScanResult = ({
 	);
 };
 
-export default ProjectScanResult;
+export default ProjectList;
