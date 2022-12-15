@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
-import { getPipeline } from "../services/axios";
+import { getPipelineList } from "../services/axios";
 
 export const BuildContext = createContext({
   pipeline: [],
+  modifyStatus: () => {},
   addPipeline: () => {},
   removePipeline: () => {},
 });
@@ -13,10 +14,21 @@ const BuildContextProvider = ({ children }) => {
   const [pipeline, setPipeline] = useState([]);
 
   useEffect(() => {
-    getPipeline().then((res) => {
+    getPipelineList().then((res) => {
       setPipeline(res.data.result);
     })
-  },[])
+  },[]);
+
+  // modify buildingStatus
+  const modifyStatus = (pipeline) => {
+    setPipeline((prev) => {
+      const index = prev.findIndex((item) => item.pipeline_name === pipeline);
+      const newPipeline = [...prev];
+      newPipeline[index].building = false;
+      return newPipeline;
+    });
+  }
+
   const addPipeline = (pipeline) => {
     setPipeline((prev) => [...prev, pipeline]);
   };
@@ -28,7 +40,8 @@ const BuildContextProvider = ({ children }) => {
   const value ={
     pipeline: pipeline,
     addPipeline: addPipeline,
-    removePipeline: removePipeline
+    removePipeline: removePipeline,
+    modifyStatus: modifyStatus
   }
   return (
     <BuildContext.Provider value={value}>

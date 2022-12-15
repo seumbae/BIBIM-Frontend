@@ -12,7 +12,6 @@ const Nav = styled.div`
 	width: 13rem;
 	margin-left: 2.5rem;
 	min-width: 11rem;
-	heigth: 100vh;
 `;
 const NavWarpper = styled.div`
 	background-color: #ffffff;
@@ -58,7 +57,7 @@ function MainSideNav() {
 
 	useLayoutEffect(() => {
 		setProjectList(buildContext.pipeline);
-	},[buildContext.pipeline])
+	}, [buildContext.pipeline]);
 
 	return (
 		<Nav>
@@ -108,8 +107,9 @@ function MainSideNav() {
 						Configuration
 					</Content>
 				</ContentWrapper>
-				{/* TODO: Context 사용하여 build 중일 때 build하고 있는 것 보여주기 */}
-				<BuildStatus />
+				{projectList.length>0 ? projectList.map((item) => {
+					return (item.building === true ? <BuildStatus key={item.pipeline_name}pipeline={item.pipeline_name}/> : null)
+				}) : null}
 			</NavWarpper>
 		</Nav>
 	);

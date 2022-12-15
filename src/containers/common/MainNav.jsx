@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
 import BuildStatus from "../../components/BuildStatus";
+import { useLayoutEffect } from "react";
+import { useState } from "react";
+import { useContext } from "react";
+import { BuildContext } from "../../store/BuildContext";
 const NavWarpper = styled.div`
 	width: 13rem;
 	height: 100vh;
@@ -35,6 +39,12 @@ function isActive(path, location) {
 
 function MainSideNav() {
   const location = useLocation();
+	const buildContext = useContext(BuildContext);
+	const [projectList, setProjectList] = useState([]);
+
+	useLayoutEffect(() => {
+		setProjectList(buildContext.pipeline);
+	}, [buildContext.pipeline]);
 	return (
 		<NavWarpper>
 			<ContentWrapper active={isActive(`/dev`,location.pathname)}>
@@ -52,8 +62,9 @@ function MainSideNav() {
 			<ContentWrapper active={isActive(`/dev/pipeline`, location.pathname)}>
 				<Content to='/dev/pipeline'>Pipeline</Content>
 			</ContentWrapper>
-			{/* TODO: Context 사용하여 build 중일 때 build하고 있는 것 보여주기 */}
-			<BuildStatus />
+			{projectList.length>0 ? projectList.map((item, index) => {
+					return (item.building === false ? <BuildStatus key={item.pipeline_name+index} pipeline={item.pipeline_name}/> : null)
+				}) : null}
 		</NavWarpper>
 	);
 }

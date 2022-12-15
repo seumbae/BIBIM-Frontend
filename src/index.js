@@ -7,8 +7,8 @@ import BuildContextProvider from "./store/BuildContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<Router>
-		{/* <BuildContextProvider> */}
+		<BuildContextProvider>
 			<App />
-		{/* </BuildContextProvider> */}
+		</BuildContextProvider>
 	</Router>
 );
