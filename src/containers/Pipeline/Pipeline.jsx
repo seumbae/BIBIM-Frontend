@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { deletePipeline, getPipeline } from "../../services/axios";
+import { deletePipeline, getPipelineList } from "../../services/axios";
 import styled from "styled-components";
 import Button from "./Button";
 import List from "./PipelineList";
@@ -52,12 +52,6 @@ const Pipeline = () => {
 	const [create, setCreate] = useState(false);
 	const [created, setCreated] = useState(false);
 	const [checkList, setChecked] = useState({});
-	const [jenkinsList, setJenkinsList] = useState([
-		"Pre-commit",
-		"Code-Ql",
-		"Zap",
-		"Dependabot",
-	]);
 	const [pipelineList, setPipelineList] = useState([]);
 	const onHandleCreate = () => {
 		setCreate(true);
@@ -69,10 +63,10 @@ const Pipeline = () => {
 
 	const onHandleDelete = () => {
 		Object.keys(checkList).forEach((key) => {
-			deletePipeline({ pipeline_name: key, branch:"master" }).then((res) => {
+			deletePipeline({ pipeline_name: key, branch: "master" }).then((res) => {
 				alert(res.data.msg);
 				setLoading(false);
-				// buildContext.removePipeline(key);
+				buildContext.removePipeline(key);
 				window.location.reload();
 			});
 		});
@@ -90,22 +84,14 @@ const Pipeline = () => {
 	};
 
 	const onHandleGetPipeline = () => {
-		getPipeline()
-			.then((res) => {
-				setPipelineList(res.data.result);
-				setLoading(false);
-			})
-			.catch((err) => {
-				setLoading(false);
-			});
+		setPipelineList(buildContext.pipeline);
+		setLoading(false);
 		if (created) setCreated(false);
 	};
 
 	useEffect(() => {
 		onHandleGetPipeline();
-	}, [created]);
-
-	// TODO: Context 사용하여 전역으로 관리
+	}, [buildContext.pipeline]);
 
 	return (
 		<BodyWrapper>
@@ -118,25 +104,28 @@ const Pipeline = () => {
 					</ModifyDelete>
 				) : null}
 			</Buttons>
-				{loading ? <PipelineWrapper><ListSkeleton /></PipelineWrapper> : null}
-				{!loading && pipelineList.length === 0 ? (
-					<None>등록된 Pipeline이 없습니다.</None>
-				) : (<PipelineWrapper>
+			{loading ? (
+				<PipelineWrapper>
+					<ListSkeleton />
+				</PipelineWrapper>
+			) : null}
+			{!loading && pipelineList.length === 0 ? (
+				<None>등록된 Pipeline이 없습니다.</None>
+			) : (
+				<PipelineWrapper>
 					{pipelineList.map((item) => {
 						return (
 							<List
 								key={item.pipeline_name}
 								onHandleCheck={onHandleCheck}
-								name={item}
-								jenkins={jenkinsList}
-								owner="nebulayoon"
+								data={item}
 								created="2022-10-12"
 								updated="2022-10-12"
-								repo="github.com/nebulayoon/python/tree/main/check2"
 							/>
 						);
 					})}
-				</PipelineWrapper>)}
+				</PipelineWrapper>
+			)}
 			<Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
 				<PipelineCreate setCreate={setCreate} setCreated={setCreated} />
 			</Modal>
