@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import BuildContextProvider from "./store/BuildContext";
 import LoginPage from "./containers/Login/Login";
 import MainLayout from "./containers/common/MainLayout";
 import DetailLayout from "./containers/common/DetailLayout";
@@ -14,6 +13,7 @@ import ProjectConfiguration from "./containers/ProjectDetail/Configuration/Confi
 import ProjectIssuse from "./containers/ProjectDetail/Issues/Issues";
 import ProjectProfile from "./containers/ProjectDetail/Profile/Profile";
 import ProejctHistory from "./containers/ProjectDetail/History/History";
+import ProjectBuild from "./containers/Build/Build";
 
 /* 로그인 여부 확인해야함 */
 function App() {
@@ -35,6 +35,7 @@ function App() {
         <Route path="/dev/:projectTitle/history" element={<ProejctHistory />} />
         <Route path="/dev/:projectTitle/configuration" element={<ProjectConfiguration />} />
       </Route>
+      <Route path="/dev/:projectTitle/build" element={<ProjectBuild />} />
       <Route path="/configuration" element={<ConfigurationContainer />} />
     </Routes>
   );
