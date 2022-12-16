@@ -1,10 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { getJenkinslist } from "../../services/axios";
+
 import Button from "./Button";
 import List from "./JenkinsList";
 import Modal from "@mui/material/Modal";
 import ListSkeleton from "../../components/ListSkeleton";
 import JenkinsCreate from "./JenkinsCreate";
+import { useLayoutEffect } from "react";
 
 const BodyWrapper = styled.div`
 	margin-top: 3rem;
@@ -39,7 +42,7 @@ const None = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex: 1;
-	color: #4A4949;
+	color: #4a4949;
 	font-size: 0.8rem;
 `;
 
@@ -48,13 +51,7 @@ const Jenkins = () => {
 	const [create, setCreate] = useState(false);
 	const [created, setCreated] = useState(false);
 	const [checkList, setChecked] = useState({});
-	const [jenkinsList, setJenkinsList] = useState([
-		"Pre-commit",
-		"Code-Ql",
-		"Zap",
-		"Dependabot",
-	]);
-
+	const [jenkinsList, setJenkinsList] = useState([]);
 	const onHandleCreate = () => setCreate((prev) => !prev);
 	const onHandleClose = () => setCreate((prev) => !prev);
 	// 현재 Jenkins List 가져오는 API 미완성
@@ -68,6 +65,7 @@ const Jenkins = () => {
 			delete temp[value];
 			setChecked(temp);
 		}
+		console.log(checkList);
 	};
 
 	const onHandleModify = () => {
@@ -75,14 +73,15 @@ const Jenkins = () => {
 	};
 	const onHandleDelete = () => {
 		console.log("delete");
-		// Object.keys(checkList).forEach((key) => {
-		//   deletePipeline({pipeline_name: key}).then((res) => {
-		//     alert(res.data.msg);
-		//     setLoading(false);
-		//     window.location.reload();
-		//   })})
 	};
 
+	useLayoutEffect(() => {
+		getJenkinslist()
+			.then((res) => {
+				setJenkinsList(res.data.result);
+			})
+			.then(setLoading(false));
+	}, []);
 	return (
 		<BodyWrapper>
 			<Buttons>
@@ -99,15 +98,15 @@ const Jenkins = () => {
 				{loading ? (
 					<ListSkeleton />
 				) : (
-					<List
-						setChecked={setChecked}
-						onHandleCheck={onHandleCheck}
-						name="deploy_jenkinsfile_1.0.2"
-						jenkins={jenkinsList}
-						owner="nebulayoon"
-						created="2022-10-12"
-						updated="2022-10-12"
-					/>
+					jenkinsList.map((item) => {
+						return (
+							<List
+								key={item.jenkinsfile_name}
+								onHandleCheck={onHandleCheck}
+								jenkins={item}
+							/>
+						);
+					})
 				)}
 			</JenkinsWrapper>
 			<Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
