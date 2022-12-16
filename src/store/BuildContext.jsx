@@ -19,10 +19,9 @@ const BuildContextProvider = ({ children }) => {
     })
   },[]);
 
-  // modify buildingStatus
-  const modifyStatus = (pipeline) => {
+  const modifyStatus = (pipelineName) => {
     setPipeline((prev) => {
-      const index = prev.findIndex((item) => item.pipeline_name === pipeline);
+      const index = prev.findIndex((item) => item.pipeline_name === pipelineName);
       const newPipeline = [...prev];
       newPipeline[index].building = false;
       return newPipeline;

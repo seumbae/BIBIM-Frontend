@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { BuildContext } from "../../store/BuildContext";
 import { getStageIssueCount, allProjectPrecisionCount  } from "../../services/axios";
+import Skeleton from "@mui/material/Skeleton";
 
 import StageIssue from "./StageIssue";
 import ProjectList from "../../components/ProjectList";
@@ -110,6 +111,29 @@ const MediumGraph = styled.div`
 	width: 350px;
 	height: 250px;
 `;
+const Skeletons = styled.div`
+	background-color: #ffffff;
+	border-radius: 6.4px;
+	padding: 12px 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+`;
+const Wrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+const LoadingSkeleton = () => {
+	return (<>
+		<Skeletons>
+			<Wrapper>
+				<Skeleton variant="text" width={200} sx={{ fontSize: "1rem" }} />
+				<Skeleton variant="text" width={360} sx={{ fontSize: "1rem" }} />
+			</Wrapper>
+		</Skeletons>
+	</>);
+}
 
 const Dashboard = () => {
 	const buildContext = useContext(BuildContext);
@@ -121,8 +145,9 @@ const Dashboard = () => {
 		{ DAST: 0 },
 		{ SCA: 0 },
 	]);
-
 	const [summaryTooltip, setSummaryTooltip] = useState(false);
+	const [loading, setLoading] = useState(true);
+
 	const handleSummaryTooltipOpen = () => {
 		setSummaryTooltip((prev) => !prev);
 	};
@@ -132,11 +157,17 @@ const Dashboard = () => {
 			setStageIssue(res.data.result);
 		});
 	}, []);
+
 	useEffect(() => {
 		allProjectPrecisionCount().then((res) =>{
 			setProjectPrecisionCount(res.data.result);
 		}).then(() => setPrecisionLoading(true));
 	},[])
+
+	useEffect(() => {
+		if(buildContext.pipeline.length > 0)
+			setLoading(false);
+	},[buildContext])
 
 	return (
 		<ContentsWrapper>
@@ -188,8 +219,8 @@ const Dashboard = () => {
 			</SummaryWrapper>
 			{/* Entire Project Scan Result List */}
 			<ScanListWrapper>
-				<ContentTitle>전체 프로젝트 {buildContext.pipeline.length}</ContentTitle>
-				{buildContext.pipeline.length > 0 ? (buildContext.pipeline.map((item, index) => { return (<ProjectList key={item.pipeline_name+index} data={item} />)})):(null)}
+				<ContentTitle>전체 프로젝트 {buildContext.pipeline.length === 0 ? "-" : buildContext.pipeline.length}</ContentTitle>
+				{loading ? (<><LoadingSkeleton /> <LoadingSkeleton /></>):(buildContext.pipeline.map((item, index) => { return (<ProjectList key={item.pipeline_name+index} data={item} />)}))}
 			</ScanListWrapper>
 		</ContentsWrapper>
 	);

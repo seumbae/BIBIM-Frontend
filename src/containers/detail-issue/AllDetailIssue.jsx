@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getSecurityList } from "../../services/axios";
+
+import Skeleton from "@mui/material/Skeleton";
 import AllIssueTableList from "../../components/detail-issue/AllIssueTable";
 import styled from "styled-components";
 import Filter from "../../components/Filter";
+import HorizonLine from "../../components/HorizonLine";
 
 const ResultArea = styled.div`
 	margin-top: 3rem;
@@ -20,18 +23,42 @@ const Lists = styled.div`
 	gap: 0.5rem;
 `;
 
-const None = styled.div`
+const Skeletons = styled.div`
+	background-color: #ffffff;
+	border-radius: 6.4px;
+	padding: 12px 8px;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 1;
-	color: #4a4949;
-	font-size: 0.8rem;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-left: 2rem;
+	width: 100%;
 `;
+const Wrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+export const LoadingSkeleton = () => {
+	return (
+		<>
+			<Skeletons>
+				<Wrapper>
+					<Skeleton variant="text" width={360} sx={{ fontSize: "1rem" }} />
+					<Skeleton variant="text" width={120} sx={{ fontSize: "1rem" }} />
+				</Wrapper>
+				<Wrapper>
+					<Skeleton variant="text" width={360} sx={{ fontSize: "1rem" }} />
+					<Skeleton variant="text" width={360} sx={{ fontSize: "1rem" }} />
+				</Wrapper>
+				<HorizonLine />
+			</Skeletons>
+		</>
+	);
+};
 
 const AllDetailIssueContainer = () => {
 	const [issueData, setIssueData] = useState([]);
-
+	const [loading, setLoding] = useState(true);
 	const [data, setData] = useState({
 		Languages: ["Javascript", "Python"],
 		Stages: {
@@ -55,7 +82,7 @@ const AllDetailIssueContainer = () => {
 			],
 		},
 	});
-	
+
 	const [checked, setChecked] = useState({
 		Languages: [],
 		SIS: [],
@@ -65,15 +92,19 @@ const AllDetailIssueContainer = () => {
 		Tag: [],
 	});
 	useEffect(() => {
-		getSecurityList().then((res) => {
-			setIssueData(JSON.parse(res.data.result));
-		});
+		getSecurityList()
+			.then((res) => {
+				setIssueData(JSON.parse(res.data.result));
+			})
+			.then(setLoding(false));
 	}, []);
 
 	return (
 		<ResultArea>
 			<Filter data={data} checked={checked} setChecked={setChecked} />
-			{issueData.length > 0 ? (
+			{loading ? (
+				<LoadingSkeleton />
+			) : (
 				<Lists>
 					{issueData.map((oneProjectItem) => (
 						<AllIssueTableList
@@ -82,8 +113,6 @@ const AllDetailIssueContainer = () => {
 						/>
 					))}
 				</Lists>
-			) : (
-				<None>검사결과가 존재하지 않아 Issue가 존재하지 않습니다.</None>
 			)}
 		</ResultArea>
 	);

@@ -45,6 +45,7 @@ function MainSideNav() {
 	useLayoutEffect(() => {
 		setProjectList(buildContext.pipeline);
 	}, [buildContext.pipeline]);
+	
 	return (
 		<NavWarpper>
 			<ContentWrapper active={isActive(`/dev`,location.pathname)}>
@@ -63,7 +64,7 @@ function MainSideNav() {
 				<Content to='/dev/pipeline'>Pipeline</Content>
 			</ContentWrapper>
 			{projectList.length>0 ? projectList.map((item, index) => {
-					return (item.building === false ? <BuildStatus key={item.pipeline_name+index} pipeline={item.pipeline_name}/> : null)
+					return (item.building === true ? <BuildStatus key={item.pipeline_name+index} pipeline={item.pipeline_name}/> : null)
 				}) : null}
 		</NavWarpper>
 	);

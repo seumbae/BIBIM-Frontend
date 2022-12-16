@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useContext } from "react";
 import { BuildContext } from "../store/BuildContext";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { stopPipeline } from "../services/axios";
 
 const rotation = keyframes`
   from{
@@ -70,22 +72,34 @@ const Date = styled.div`
 
 const BuildStatus = ({ pipeline }) => {
 	const buildContext = useContext(BuildContext);
+	const [data, setData] = useState([]);
 	const [open, setOpen] = useState(true);
 	const onHandleCancel = () => {
-		if(window.confirm("진행중인 빌드가 취소됩니다. 정말 취소하시겠습니까?")){
-			alert("빌드가 정상적으로 취소되었습니다.")
+		if (window.confirm("진행중인 빌드가 취소됩니다. 정말 취소하시겠습니까?")) {
+			stopPipeline({pipeline_name: pipeline, branch: data[0].branch}).then((res) => console.log(res));
+			alert("빌드가 정상적으로 취소되었습니다.");
 			setOpen(false);
 			buildContext.modifyStatus(pipeline);
 		}
 	};
+
+	useEffect(() => {
+		setData(
+			buildContext.pipeline.filter((item) => item.pipeline_name === pipeline)
+		);
+	}, [buildContext.pipeline]);
+
 	return (
-		<>
-			{open ? (
 				<Container>
 					<StyledLoopIcon />
 					<DetailArea>
 						<TitleArea>
-							<ProjectTitle to={`/dev/${pipeline}/build`}>{pipeline}</ProjectTitle>
+							<ProjectTitle
+								to={`/dev/${pipeline}/build`}
+								state={{ pipeline: data }}
+							>
+								{pipeline}
+							</ProjectTitle>
 							<Cancel onClick={onHandleCancel}>Cancel</Cancel>
 						</TitleArea>
 						<ProgressArea>
@@ -94,8 +108,6 @@ const BuildStatus = ({ pipeline }) => {
 						</ProgressArea>
 					</DetailArea>
 				</Container>
-			) : null}
-		</>
 	);
 };
 

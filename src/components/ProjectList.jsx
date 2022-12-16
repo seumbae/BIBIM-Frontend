@@ -38,7 +38,7 @@ const ProjectTitle = styled(Link)`
 
 const Result = styled.div`
 	background-color: ${({ result }) =>
-		result ? "#00AA00" : "#FF0000"};
+		result === undefined ? "#EEEEF2" : result ? "#00AA00" : "#FF0000"};
 	padding: 4px 12px;
 	font-size: 0.8rem;
 	border-radius: 1.5rem;
@@ -79,6 +79,7 @@ const Box = styled.div`
 
 const AlpaScore = styled.div`
 	background-color: ${({ score }) =>
+		(score === undefined && "#EEEEF2") ||
 		(score === "D" && "#FF1900") ||
 		(score === "C" && "#F58737") ||
 		(score === "B" && "#F5C037") ||
@@ -100,7 +101,7 @@ const SettingIcon = styled(SettingsIcon)`
 
 const ProjectList = ({ data }) => {
 	const [issue, setIssue] = useState([]);
-	const [issueLoading, setIssueLoading] = useState(false);
+	const [issueLoading, setIssueLoading] = useState(true);
 	const [totalIssue, setTotalIssue] = useState(0);
 	const [open, setOpen] = useState(false);
 	const onHandleIconClick = () => {
@@ -108,18 +109,18 @@ const ProjectList = ({ data }) => {
 	};
 
 	useEffect(() => {
-		projectPrecisionCount("test1")
+		const name = data.pipeline_name === "test1" || data.pipeline_name === "test2" ? data.pipeline_name : "test1";
+		projectPrecisionCount(name)
 			.then((res) => {
-				setIssue(res.data.result);
+					setIssue(res.data.result);
 			})
 			.then(() => {
-				setIssueLoading(true);
+				setIssueLoading(false);
 				setTotalIssue(
 					Object.values(issue.precision).reduce((acc, cur) => acc + cur, 0)
 				);
-			});
+			})
 	}, []);
-
 
 	return (
 		<ListWrapper>
@@ -134,16 +135,20 @@ const ProjectList = ({ data }) => {
 					<Branch name={data.branch} />
 					<Result result={issue.qualityGate}>
 						<div style={{ color: "#FFFFFF" }}>
-							{issue.qualityGate ? "Passed" : "Failed"}
+							{issue.qualityGate === undefined
+								? "None"
+								: issue.qualityGate
+								? "Passed"
+								: "Failed"}
 						</div>
 					</Result>
 				</ProjectInfoWrapper>
 				<CountWrapper>
 					{issueLoading
-						? Object.entries(issue.precision).map((item) => {
+						? null
+						: Object.entries(issue.precision).map((item) => {
 								return <ResultCount key={item[0]} data={item} />;
-						  })
-						: null}
+						  })}
 					{open ? (
 						<MoreIcon onClick={onHandleIconClick} />
 					) : (
@@ -156,7 +161,9 @@ const ProjectList = ({ data }) => {
 					<Detail>
 						<Box>
 							<div>Security Score</div>
-							<AlpaScore score={issue.grade}>{issue.grade}</AlpaScore>
+							<AlpaScore score={issue.grade}>
+								{issue.grade === undefined ? "N" : issue.grade}
+							</AlpaScore>
 						</Box>
 						<Box>
 							<div>Vulnerabilities</div>
