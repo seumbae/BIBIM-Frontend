@@ -26,6 +26,7 @@ export const getToolList = async () => await API.get('/tool/toolList');
 export const createPipeline = async (data) => await API.post('/pipeline/createPipeline', data);
 export const deletePipeline = async (data) => await API.post('/pipeline/deletePipeline', data);
 export const runPipeline = async (data) => await API.post('/pipeline/runPipeline', data);
+export const stopPipeline = async (data) => await API.post('/pipeline/stopPipeline', data);
 export const getPipelineList = async () => await API.get('/pipeline/pipelineList');
 export const getPipeline = async (data) => await API.post('/pipeline/getPipeline', data);
 export const getStream = async (data) => await API.post('/pipeline/getStream', data);
