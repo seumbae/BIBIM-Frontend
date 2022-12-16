@@ -1,8 +1,7 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LazyLog, ScrollFollow, LineContent, LinePart } from "react-lazylog";
-import { useContext, useEffect, useState } from "react";
-import { BuildContext } from "../../store/BuildContext";
+import { useState } from "react";
 
 import Branch from "../../components/Branch";
 import Header from "../common/Header";
