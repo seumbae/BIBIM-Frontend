@@ -74,10 +74,12 @@ const Build = () => {
 		setData(location.state.pipeline);
 	}, []);
 
-	console.log(location.state.pipeline[0].pipeline_name);
-
+	
 	const url = "http://222.234.124.57:52200/api/v1/pipeline/getStream";
-
+	const body = JSON.stringify({
+		pipeline_name: location.state.pipeline[0].pipeline_name,
+		branch: location.state.pipeline[0].branch,
+	});
 	// const func = async () => {
 	// 	const res = await fetch(
 	// 		"http://222.234.124.57:52200/api/v1/pipeline/getStream",
@@ -108,7 +110,6 @@ const Build = () => {
 			{data.length > 0 ? (
 				<HeaderWrapper>
 					<TitleWrapper>
-						{/* TODO: undefined면 loading 추가 */}
 						<Title>{data[0].pipeline_name}</Title>
 						<Branch name={data[0].branch} />
 					</TitleWrapper>
@@ -155,10 +156,7 @@ const Build = () => {
 								headers: {
 									"Content-Type": "application/json",
 								},
-								body: {
-									pipeline_name: location.state.pipeline[0].pipeline_name,
-									branch: location.state.pipeline[0].brach,
-								},
+								body: body
 							}}
 						/>
 					)}
