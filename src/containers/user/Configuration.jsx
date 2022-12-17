@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import Header from "../common/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import HorizonLine from "../../components/HorizonLine";
+import { BuildContext } from "../../store/BuildContext";
+
 
 const NavWarpper = styled.div`
 	width: 13rem;
@@ -205,6 +207,7 @@ const ConfigurationSideNav = () => {
  
 
 const ConfigurationContainer = () => {
+  const buildContext = useContext(BuildContext);
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   
@@ -257,7 +260,7 @@ const ConfigurationContainer = () => {
 
   return(
     <>
-      <Header userName={'admin'} />
+      <Header userName={buildContext.user} />
       <Body>
         <ConfigurationSideNav />
         <ConfigurationArea>
@@ -266,7 +269,7 @@ const ConfigurationContainer = () => {
               <TitleName>Name</TitleName>
               <TipText>변경은 관리자에게 문의하십시오</TipText>
             </TitleArea>
-            <UserName>admin</UserName>
+            <UserName>{buildContext.user}</UserName>
           </NameArea>
           <HorizonLine />
           <PasswordArea>

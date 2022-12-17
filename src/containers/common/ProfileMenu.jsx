@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import styled from "styled-components";
 
 import sampleImage from '../../static/sample.png'
 import Menu from "@mui/material/Menu";
 import HorizonLine from "../../components/HorizonLine";
 import { useNavigate } from "react-router-dom";
+import { BuildContext } from "../../store/BuildContext";
 
 const StyledMenu = styled(Menu)`
   .MuiPaper-root {
@@ -41,12 +43,12 @@ const Email = styled.div`
   font-size: 1rem;
 `
 const ProfileMenu = ({userName, anchorEl, setAnchorEl}) => {
+  const buildContext = useContext(BuildContext);
   const navigation = useNavigate();
 	const open = Boolean(anchorEl);
   const onHandleClose = (e) => {
     if(e.target.id === 'logout') {
-      // TODO: Context 이용해서 로그아웃 처리
-      console.log('logout');
+      buildContext.logout();
     }
     if(e.target.id === 'account'){
       navigation('configuration');
@@ -60,8 +62,8 @@ const ProfileMenu = ({userName, anchorEl, setAnchorEl}) => {
 			<MenuItem onClick={onHandleClose}> 
         <Image src={sampleImage} />
 				<ProfileArea>
-          <Username>{userName}</Username>
-          <Email>admin@bibim.com</Email>
+          <Username>{buildContext.user}</Username>
+          <Email>{buildContext.user}@bibim.com</Email>
         </ProfileArea>
 			</MenuItem>
 			<HorizonLine />
