@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { tryLogin } from "../../services/axios";
+import { BuildContext } from "../../store/BuildContext";
 import styled from "styled-components";
-import Tooltip from "@mui/material/Tooltip";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 import TooltipMsg from "../../components/Tooltip";
 
 const LoginComponent = styled.div`
@@ -78,6 +78,8 @@ const SignUp = styled.div`
 `;
 
 const Login = (props) => {
+	const buildContext = useContext(BuildContext);
+	const navigate = useNavigate();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [signupOpen, setSignupOpen] = useState(false);
@@ -96,11 +98,16 @@ const Login = (props) => {
 		if (name === "password") setPassword(value);
 	};
 
-	const onHandleSubmit = (e) => {
+	const onHandleSubmit =  (e) => {
 		if (e && e.preventDefault) e.preventDefault();
-		tryLogin({ user_id: username, password }).then((res) => {});
-		setUsername("");
-		setPassword("");
+		tryLogin({ user_id: username, password }).then((res) => {
+			if (res.data.status === 200) {
+				buildContext.login(username);
+				navigate("/dev");
+			}
+			if (res.data.status === 400 || res.data.status === 500)
+				alert("아이디 또는 비밀번호가 틀렸습니다.");
+		});
 	};
 
 	return (

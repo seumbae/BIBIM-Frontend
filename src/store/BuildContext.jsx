@@ -4,14 +4,19 @@ import { createContext } from "react";
 import { getPipelineList } from "../services/axios";
 
 export const BuildContext = createContext({
+  user: "",
+  isAuthenticated: false,
   pipeline: [],
   modifyStatus: () => {},
   addPipeline: () => {},
   removePipeline: () => {},
+  login: () => {},
+  logout: () => {}
 });
 
 const BuildContextProvider = ({ children }) => {
   const [pipeline, setPipeline] = useState([]);
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     getPipelineList().then((res) => {
@@ -36,11 +41,24 @@ const BuildContextProvider = ({ children }) => {
     setPipeline((prev) => prev.filter((item) => item !== pipeline));
   };
 
+  const login = (user) => {
+    setUser(user);
+    window.localStorage.setItem("user", user);
+  }
+  const logout = () => {
+    setUser("");
+    window.localStorage.removeItem("user");
+  }
+
   const value ={
+    user: user,
+    isAuthenticated: user.length > 0,
     pipeline: pipeline,
     addPipeline: addPipeline,
     removePipeline: removePipeline,
-    modifyStatus: modifyStatus
+    modifyStatus: modifyStatus,
+    login: login,
+    logout: logout
   }
   return (
     <BuildContext.Provider value={value}>
