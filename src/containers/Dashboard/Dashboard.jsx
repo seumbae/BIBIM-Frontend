@@ -153,9 +153,6 @@ const Dashboard = () => {
 	const [failed, setFailed] = useState(0);
 	const [loading, setLoading] = useState(true);
 
-	const handleSummaryTooltipOpen = () => {
-		setSummaryTooltip((prev) => !prev);
-	};
 
 	useEffect(() => {
 		getStageIssueCount().then((res) => {
@@ -197,7 +194,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		if (buildContext.pipeline.length > 0) setLoading(false);
 	}, [buildContext]);
-
+	
 	return (
 		<ContentsWrapper>
 			{PrecisionLoading ? (

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import SecurityCheckList from "../../components/SecurityCheckList";
@@ -14,11 +13,11 @@ const ModalContainer = styled.div`
 	background-color: #ffffff;
 	border: 2px solid #ffffff;
 	padding: 2rem;
-  max-height: 700px;
-  overflow: auto;
+	max-height: 700px;
+	overflow: auto;
 `;
 const TitleWrapper = styled.div`
-  display: flex;
+	display: flex;
 	justify-content: space-between;
 `;
 
@@ -80,7 +79,7 @@ const TextArea = styled.textarea`
 	width: 95%;
 	margin-bottom: 0.8rem;
 	resize: none;
-  float: right;
+	float: right;
 `;
 
 const Btn = styled.div`
@@ -92,13 +91,13 @@ const Btn = styled.div`
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-  float: right;
+	float: right;
 `;
 
 const Close = styled(CloseIcon)`
 	cursor: pointer;
 `;
-const CreateModal = ({ create, setCreate, setCreated}) => {
+const CreateModal = ({ create, setCreate, setCreated }) => {
 	const [filename, setFileName] = useState("");
 	const [created, setCreadted] = useState(false);
 	const [checkDescription, setcheckDescription] = useState(false);
@@ -109,13 +108,13 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 
 	const onHandleCreate = async (event) => {
 		event.preventDefault();
-    // createJenkins({pipeline_name: filename, repo_url: repoUrl, branch}).then((res) => {
-    //   alert(res.data.msg);
-    //   runPipeline({pipeline_name: "building-a-multibranch-pipeline-project/master"})
-    // })
+		// createJenkins({pipeline_name: filename, repo_url: repoUrl, branch}).then((res) => {
+		//   alert(res.data.msg);
+		//   runPipeline({pipeline_name: "building-a-multibranch-pipeline-project/master"})
+		// })
 		alert("created");
-    setCreated(true);
-    setCreate(false);
+		setCreated(true);
+		setCreate(false);
 		setFileName("");
 	};
 
@@ -123,9 +122,9 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 		setCreate(false);
 	};
 
-  useEffect(() => {
-    onHandleCreate();
-  },[])
+	useEffect(() => {
+		onHandleCreate();
+	}, []);
 
 	return (
 		<ModalContainer>
@@ -168,7 +167,7 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 						<Subtitle>Proceed Security check</Subtitle>
 					</SubtitleWithCheck>
 					<Collapse in={checkSecurity}>
-            <SecurityCheckList />
+						<SecurityCheckList />
 					</Collapse>
 				</AreaWithCheck>
 				<AreaWithCheck>
@@ -183,7 +182,7 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 						<div>Upload existing Jenkins File</div>
 					</Collapse>
 				</AreaWithCheck>
-        <AreaWithCheck>
+				<AreaWithCheck>
 					<SubtitleWithCheck>
 						<Checkbox
 							type="checkbox"
@@ -195,7 +194,6 @@ const CreateModal = ({ create, setCreate, setCreated}) => {
 						<div>Upload Jenkins File from Local</div>
 					</Collapse>
 				</AreaWithCheck>
-        {/* Option이 더 존재한다면 넣을 자리 */}
 			</div>
 			<Btn onClick={onHandleCreate}>Create</Btn>
 		</ModalContainer>

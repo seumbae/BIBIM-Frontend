@@ -67,7 +67,7 @@ const Pipeline = () => {
 				alert(res.data.msg);
 				setLoading(false);
 				buildContext.removePipeline(key);
-				// window.location.reload();
+				window.location.reload();
 			});
 		});
 	};
