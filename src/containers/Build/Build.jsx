@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { LazyLog, ScrollFollow, LineContent, LinePart } from "react-lazylog";
+import { LazyLog, ScrollFollow } from "react-lazylog";
 import { useState } from "react";
 
 import Branch from "../../components/Branch";
@@ -63,55 +63,41 @@ const DescWrapper = styled.div`
 	max-width: 70%;
 `;
 
-const LogViewer = ({ setStages }) => {
-	let stage = [];
-	// setStages(prev=> [...prev, stage]);
-	const url = "http://222.234.124.57:52200/api/v1/pipeline/getStream";
-	const body = { pipeline_name: "test2", branch: "master" };
-	return  (
-	<div style={{ height: 600, width: "90%",margin: '2rem auto 0'  }}>
-				<ScrollFollow
-					startFollowing
-					render={({ follow, onScroll }) => (
-						<LazyLog
-							url={url}
-							stream
-							follow={follow}
-							onScroll={onScroll}
-							fetchOptions={{
-								method: "POST",
-								headers: {
-									"Content-Type": "application/json",
-								},
-								body: JSON.stringify(body),
-							}}
-							formatPart={(text) => {
-								if (text.includes("[Pipeline] { (")) {
-									stage.push(text);
-								}
-								return text;
-							}}
-						/>
-					)}
-				/>
-			</div>
-	);
-}
-
 const Build = () => {
 	const location = useLocation();
 	const navigation = useNavigate();
 	const [data, setData] = useState([]);
-	const [stages, setStages] = useState([]);
 	const onHandleClick = () => {
 		navigation(-1);
 	};
-
 	useLayoutEffect(() => {
 		setData(location.state.pipeline);
 	}, []);
 
-	console.log(stages);
+	console.log(location.state.pipeline[0].pipeline_name);
+
+	const url = "http://222.234.124.57:52200/api/v1/pipeline/getStream";
+
+	// const func = async () => {
+	// 	const res = await fetch(
+	// 		"http://222.234.124.57:52200/api/v1/pipeline/getStream",
+	// 		{
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 			body: JSON.stringify({ pipeline_name: "test2", branch: "master" }),
+	// 		}
+	// 	);
+	// 	const reader = res.body.getReader();
+	// 	const decoder = new TextDecoder("utf-8");
+
+	// 	let result;
+	// 	while (!(result = await reader.read()).done) {
+	// 		console.log(decoder.decode(result.value));
+	// 	}
+	// };
+	// func();
 
 	return (
 		<>
@@ -154,9 +140,30 @@ const Build = () => {
 					<HorizonLine />
 				</HeaderWrapper>
 			) : null}
-			<LogViewer setStages={setStages}/>
 
-			
+			<div style={{ height: 600, width: "90%", margin: "2rem auto 0" }}>
+				<ScrollFollow
+					startFollowing
+					render={({ follow, onScroll }) => (
+						<LazyLog
+							url={url}
+							stream
+							follow={follow}
+							onScroll={onScroll}
+							fetchOptions={{
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json",
+								},
+								body: {
+									pipeline_name: location.state.pipeline[0].pipeline_name,
+									branch: location.state.pipeline[0].brach,
+								},
+							}}
+						/>
+					)}
+				/>
+			</div>
 		</>
 	);
 };
