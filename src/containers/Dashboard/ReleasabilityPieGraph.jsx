@@ -8,22 +8,21 @@ import {
 	Tooltip,
 } from "recharts";
 
-const ReleasabilityPieGraph = () => {
+const ReleasabilityPieGraph = ({ passed, failed }) => {
 	const data = [
 		{
 			name: "Passed",
-			value: 12,
+			value: passed,
 		},
 		{
 			name: "Failed",
-			value: 2,
+			value: failed,
 		},
 	];
-
 	const COLORS = ["#00AA00", "#FF0000"];
 	return (
 		<ResponsiveContainer>
-			<PieChart >
+			<PieChart>
 				<Legend layout="vertical" verticalAlign="bottom" align="right" />
 				<Pie
 					data={data}
@@ -36,7 +35,7 @@ const ReleasabilityPieGraph = () => {
 					fill="#8884d8"
 				>
 					<Label
-						value="14"
+						value={passed + failed}
 						position="centerBottom"
 						fontSize="2rem"
 						style={{ fontSize: "3rem", fontWeight: "600", color: "#263690" }}
