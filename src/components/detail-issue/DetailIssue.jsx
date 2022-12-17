@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import SellIcon from "@mui/icons-material/Sell";
 import HorizonLine from "../HorizonLine";
+import Modal from "@mui/material/Modal";
+import { useState } from "react";
+
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -21,6 +24,7 @@ const Footer = styled.div`
 const Messasge = styled.div`
 	max-width: 80%;
 	font-size: 0.9rem;
+	cursor: pointer;
 `;
 const ScoreArea = styled.div`
 	display: flex;
@@ -72,6 +76,19 @@ const ValueText = styled.div`
 	color: ${({ color }) => (color ? color : "#707070")};
 `;
 
+const ModalContainer = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 35rem;
+	background-color: #ffffff;
+	border: 2px solid #ffffff;
+	padding: 2rem;
+	max-height: 700px;
+	overflow: auto;
+`;
+
 const PropetyValue = ({ value }) => {
 	const colorList = {
 		warning: "#F58737",
@@ -81,17 +98,27 @@ const PropetyValue = ({ value }) => {
 		medium: "#F58737",
 		low: "#F5C037",
 		informational: "#263690",
-		None: "#707070",
+		None: "#4a4a4a",
+		Critical: "#FF0000",
+		Major: "#F58737",
+		Minor: "F5C037",
+		Info: "#00AA00",
 	};
 
 	return <ValueText color={colorList[value]}>{value}</ValueText>;
 };
 
 const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
+	const [create, setCreate] = useState(false);
+	const onHandleClose = () => setCreate(false);
+
+	const onHandleOpen = () => {
+		setCreate(true);
+	};
 	return (
 		<Container>
 			<Body>
-				<Messasge>{data.message}</Messasge>
+				<Messasge onClick={onHandleOpen}>{data.message}</Messasge>
 				<ScoreArea>
 					Score
 					<Score>
@@ -123,6 +150,12 @@ const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
 						</PropetyValue>
 					</Detail>
 					<Detail>
+						Vul:{" "}
+						<PropetyValue value={data.bibimPrecision}>
+							{data.toolPrecision}
+						</PropetyValue>
+					</Detail>
+					<Detail>
 						Precision:{" "}
 						<PropetyValue
 							value={
@@ -137,11 +170,12 @@ const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
 					<Detail>Line: {data.startLine}</Detail>
 				</Details>
 				<TagArea>
-					<Tag>
-						<TagIcon />
-						{/* TODO: parent에서 Stage나 툴 받아와서 더 보여주기 */}
-						<Detail>{data.cweId ? "cwe" : "owasp"}</Detail>
-					</Tag>
+					{data.cweId === 0 ? null : (
+						<Tag>
+							<TagIcon />
+							<Detail>CWE-{data.cweId}</Detail>
+						</Tag>
+					)}
 					{stage ? (
 						<Tag>
 							<TagIcon />
@@ -157,6 +191,10 @@ const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
 				</TagArea>
 			</Footer>
 			<HorizonLine />
+			<Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
+				{/* TODO: Modal */}
+				<ModalContainer>sdasdasd</ModalContainer>
+			</Modal>
 		</Container>
 	);
 };
