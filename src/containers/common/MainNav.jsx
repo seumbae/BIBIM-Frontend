@@ -8,7 +8,6 @@ import { useContext } from "react";
 import { BuildContext } from "../../store/BuildContext";
 const NavWarpper = styled.div`
 	width: 13rem;
-	height: 100vh;
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
@@ -46,6 +45,7 @@ function MainSideNav() {
 		setProjectList(buildContext.pipeline);
 	}, [buildContext.pipeline]);
 
+	console.log(projectList);
 	return (
 		<NavWarpper>
 			<ContentWrapper active={isActive(`/dev`, location.pathname)}>
@@ -65,7 +65,7 @@ function MainSideNav() {
 			</ContentWrapper>
 			{projectList.length > 0
 				? projectList.map((item, index) => {
-						return item.building === true ? (
+						return item.building === false ? (
 							<BuildStatus
 								key={item.pipeline_name + index}
 								pipeline={item.pipeline_name}
