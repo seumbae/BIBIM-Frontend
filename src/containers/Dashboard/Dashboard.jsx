@@ -1,18 +1,32 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useContext } from "react";
 import { BuildContext } from "../../store/BuildContext";
-import { getStageIssueCount, allProjectPrecisionCount  } from "../../services/axios";
+import {
+	getStageIssueCount,
+	allProjectPrecisionCount,
+	getCwe25,
+	getdashboardOwasp10,
+} from "../../services/axios";
 import Skeleton from "@mui/material/Skeleton";
 
-import StageIssue from "./StageIssue";
+import VulComponent from "../ProjectDetail/Status/Vulnerability";
+import StageVul from "./StageVul";
 import ProjectList from "../../components/ProjectList";
-import Graph from "./Graph";
 import TooltipIcon from "../../components/TooltipIcon";
-import TooltipMsg from "../../components/Tooltip";
 import ReleasabilityPieGraph from "./ReleasabilityPieGraph";
 import SecurityGradePieGraph from "./SecurityGradePieGraph";
 import VulnerabilityBarGraph from "./VulnerabilityBarGraph";
+import CwePieGraph from "./CwePieGraph";
+import OwaspPieGraph from "./OwaspPieGraph";
+
+const VulWrapper = styled.div`
+	font-weight: 700;
+`;
+const Vul = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
 
 const ContentsWrapper = styled.div`
 	margin-top: 3rem;
@@ -48,7 +62,7 @@ const IconWrapper = styled.div`
 const ResultStatisticsWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: 2rem;
 `;
 
 const ContentTitle = styled.div`
@@ -56,7 +70,6 @@ const ContentTitle = styled.div`
 	font-weight: 500;
 `;
 
-/* Entire Project Summary Graph */
 const SummaryWrapper = styled.div`
 	max-width: 100%;
 	background-color: #eeeef2;
@@ -66,30 +79,14 @@ const SummaryWrapper = styled.div`
 	flex-direction: column;
 	gap: 1rem;
 `;
-const SummaryHeader = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`;
+
 const GraphWrapper = styled.div`
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	flex-wrap: nowrap;
 	gap: 1rem;
 `;
-const GraphBody = styled.div`
-	display: flex;
-	flex-direction: column;
-	background-color: #ffffff;
-	border-radius: 6.4px;
-	padding: 21px 21px 21px 0px;
-	gap: 1rem;
-`;
-const GraphTitle = styled.div`
-	font-size: 1rem;
-	margin-left: 1.2rem;
-	font-weight: 400;
-`;
+
 /* Entire Project Scan Result */
 const ScanListWrapper = styled.div`
 	max-width: 100%;
@@ -125,15 +122,17 @@ const Wrapper = styled.div`
 `;
 
 const LoadingSkeleton = () => {
-	return (<>
-		<Skeletons>
-			<Wrapper>
-				<Skeleton variant="text" width={200} sx={{ fontSize: "1rem" }} />
-				<Skeleton variant="text" width={360} sx={{ fontSize: "1rem" }} />
-			</Wrapper>
-		</Skeletons>
-	</>);
-}
+	return (
+		<>
+			<Skeletons>
+				<Wrapper>
+					<Skeleton variant="text" width={200} sx={{ fontSize: "1rem" }} />
+					<Skeleton variant="text" width={360} sx={{ fontSize: "1rem" }} />
+				</Wrapper>
+			</Skeletons>
+		</>
+	);
+};
 
 const Dashboard = () => {
 	const buildContext = useContext(BuildContext);
@@ -145,7 +144,13 @@ const Dashboard = () => {
 		{ DAST: 0 },
 		{ SCA: 0 },
 	]);
+	const [cwe, setCwe] = useState([]);
+	const [cweLoading, setCweLoading] = useState(true);
+	const [owasp, setOwasp] = useState([]);
+	const [owaspLoading, setOwaspLoading] = useState(true);
 	const [summaryTooltip, setSummaryTooltip] = useState(false);
+	const [passed, setPassed] = useState(0);
+	const [failed, setFailed] = useState(0);
 	const [loading, setLoading] = useState(true);
 
 	const handleSummaryTooltipOpen = () => {
@@ -159,19 +164,46 @@ const Dashboard = () => {
 	}, []);
 
 	useEffect(() => {
-		allProjectPrecisionCount().then((res) =>{
-			setProjectPrecisionCount(res.data.result);
-		}).then(() => setPrecisionLoading(true));
-	},[])
+		getdashboardOwasp10()
+			.then((res) => {
+				if (res.data.status === 500) throw new Error("Can't load CWE25 Data.");
+				setOwasp(res.data.result);
+			})
+			.then(setOwaspLoading(true))
+			.catch((err) => console.log(err));
+	}, []);
 
 	useEffect(() => {
-		if(buildContext.pipeline.length > 0)
-			setLoading(false);
-	},[buildContext])
+		getCwe25()
+			.then((res) => {
+				if (res.data.status === 500) throw new Error("Can't load CWE25 Data.");
+				setCwe(res.data.result);
+			})
+			.then(setCweLoading(true))
+			.catch((err) => console.log(err));
+	}, []);
+
+	useEffect(() => {
+		allProjectPrecisionCount()
+			.then((res) => {
+				if (res.data.status === 500)
+					throw new Error("Can't load all Projects Precision Count Data.");
+				setProjectPrecisionCount(res.data.result);
+			})
+			.then(() => setPrecisionLoading(true))
+			.catch((err) => console.log(err));
+	}, []);
+
+	useEffect(() => {
+		if (buildContext.pipeline.length > 0) setLoading(false);
+	}, [buildContext]);
 
 	return (
 		<ContentsWrapper>
-			<StageIssue data={stageIssue} />
+			{PrecisionLoading ? (
+				<StageVul data={projectPrecisionCount.precision} />
+			) : null}
+
 			<StatusWrapper>
 				<ResultStatistics>
 					<IconWrapper>
@@ -180,47 +212,61 @@ const Dashboard = () => {
 					<ResultStatisticsWrapper>
 						<GraphArea>
 							<MediumGraph>
-								<ReleasabilityPieGraph />
+								<ReleasabilityPieGraph passed={passed} failed={failed} />
 							</MediumGraph>
 							<MediumGraph>
-								{PrecisionLoading ? <SecurityGradePieGraph item={projectPrecisionCount.grade}/> : null}
+								{PrecisionLoading ? (
+									<SecurityGradePieGraph item={projectPrecisionCount.grade} />
+								) : null}
 							</MediumGraph>
 							<MediumGraph>
-								{PrecisionLoading ? <VulnerabilityBarGraph item={projectPrecisionCount.precision}/>: null}
+								<VulnerabilityBarGraph item={stageIssue} />
 							</MediumGraph>
 						</GraphArea>
+						<GraphWrapper>
+							<MediumGraph>
+								{cweLoading ? <CwePieGraph cwe={cwe} /> : null}
+							</MediumGraph>
+							<MediumGraph>
+								{cweLoading ? <OwaspPieGraph owasp={owasp} /> : null}
+							</MediumGraph>
+						</GraphWrapper>
 					</ResultStatisticsWrapper>
 				</ResultStatistics>
 			</StatusWrapper>
-			{/* Entire Project Summary Graph */}
-			<SummaryWrapper>
-				<SummaryHeader>
-					<ContentTitle>전체 프로젝트 요약</ContentTitle>
-					<TooltipMsg
-						title="과거부터 현재까지 전체 프로젝트에 대한 요약"
-						open={summaryTooltip}
-						setOpen={setSummaryTooltip}
-					>
-						<div onClick={handleSummaryTooltipOpen}>
-							<TooltipIcon />
-						</div>
-					</TooltipMsg>
-				</SummaryHeader>
+			{/* <SummaryWrapper>
 				<GraphWrapper>
-					<GraphBody>
-						<GraphTitle>Vulnerabilities</GraphTitle>
-						<Graph item={projectPrecisionCount.precision}/>
-					</GraphBody>
-					<GraphBody>
-						<GraphTitle>Reliabilities</GraphTitle>
-						<Graph item={projectPrecisionCount.grade}/>
-					</GraphBody>
+					<MediumGraph>
+						{cweLoading ? <CwePieGraph cwe={cwe} /> : null}
+					</MediumGraph>
+					<MediumGraph>
+						{cweLoading ? <OwaspPieGraph owasp={owasp} /> : null}
+					</MediumGraph>
 				</GraphWrapper>
-			</SummaryWrapper>
-			{/* Entire Project Scan Result List */}
+			</SummaryWrapper> */}
 			<ScanListWrapper>
-				<ContentTitle>전체 프로젝트 {buildContext.pipeline.length === 0 ? "-" : buildContext.pipeline.length}</ContentTitle>
-				{loading ? (<><LoadingSkeleton /> <LoadingSkeleton /></>):(buildContext.pipeline.map((item, index) => { return (<ProjectList key={item.pipeline_name+index} data={item} />)}))}
+				<ContentTitle>
+					전체 프로젝트{" "}
+					{buildContext.pipeline.length === 0
+						? "-"
+						: buildContext.pipeline.length}
+				</ContentTitle>
+				{loading ? (
+					<>
+						<LoadingSkeleton /> <LoadingSkeleton />
+					</>
+				) : buildContext.pipeline.length > 0 ? (
+					buildContext.pipeline.map((item, index) => {
+						return (
+							<ProjectList
+								key={item.pipeline_name + index}
+								data={item}
+								setPassed={setPassed}
+								setFailed={setFailed}
+							/>
+						);
+					})
+				) : null}
 			</ScanListWrapper>
 		</ContentsWrapper>
 	);

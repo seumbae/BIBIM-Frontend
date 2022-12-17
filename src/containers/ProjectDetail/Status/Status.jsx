@@ -9,7 +9,6 @@ import VulComponent from "./Vulnerability";
 import Tooltip from "../../../components/TooltipIcon";
 import Condition from "./Condition";
 import Score from "./Score";
-import Graph from "./Graph";
 
 const BodyWrapper = styled.div`
 	margin-top: 3rem;
@@ -122,25 +121,28 @@ const Scores = styled.div`
 	justify-content: space-between;
 	margin-left: 2rem;
 `;
-const HistoryWrapper = styled.div``;
 
 const Status = () => {
 	const location = useLocation();
 	const [lastScan, setLastScan] = useState("24 hours ago");
-	const [condition, setCondition] = useState("Passed");
 	const [score, setScore] = useState({
 		score: "A",
-		reliability: "A",
-		Vulnerability: "B",
+		reliability: "B",
+		Vulnerability: "C",
 	});
 	const { data, issue } = location.state;
-	const totalIssue = Object.values(issue.precision).reduce((acc, cur) => acc + cur, 0);
+	const totalIssue = Object.values(issue.precision).reduce(
+		(acc, cur) => acc + cur,
+		0
+	);
 
 	const onHandleScan = () => {
 		runPipeline({
 			pipeline_name: data.pipeline_name,
 			branch: data.branch,
-		}).then((res) => res.data.status === 200 ? alert("Scan Success") : alert("Scan Fail"));
+		}).then((res) =>
+			res.data.status === 200 ? alert("Scan Success") : alert("Scan Fail")
+		);
 	};
 
 	return (
@@ -219,14 +221,6 @@ const Status = () => {
 					</SecurityScoreWrapper>
 				</ConditionBody>
 			</ConditionWrapper>
-			<HorizonLine />
-			<HistoryWrapper>
-				<SubTitle>HISTORY SUMMARY</SubTitle>
-				<div style={{ display: "flex", justifyContent: "space-between" }}>
-					<Graph />
-					<Graph />
-				</div>
-			</HistoryWrapper>
 		</BodyWrapper>
 	);
 };
