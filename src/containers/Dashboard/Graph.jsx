@@ -10,7 +10,8 @@ import {
 	YAxis,
 } from "recharts";
 
-const Graph = ({ Data }) => {
+const Graph = ({ item }) => {
+	const [realdata, setRealdata] = useState([]);
 	const data = [
 		{
 			name: "0",
@@ -84,12 +85,21 @@ const Graph = ({ Data }) => {
 		},
 	];
 	// const [data, setData] = useState(Data);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		// setData(Data);
-		setLoading(false);
-	}, [Data]);
+	//TODO: item을 받아서 그래프에 표시하기
+	// useEffect(() => {
+	// 	if(item){
+	// 		Object.entries(item)?.map(([key, value], index)=>{
+	// 			console.log(key, value, index);
+	// 			const tmp = {name: index, key: value};
+	// 		})
+	// 	}
+	// },[item])
+	// useEffect(() => {
+	// 	// setData(Data);
+	// 	setLoading(false);
+	// }, [Data]);
 
 	return (
 		<div style={{width: 580, height: 250}}>
