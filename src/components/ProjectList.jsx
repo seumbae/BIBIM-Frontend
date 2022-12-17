@@ -99,7 +99,7 @@ const SettingIcon = styled(SettingsIcon)`
 	}
 `;
 
-const ProjectList = ({ data }) => {
+const ProjectList = ({ data, setPassed, setFailed }) => {
 	const [issue, setIssue] = useState([]);
 	const [issueLoading, setIssueLoading] = useState(true);
 	const [totalIssue, setTotalIssue] = useState(0);
@@ -107,21 +107,34 @@ const ProjectList = ({ data }) => {
 	const onHandleIconClick = () => {
 		setOpen(!open);
 	};
-
 	useEffect(() => {
-		const name = data.pipeline_name === "test1" || data.pipeline_name === "test2" ? data.pipeline_name : "test1";
-		projectPrecisionCount(name)
+		projectPrecisionCount(data.pipeline_name)
 			.then((res) => {
+				if (res.data.status === 200) {
 					setIssue(res.data.result);
+					setTotalIssue(
+						Object.values(res.data.result.precision).reduce(
+							(acc, cur) => acc + cur,
+							0
+						)
+					);
+				} else if (res.data.status === 500) {
+					setIssue({
+						grade: undefined,
+						precision: { Critical: 0, Major: 0, Minor: 0, Info: 0, None: 0 },
+						qualityGate: undefined,
+					});
+				}
+				if (res.data.result.qualityGate === true) {
+					setPassed((prev) => prev + 1);
+				} else if (res.data.result.qualityGate === false) {
+					setFailed((prev) => prev + 1);
+				}
 			})
 			.then(() => {
 				setIssueLoading(false);
-				setTotalIssue(
-					Object.values(issue.precision).reduce((acc, cur) => acc + cur, 0)
-				);
-			})
+			});
 	}, []);
-
 	return (
 		<ListWrapper>
 			<MainContentWrapper>
