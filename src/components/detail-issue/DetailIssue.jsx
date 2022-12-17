@@ -9,6 +9,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.3rem;
+	min-width: 1100px;
 `;
 
 const Body = styled.div`
@@ -24,6 +25,7 @@ const Footer = styled.div`
 
 const Messasge = styled.div`
 	max-width: 80%;
+	word-break: break-all;
 	font-size: 0.9rem;
 	cursor: pointer;
 `;
@@ -47,14 +49,14 @@ const Details = styled.div`
 `;
 const Detail = styled.div`
 	display: flex;
-	gap: 0.2rem;
+	gap: 0.1rem;
 	align-items: center;
 	font-size: 0.8rem;
 	color: #707070;
 `;
 
 const URL = styled.div`
-	width: 300px;
+	width: 200px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -116,11 +118,10 @@ const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
 	const onHandleOpen = () => {
 		setOpen(true);
 	};
-	console.log(data);
-	return (<>
+	return (
 		<Container>
 			<Body>
-				<Messasge onClick={onHandleOpen}>{data.message}</Messasge>
+				<Messasge title={data.message} onClick={onHandleOpen}>{data.message}</Messasge>
 				<ScoreArea>
 					Score
 					<Score>
@@ -197,7 +198,6 @@ const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
 				<IssueModal setOpen={setOpen} data={data} pipelineName={pipelineName} stage={stage} />
 			</Modal>
 		</Container>
-		</>
 	);
 };
 
