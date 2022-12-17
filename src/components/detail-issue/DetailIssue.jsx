@@ -3,6 +3,7 @@ import SellIcon from "@mui/icons-material/Sell";
 import HorizonLine from "../HorizonLine";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
+import IssueModal from "./IssueModal";
 
 const Container = styled.div`
 	display: flex;
@@ -109,13 +110,14 @@ const PropetyValue = ({ value }) => {
 };
 
 const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
-	const [create, setCreate] = useState(false);
-	const onHandleClose = () => setCreate(false);
+	const [open, setOpen] = useState(false);
+	const onHandleClose = () => setOpen(false);
 
 	const onHandleOpen = () => {
-		setCreate(true);
+		setOpen(true);
 	};
-	return (
+	console.log(data);
+	return (<>
 		<Container>
 			<Body>
 				<Messasge onClick={onHandleOpen}>{data.message}</Messasge>
@@ -191,11 +193,11 @@ const DetailIssueComponent = ({ data, pipelineName, stage, tool }) => {
 				</TagArea>
 			</Footer>
 			<HorizonLine />
-			<Modal open={create} onClose={onHandleClose} disableAutoFocus={true}>
-				{/* TODO: Modal */}
-				<ModalContainer>sdasdasd</ModalContainer>
+			<Modal open={open} onClose={onHandleClose} disableAutoFocus={true}>
+				<IssueModal setOpen={setOpen} data={data} pipelineName={pipelineName} stage={stage} />
 			</Modal>
 		</Container>
+		</>
 	);
 };
 
