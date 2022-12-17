@@ -16,7 +16,6 @@ const ResultArea = styled.div`
 `;
 
 const Lists = styled.div`
-	min-width: 700px;
 	display: flex;
 	flex-direction: column;
 	flex: 1;
