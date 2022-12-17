@@ -16,6 +16,8 @@ export const getProjectSecurityResult = async (id) => await API.get(`/projectTot
 export const getStageIssueCount = async () => await API.get('/security_result/dashboardStageIssueCount');
 export const allProjectPrecisionCount = async () => await API.get('/security_result/allProjectPrecisionCount');
 export const projectPrecisionCount = async (pipelineName) => await API.get(`/security_result/projectPrecisionCount/${pipelineName}`);
+export const getCwe25 = async () => await API.get(`/security_result/dashboardCwe25`);
+export const getdashboardOwasp10 = async () => await API.get(`/security_result/dashboardOwasp10`);
 
 
 /* Get Security Check List */
